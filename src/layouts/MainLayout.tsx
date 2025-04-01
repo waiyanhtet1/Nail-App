@@ -14,19 +14,20 @@ import {
   pricetagsOutline,
 } from "ionicons/icons";
 import { useState } from "react";
+import BookingScreen from "../screens/BookingScreen";
 import HomeScreen from "../screens/HomeScreen";
 
 const MainLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="">
+    <>
       <IonTabs>
         <IonTab tab="home">
           <HomeScreen />
         </IonTab>
         <IonTab tab="book">
-          <div>Radio content</div>
+          <BookingScreen />
         </IonTab>
         <IonTab tab="promo">
           <div>Library content</div>
@@ -69,7 +70,7 @@ const MainLayout = () => {
         duration={1000}
         icon={flagOutline}
       ></IonToast>
-    </div>
+    </>
   );
 };
 
