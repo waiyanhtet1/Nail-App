@@ -9,3 +9,18 @@ export type StyleListType = {
   stylistName: string;
   image: string;
 };
+
+export type CategoriesType = {
+  id: string;
+  name: string;
+  icon: string;
+};
+
+export type HomePageDataType = {
+  businessConfig: {
+    _id: string;
+    businessImage: string;
+  };
+  serviceCategories: Array<serviceCategoriesType>;
+  stylists: Array<StyleListType>;
+};

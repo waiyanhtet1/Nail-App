@@ -6,6 +6,7 @@ import {
   IonTabs,
   IonToast,
 } from "@ionic/react";
+import axios from "axios";
 import {
   calendarOutline,
   chatbubbleEllipsesOutline,
@@ -13,21 +14,82 @@ import {
   homeOutline,
   pricetagsOutline,
 } from "ionicons/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../constants/baseUrl";
 import BookingScreen from "../screens/BookingScreen";
 import HomeScreen from "../screens/HomeScreen";
+import { CategoriesType, HomePageDataType } from "../types/types";
 
 const MainLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("home");
+  const [homeData, setHomeData] = useState<HomePageDataType>();
+  const [categoriesData, setCategoriesData] = useState<CategoriesType[]>();
+  const [isLoading, setSetIsLoading] = useState({
+    home: false,
+    categories: false,
+  });
+
+  // Function to fetch home data
+  const getHomeData = async () => {
+    setSetIsLoading((prev) => ({
+      ...prev,
+      home: true,
+    }));
+    try {
+      const { data } = await axios.get(`${BASE_URL}/homepage`);
+      setHomeData(data);
+    } catch (error) {
+      console.log(error);
+    }
+    setSetIsLoading((prev) => ({
+      ...prev,
+      home: false,
+    }));
+  };
+
+  // function to fetch booking data
+  const getCategoriesData = async () => {
+    setSetIsLoading((prev) => ({
+      ...prev,
+      categories: true,
+    }));
+    try {
+      const { data } = await axios.get(`${BASE_URL}/admin/categories`);
+      setCategoriesData(data);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setSetIsLoading((prev) => ({
+      ...prev,
+      categories: false,
+    }));
+  };
+
+  useEffect(() => {
+    if (activeTab === "home") {
+      getHomeData();
+    }
+    if (activeTab === "book") {
+      getCategoriesData();
+    }
+  }, [activeTab]);
 
   return (
     <>
-      <IonTabs>
+      <IonTabs onIonTabsDidChange={(e) => setActiveTab(e.detail.tab)}>
         <IonTab tab="home">
-          <HomeScreen />
+          <HomeScreen
+            homePageData={homeData as HomePageDataType}
+            isLoading={isLoading.home}
+          />
         </IonTab>
         <IonTab tab="book">
-          <BookingScreen />
+          <BookingScreen
+            categoriesData={categoriesData as CategoriesType[]}
+            isLoading={isLoading.categories}
+          />
         </IonTab>
         <IonTab tab="promo">
           <div>Library content</div>

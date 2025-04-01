@@ -1,34 +1,28 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import { BASE_URL } from "../constants/baseUrl";
 import CategoriesSection from "../sections/homeSections/CategoriesSection";
 import PromotionSlider from "../sections/homeSections/PromotionSlider";
 import StyleListSection from "../sections/homeSections/StyleListSection";
-import { serviceCategoriesType, StyleListType } from "../types/types";
+import {
+  HomePageDataType,
+  serviceCategoriesType,
+  StyleListType,
+} from "../types/types";
 
-const HomeScreen = () => {
+interface Props {
+  homePageData: HomePageDataType;
+  isLoading: boolean;
+}
+
+const HomeScreen = ({ homePageData, isLoading }: Props) => {
   const [services, setServices] = useState<serviceCategoriesType[]>([]);
   const [styleList, setStyleList] = useState<StyleListType[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    async function getHomeData() {
-      setIsLoading(true);
-      try {
-        const { data } = await axios.get(`${BASE_URL}/homepage`);
-        console.log(data);
-        setServices(data.serviceCategories);
-        setStyleList(data.stylists);
-      } catch (error) {
-        console.log(error);
-      }
-      setIsLoading(false);
-    }
-
-    getHomeData();
-  }, []);
+    setServices(homePageData?.serviceCategories);
+    setStyleList(homePageData?.stylists);
+  }, [homePageData]);
 
   return (
     <div>
