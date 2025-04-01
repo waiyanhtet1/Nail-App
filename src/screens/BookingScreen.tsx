@@ -44,11 +44,9 @@ const BookingScreen = ({ categoriesData, isLoading }: Props) => {
                         onClick={() =>
                           dispatch(
                             setSelectedCategory({
-                              selectedCategory: {
-                                id: item.id,
-                                name: item.name,
-                                icon: item.icon,
-                              },
+                              id: item.id,
+                              name: item.name,
+                              icon: item.icon,
                             })
                           )
                         }

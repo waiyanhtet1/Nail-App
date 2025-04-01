@@ -6,6 +6,7 @@ interface Props {
   serviceDescription: string;
   serviceDescription_mm: string;
   servicePrice: number;
+  onClick: () => void;
 }
 
 const ServiceCard = ({
@@ -14,6 +15,7 @@ const ServiceCard = ({
   serviceDescription,
   serviceDescription_mm,
   servicePrice,
+  onClick,
 }: Props) => {
   return (
     <div className="mt-3 bg-white flex flex-col gap-3 p-3 rounded-xl">
@@ -28,7 +30,12 @@ const ServiceCard = ({
         <p className="text-sm">
           {serviceDescription} {serviceDescription_mm}
         </p>
-        <ActionButton variant="primary" size="sm" type="button">
+        <ActionButton
+          variant="primary"
+          size="sm"
+          type="button"
+          onClick={onClick}
+        >
           Book Now
         </ActionButton>
       </div>

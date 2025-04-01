@@ -45,3 +45,18 @@ export type ServiceType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type ServiceDetailType = {
+  businessConfig: {
+    from: string;
+    to: string;
+    closingDays: Array<string>;
+  };
+  stylists: Array<StyleListType>;
+  timeSlots: [
+    {
+      timeSlot: string;
+      timeSlotStatus: string;
+    }
+  ];
+};

@@ -2,18 +2,23 @@ import { IonIcon } from "@ionic/react";
 import axios from "axios";
 import { arrowBackOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
 import ServiceCard from "../../components/ServiceCard";
 import { BASE_URL } from "../../constants/baseUrl";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { setSelectedCategory } from "../../redux/slices/bookingSlice";
+import {
+  setSelectedCategory,
+  setSelectedServiceId,
+} from "../../redux/slices/bookingSlice";
 import { ServiceType } from "../../types/types";
 
 const ServiceListSection = () => {
   const { selectedCategory } = useAppSelector((state) => state.booking);
-  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [servicesData, setServicesData] = useState<ServiceType[]>([]);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getServicesData = async () => {
@@ -40,13 +45,7 @@ const ServiceListSection = () => {
         <IonIcon
           icon={arrowBackOutline}
           className="size-5"
-          onClick={() =>
-            dispatch(
-              setSelectedCategory({
-                selectedCategory: null,
-              })
-            )
-          }
+          onClick={() => dispatch(setSelectedCategory(null))}
         />
         <p className="text-sm text-secondary">
           Categories / {selectedCategory?.name}
@@ -69,6 +68,10 @@ const ServiceListSection = () => {
                 serviceDescription={item.serviceDescription}
                 serviceDescription_mm={item.serviceDescription_mm}
                 servicePrice={item.servicePrice}
+                onClick={() => {
+                  dispatch(setSelectedServiceId(item._id));
+                  navigate("/add-booking");
+                }}
               />
             ))
           )}

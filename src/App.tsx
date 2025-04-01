@@ -9,6 +9,7 @@ import {
 import { CSSTransition, TransitionGroup } from "react-transition-group"; // Import transition components
 import AppBackButtonHandler from "./AppBackButtonHandler";
 import MainLayout from "./layouts/MainLayout";
+import AddBookingScreen from "./screens/AddBookingScreen";
 import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -33,6 +34,7 @@ const App = () => {
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/profile" element={<ProfileScreen />} />
+              <Route path="/add-booking" element={<AddBookingScreen />} />
             </Routes>
           </div>
         </CSSTransition>
