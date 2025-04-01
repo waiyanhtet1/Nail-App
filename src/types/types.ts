@@ -24,3 +24,24 @@ export type HomePageDataType = {
   serviceCategories: Array<serviceCategoriesType>;
   stylists: Array<StyleListType>;
 };
+
+export type ServiceType = {
+  _id: string;
+  serviceName: string;
+  serviceName_mm: string;
+  serviceCategory: string;
+  serviceDescription: string;
+  serviceDescription_mm: string;
+  serviceIcon: string;
+  serviceDuration: number;
+  servicePrice: number;
+  serviceDesignImages: Array<string>;
+  serviceStylists: [
+    {
+      _id: string;
+      stylistName: string;
+    }
+  ];
+  createdAt: string;
+  updatedAt: string;
+};

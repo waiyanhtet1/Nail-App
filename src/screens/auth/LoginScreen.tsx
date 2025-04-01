@@ -68,7 +68,9 @@ const LoginScreen = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">
       <div className="flex flex-col items-center">
-        <p className="font-beauty text-5xl">Barbie’s Studio</p>
+        <p className="font-beauty text-5xl" onClick={() => navigate("/")}>
+          Barbie’s Studio
+        </p>
         <p className="uppercase text-xl">NAIL BAR</p>
       </div>
 
