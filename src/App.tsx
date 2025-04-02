@@ -9,9 +9,10 @@ import {
 import { CSSTransition, TransitionGroup } from "react-transition-group"; // Import transition components
 import AppBackButtonHandler from "./AppBackButtonHandler";
 import MainLayout from "./layouts/MainLayout";
-import AddBookingScreen from "./screens/AddBookingScreen";
 import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
+import AddBookingScreen from "./screens/booking/AddBookingScreen";
+import BookingConfirmScreen from "./screens/booking/BookingConfirmScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 
 setupIonicReact();
@@ -35,6 +36,10 @@ const App = () => {
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/profile" element={<ProfileScreen />} />
               <Route path="/add-booking" element={<AddBookingScreen />} />
+              <Route
+                path="confirm-booking"
+                element={<BookingConfirmScreen />}
+              />
             </Routes>
           </div>
         </CSSTransition>

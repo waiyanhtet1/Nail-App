@@ -16,7 +16,7 @@ import {
 } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../constants/baseUrl";
-import BookingScreen from "../screens/BookingScreen";
+import BookingScreen from "../screens/booking/BookingScreen";
 import HomeScreen from "../screens/HomeScreen";
 import { CategoriesType, HomePageDataType } from "../types/types";
 

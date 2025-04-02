@@ -1,3 +1,5 @@
+import { IonIcon } from "@ionic/react";
+
 interface Props {
   children: React.ReactNode;
   variant: "primary" | "outline";
@@ -5,6 +7,8 @@ interface Props {
   type: "submit" | "reset" | "button";
   size: "sm" | "md";
   onClick: () => void;
+  Icon?: string;
+  IconOnClick?: () => void;
 }
 const ActionButton = ({
   children,
@@ -13,23 +17,38 @@ const ActionButton = ({
   type,
   size,
   onClick,
+  Icon,
+  IconOnClick,
 }: Props) => {
   return (
     <button
       type={type}
       className={`
-    ${variant === "primary" && "bg-gray text-white"}
+    ${variant === "primary" && "bg-gray text-white rounded-md"}
     ${
       variant === "outline" &&
       "bg-transparent text-secondary border border-secondary"
     }
     ${size === "sm" && "p-2 text-xs"}
-    rounded-md whitespace-nowrap
+    ${size === "md" && "px-3 py-2 text-sm"} 
+    whitespace-nowrap flex items-center justify-center
     ${className}
     `}
       onClick={onClick}
     >
-      {children}
+      <div className="flex items-center gap-1">
+        {Icon && (
+          <IonIcon
+            icon={Icon}
+            className={`size-5 
+            ${variant === "primary" && "text-white"} 
+            ${variant === "outline" && "text-gray"} 
+            `}
+            onClick={IconOnClick}
+          />
+        )}
+        {children}
+      </div>
     </button>
   );
 };

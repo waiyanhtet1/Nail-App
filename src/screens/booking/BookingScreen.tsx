@@ -1,12 +1,12 @@
-import CategoryCard from "../components/CategoryCard";
-import Header from "../components/Header";
-import Loading from "../components/Loading";
-import { encodeSvg } from "../libs/imgUtils";
-import { getLoginUser } from "../libs/userUtils";
-import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { setSelectedCategory } from "../redux/slices/bookingSlice";
-import ServiceListSection from "../sections/bookingSections/ServiceListSection";
-import { CategoriesType } from "../types/types";
+import CategoryCard from "../../components/CategoryCard";
+import Header from "../../components/Header";
+import Loading from "../../components/Loading";
+import { encodeSvg } from "../../libs/imgUtils";
+import { getLoginUser } from "../../libs/userUtils";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { setSelectedCategory } from "../../redux/slices/bookingSlice";
+import ServiceListSection from "../../sections/bookingSections/ServiceListSection";
+import { CategoriesType } from "../../types/types";
 
 interface Props {
   categoriesData: CategoriesType[];
