@@ -67,3 +67,11 @@ ion-spinner {
 }
 
 
+ion-segment-button {
+  --indicator-color: rgba(165, 138, 132, 1); /* Change to your desired color */
+  color:var(--color-secondary);
+  font-weight: bold;
+  text-transform: capitalize;
+  font-family: var(--default-font-family);
+}
+

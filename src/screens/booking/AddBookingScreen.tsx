@@ -123,6 +123,7 @@ const AddBookingScreen = () => {
                     item.timeSlot === selectedTimeSlot ? "primary" : "outline"
                   }
                   size="sm"
+                  className="rounded-md"
                   onClick={() => setSelectedTimeSlot(item.timeSlot)}
                 >
                   {item.timeSlot}

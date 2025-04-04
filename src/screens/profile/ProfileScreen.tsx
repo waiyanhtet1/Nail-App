@@ -9,7 +9,7 @@ import {
   settingsOutline,
 } from "ionicons/icons";
 import { useNavigate } from "react-router-dom";
-import showToast from "../libs/toastUtil";
+import showToast from "../../libs/toastUtil";
 import profileImg from "/images/stylist.jpeg";
 
 const ProfileScreen = () => {
@@ -40,7 +40,10 @@ const ProfileScreen = () => {
           <div className="flex flex-col gap-2 text-secondary">
             <p className="font-semibold text-lg">Name: Su Mon</p>
             <p className="font-light">0912345678</p>
-            <p className="px-5 py-1 w-max text-white bg-gray text-sm rounded-lg">
+            <p
+              className="px-5 py-1 w-max text-white bg-gray text-sm rounded-lg"
+              onClick={() => navigate("edit")}
+            >
               Edit
             </p>
           </div>
@@ -49,7 +52,11 @@ const ProfileScreen = () => {
 
       {/* action card list */}
       <div className="grid grid-cols-2 gap-5 m-5">
-        <CardItem title="My Booking" icon={calendarOutline} />
+        <CardItem
+          title="My Booking"
+          icon={calendarOutline}
+          onClick={() => navigate("/profile/booking")}
+        />
         <CardItem title="My Stamps" icon={extensionPuzzleOutline} />
         <CardItem title="Setting" icon={settingsOutline} />
         <CardItem title="Payment Method" icon={cardOutline} />

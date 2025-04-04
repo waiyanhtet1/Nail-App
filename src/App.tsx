@@ -13,7 +13,9 @@ import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
 import AddBookingScreen from "./screens/booking/AddBookingScreen";
 import BookingConfirmScreen from "./screens/booking/BookingConfirmScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import MyBookingScreen from "./screens/booking/MyBookingScreen";
+import EditProfile from "./screens/profile/EditProfile";
+import ProfileScreen from "./screens/profile/ProfileScreen";
 
 setupIonicReact();
 
@@ -34,12 +36,16 @@ const App = () => {
               <Route index path="/" element={<MainLayout />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
-              <Route path="/profile" element={<ProfileScreen />} />
+              {/* booking screens */}
               <Route path="/add-booking" element={<AddBookingScreen />} />
               <Route
                 path="confirm-booking"
                 element={<BookingConfirmScreen />}
               />
+              {/* profile screens */}
+              <Route path="/profile" element={<ProfileScreen />} />
+              <Route path="/profile/edit" element={<EditProfile />} />
+              <Route path="/profile/booking" element={<MyBookingScreen />} />
             </Routes>
           </div>
         </CSSTransition>
