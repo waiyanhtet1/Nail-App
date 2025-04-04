@@ -17,6 +17,7 @@ import {
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../constants/baseUrl";
 import BookingScreen from "../screens/booking/BookingScreen";
+import ChatHomeScreen from "../screens/chat/ChatHomeScreen";
 import HomeScreen from "../screens/HomeScreen";
 import { CategoriesType, HomePageDataType } from "../types/types";
 
@@ -95,7 +96,7 @@ const MainLayout = () => {
           <div>Library content</div>
         </IonTab>
         <IonTab tab="chat">
-          <div>search</div>
+          <ChatHomeScreen />
         </IonTab>
 
         <IonTabBar slot="bottom" className="h-[70px]">

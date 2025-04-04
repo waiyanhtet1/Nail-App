@@ -14,6 +14,8 @@ import RegisterScreen from "./screens/auth/RegisterScreen";
 import AddBookingScreen from "./screens/booking/AddBookingScreen";
 import BookingConfirmScreen from "./screens/booking/BookingConfirmScreen";
 import MyBookingScreen from "./screens/booking/myBooking/MyBookingScreen";
+import ChatHomeScreen from "./screens/chat/ChatHomeScreen";
+import ChattingScreen from "./screens/chat/ChattingScreen";
 import EditProfile from "./screens/profile/EditProfile";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 
@@ -46,6 +48,10 @@ const App = () => {
               <Route path="/profile" element={<ProfileScreen />} />
               <Route path="/profile/edit" element={<EditProfile />} />
               <Route path="/profile/booking" element={<MyBookingScreen />} />
+
+              {/* chat screens */}
+              <Route path="/chat-home" element={<ChatHomeScreen />} />
+              <Route path="/chat" element={<ChattingScreen />} />
             </Routes>
           </div>
         </CSSTransition>
