@@ -4,7 +4,7 @@ import { arrowBackOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
-import ServiceCard from "../../components/ServiceCard";
+import ServiceCard from "../../components/cards/ServiceCard";
 import { BASE_URL } from "../../constants/baseUrl";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import {

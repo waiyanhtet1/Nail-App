@@ -13,7 +13,7 @@ import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
 import AddBookingScreen from "./screens/booking/AddBookingScreen";
 import BookingConfirmScreen from "./screens/booking/BookingConfirmScreen";
-import MyBookingScreen from "./screens/booking/MyBookingScreen";
+import MyBookingScreen from "./screens/booking/myBooking/MyBookingScreen";
 import EditProfile from "./screens/profile/EditProfile";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 

@@ -1,7 +1,7 @@
 import { IonIcon } from "@ionic/react";
 import { arrowBackOutline } from "ionicons/icons";
 import { useNavigate } from "react-router-dom";
-import SegmentButton from "../../components/SegmentButton";
+import SegmentButton from "../../../components/SegmentButton";
 
 const MyBookingScreen = () => {
   const navigate = useNavigate();

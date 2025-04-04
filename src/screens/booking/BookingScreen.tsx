@@ -1,4 +1,4 @@
-import CategoryCard from "../../components/CategoryCard";
+import CategoryCard from "../../components/cards/CategoryCard";
 import Header from "../../components/Header";
 import Loading from "../../components/Loading";
 import { encodeSvg } from "../../libs/imgUtils";

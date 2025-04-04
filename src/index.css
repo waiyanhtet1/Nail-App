@@ -25,6 +25,7 @@ body {
   --color-gray-second: rgba(106, 122, 134, 1);
   --color-gray-third: rgba(141, 163, 178, 1);
   --color-gray-fourth: rgba(158, 184, 201, 1);
+  --color-gray-fifth: rgba(176, 204, 223, 1);
 
   --shadow-primary: 0px 2px 10px 0px rgba(176, 204, 223, 1);
   --color-red-primary: rgba(157, 48, 32, 1);
