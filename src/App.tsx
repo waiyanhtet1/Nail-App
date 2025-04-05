@@ -17,6 +17,7 @@ import MyBookingScreen from "./screens/booking/myBooking/MyBookingScreen";
 import ChatHomeScreen from "./screens/chat/ChatHomeScreen";
 import ChattingScreen from "./screens/chat/ChattingScreen";
 import EditProfile from "./screens/profile/EditProfile";
+import MyStamps from "./screens/profile/MyStamps";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 
 setupIonicReact();
@@ -48,6 +49,7 @@ const App = () => {
               <Route path="/profile" element={<ProfileScreen />} />
               <Route path="/profile/edit" element={<EditProfile />} />
               <Route path="/profile/booking" element={<MyBookingScreen />} />
+              <Route path="/profile/my-stamps" element={<MyStamps />} />
 
               {/* chat screens */}
               <Route path="/chat-home" element={<ChatHomeScreen />} />

@@ -55,9 +55,13 @@ const ProfileScreen = () => {
         <CardItem
           title="My Booking"
           icon={calendarOutline}
-          onClick={() => navigate("/profile/booking")}
+          onClick={() => navigate("booking")}
         />
-        <CardItem title="My Stamps" icon={extensionPuzzleOutline} />
+        <CardItem
+          title="My Stamps"
+          icon={extensionPuzzleOutline}
+          onClick={() => navigate("my-stamps")}
+        />
         <CardItem title="Setting" icon={settingsOutline} />
         <CardItem title="Payment Method" icon={cardOutline} />
         <CardItem title="Notification" icon={notificationsOutline} />
