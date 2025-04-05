@@ -2,7 +2,7 @@ import { cardOutline, cashOutline, qrCodeOutline } from "ionicons/icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
-import BottomSheetModal from "../../components/BottomSheetModal";
+import BottomSheetModal from "../../components/bottomSheets/BottomSheetModal";
 import Button from "../../components/Button";
 
 const paymentsList = [

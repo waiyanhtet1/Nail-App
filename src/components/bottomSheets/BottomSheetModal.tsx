@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
-import ActionButton from "./ActionButton";
-import Button from "./Button";
+import ActionButton from "../ActionButton";
+import Button from "../Button";
 import successImg from "/images/success.png";
 
 interface Props {

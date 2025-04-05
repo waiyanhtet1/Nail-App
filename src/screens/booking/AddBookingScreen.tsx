@@ -4,9 +4,11 @@ import { arrowBackOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
+import DateSelectBottomSheet from "../../components/bottomSheets/DateSelectBottomSheet";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
+import { formatDateString } from "../../libs/dateUtils";
 import { useAppSelector } from "../../redux/hook";
 import SelectArtistSection from "../../sections/bookingSections/SelectArtistSection";
 import { ServiceDetailType } from "../../types/types";
@@ -22,6 +24,8 @@ const AddBookingScreen = () => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [personCount, setPersonCount] = useState(1);
   const [error, setError] = useState("");
+  const [isDateSheetOpen, setIsDateSheetOpen] = useState(false);
+  const [selectedDateInput, setSelectedDateInput] = useState("");
   // const userInfo = getLoginUser();
 
   useEffect(() => {
@@ -72,27 +76,36 @@ const AddBookingScreen = () => {
     }
   }
 
+  console.log("here", selectedDateInput);
+
   return (
-    <div>
-      {/* header */}
-      <div className="h-[150px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
-        <div className="flex items-center">
-          {/* back and title */}
-          <IonIcon
-            icon={arrowBackOutline}
-            className="size-6"
-            onClick={() => navigate(-1)}
-          />
-          <p className="text-secondary font-bold text-center flex justify-center w-full">
-            Choose Date & Time
-          </p>
-        </div>
+    <div className="mt-10 mx-5">
+      <div className="flex items-center">
+        {/* back and title */}
+        <IonIcon
+          icon={arrowBackOutline}
+          className="size-6"
+          onClick={() => navigate(-1)}
+        />
+        <p className="text-secondary font-bold text-center flex justify-center w-full">
+          Choose Date & Time
+        </p>
       </div>
 
       {isLoading ? (
         <Loading />
       ) : (
         <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-190px)] no-scrollbar">
+          {/* choose date button */}
+          <div
+            className="bg-primary p-3 rounded-xl shadow-md text-secondary font-semibold text-center"
+            onClick={() => setIsDateSheetOpen(true)}
+          >
+            {selectedDateInput === ""
+              ? "Select Choose Date"
+              : formatDateString(selectedDateInput)}
+          </div>
+
           {/* artist list */}
           <p className="text-center text-secondary text-lg font-semibold">
             Choose Available Artists
@@ -149,6 +162,14 @@ const AddBookingScreen = () => {
             Book on Appointment
           </Button>
         </div>
+      )}
+      {isDateSheetOpen && (
+        <DateSelectBottomSheet
+          isOpen={isDateSheetOpen}
+          setOpen={setIsDateSheetOpen}
+          selectedDateInput={selectedDateInput}
+          setSelectedDateInput={setSelectedDateInput}
+        />
       )}
     </div>
   );
