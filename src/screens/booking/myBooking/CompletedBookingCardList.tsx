@@ -1,11 +1,25 @@
 import MyBookingCard from "../../../components/cards/MyBookingCard";
+import { BookingType } from "../../../types/BookingType";
 
-const CompletedBookingCardList = () => {
+interface Props {
+  bookings: BookingType[];
+}
+
+const CompletedBookingCardList = ({ bookings }: Props) => {
   return (
     <div className="flex flex-col gap-3 mx-3 overflow-y-scroll h-[calc(100vh-150px)] no-scrollbar mt-3">
-      {Array.from({ length: 10 }).map((_, index) => (
-        <MyBookingCard key={index} variant="completed" />
-      ))}
+      {bookings && bookings.length === 0 ? (
+        <div className="text-sm text-secondary font-semibold">No Result.</div>
+      ) : (
+        bookings.map((item: BookingType) => (
+          <MyBookingCard
+            key={item.bookingId}
+            serviceName={item.serviceName}
+            bookingCreatedDate={item.bookingCreatedDate}
+            variant="completed"
+          />
+        ))
+      )}
     </div>
   );
 };

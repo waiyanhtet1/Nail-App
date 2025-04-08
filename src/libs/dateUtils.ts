@@ -9,3 +9,18 @@ export function formatDateString(dateStr: string) {
 
   return formattedDate;
 }
+
+export function formatDateTimeString(isoDate: string) {
+  const date = new Date(isoDate);
+
+  const formatted = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "Asia/Yangon",
+  }).format(date);
+  return formatted;
+}

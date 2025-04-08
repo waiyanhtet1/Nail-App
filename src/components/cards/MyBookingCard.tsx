@@ -1,17 +1,20 @@
+import { formatDateTimeString } from "../../libs/dateUtils";
 import ActionButton from "../ActionButton";
 import image from "/images/category.png";
 
 interface Props {
   variant: "active" | "completed" | "cancel";
+  serviceName: string;
+  bookingCreatedDate?: string;
 }
 
-const MyBookingCard = ({ variant }: Props) => {
+const MyBookingCard = ({ variant, serviceName, bookingCreatedDate }: Props) => {
   return (
     <div className="bg-white rounded-xl p-3">
       {variant === "active" && (
         <>
           <p className="text-sm text-secondary font-bold">
-            April 22, 2025 - 11:00 PM
+            {formatDateTimeString(bookingCreatedDate as string)}
           </p>
           <hr className="text-gray-fifth my-3" />
         </>
@@ -28,15 +31,15 @@ const MyBookingCard = ({ variant }: Props) => {
 
         {/* title and description */}
         <div className="">
-          <p className="text-sm font-semibold">Mini Pedicure</p>
+          <p className="text-sm font-semibold">{serviceName}</p>
           <p className="text-sm mt-1">
-            Nail shaping, cuticle treatment, hydration & shining buff
+            Lorem ipsum dolor sit amet consectetur adipisicing.
           </p>
         </div>
 
         {/* price */}
         <p className="whitespace-nowrap text-sm font-bold self-start">
-          6,000 KS
+          0,000 KS
         </p>
       </div>
 

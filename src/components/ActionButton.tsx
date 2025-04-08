@@ -27,7 +27,7 @@ const ActionButton = ({
     ${variant === "primary" && "bg-gray text-white rounded-md"}
     ${
       variant === "outline" &&
-      "bg-transparent text-secondary border border-secondary"
+      "bg-transparent text-secondary border border-secondary rounded-md"
     }
     ${variant === "secondary" && "bg-primary-second"}
     ${size === "sm" && "p-2 text-xs"}

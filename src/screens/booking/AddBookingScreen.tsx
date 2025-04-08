@@ -1,5 +1,5 @@
 import { IonIcon } from "@ionic/react";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { arrowBackOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
 import { formatDateString } from "../../libs/dateUtils";
+import { getLoginUser } from "../../libs/userUtils";
 import { useAppSelector } from "../../redux/hook";
 import SelectArtistSection from "../../sections/bookingSections/SelectArtistSection";
 import { ServiceDetailType } from "../../types/types";
@@ -26,7 +27,7 @@ const AddBookingScreen = () => {
   const [error, setError] = useState("");
   const [isDateSheetOpen, setIsDateSheetOpen] = useState(false);
   const [selectedDateInput, setSelectedDateInput] = useState("");
-  // const userInfo = getLoginUser();
+  const userInfo = getLoginUser();
 
   useEffect(() => {
     async function getBookingDetail() {
@@ -49,34 +50,45 @@ const AddBookingScreen = () => {
 
   async function addOnBooking() {
     // check if button disabled or not
-    if (selectedArtistId === "" || selectedTimeSlot === "") {
+    if (
+      selectedArtistId === "" ||
+      selectedTimeSlot === "" ||
+      selectedDateInput === ""
+    ) {
       setError("Require to select or fill fields");
+      return;
     } else if (personCount <= 0) {
       setError("Person Count should be at least 1");
-    } else {
-      setError("");
+      return;
+    }
+    // create booking
+    setError("");
+    try {
+      const response = await axios.post(`${BASE_URL}/booking`, {
+        serviceId: selectedServiceId,
+        customerUserId: userInfo._id,
+        date: selectedDateInput,
+        bookingData: [
+          {
+            personCount,
+            stylistId: selectedArtistId,
+            timeSlot: selectedTimeSlot,
+          },
+        ],
+      });
+      console.log(response);
       navigate("/confirm-booking");
-      // try {
-      //   const response = await axios.post(`${BASE_URL}/booking`, {
-      //     serviceId: selectedServiceId,
-      //     customerUserId: userInfo._id,
-      //     bookingData: [
-      //       {
-      //         personCount,
-      //         stylistId: selectedArtistId,
-      //         timeSlot: selectedTimeSlot,
-      //       },
-      //     ],
-      //   });
-      //   console.log(response);
-      // } catch (error) {
-      //   console.log(error);
-      //   setError("Fail to book on appointment");
-      // }
+    } catch (error) {
+      console.log(error);
+      if (error && isAxiosError(error)) {
+        setError(error.response?.data.message);
+      } else {
+        setError("Fail to book on appointment");
+      }
     }
   }
 
-  console.log("here", selectedDateInput);
+  // console.log("here", selectedDateInput);
 
   return (
     <div className="mt-10 mx-5">
@@ -95,7 +107,7 @@ const AddBookingScreen = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-190px)] no-scrollbar">
+        <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-110px)] no-scrollbar">
           {/* choose date button */}
           <div
             className="bg-primary p-3 rounded-xl shadow-md text-secondary font-semibold text-center"
@@ -136,7 +148,7 @@ const AddBookingScreen = () => {
                     item.timeSlot === selectedTimeSlot ? "primary" : "outline"
                   }
                   size="sm"
-                  className="rounded-md"
+                  className="rounded-lg"
                   onClick={() => setSelectedTimeSlot(item.timeSlot)}
                 >
                   {item.timeSlot}
@@ -157,7 +169,6 @@ const AddBookingScreen = () => {
 
           {error !== "" && <p className="text-sm text-red-500">{error}</p>}
 
-          {/* add booking button */}
           <Button variant="primary" type="button" onClick={addOnBooking}>
             Book on Appointment
           </Button>
