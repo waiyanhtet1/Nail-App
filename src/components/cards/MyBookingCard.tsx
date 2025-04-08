@@ -1,20 +1,24 @@
+import { useState } from "react";
 import { formatDateTimeString } from "../../libs/dateUtils";
+import { BookingType } from "../../types/BookingType";
 import ActionButton from "../ActionButton";
+import BookingDetailBottomSheet from "../bottomSheets/BookingDetailBottomSheet";
 import image from "/images/category.png";
 
 interface Props {
   variant: "active" | "completed" | "cancel";
-  serviceName: string;
-  bookingCreatedDate?: string;
+  booking: BookingType;
 }
 
-const MyBookingCard = ({ variant, serviceName, bookingCreatedDate }: Props) => {
+const MyBookingCard = ({ variant, booking }: Props) => {
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
   return (
     <div className="bg-white rounded-xl p-3">
       {variant === "active" && (
         <>
           <p className="text-sm text-secondary font-bold">
-            {formatDateTimeString(bookingCreatedDate as string)}
+            {formatDateTimeString(booking.bookingCreatedDate as string)}
           </p>
           <hr className="text-gray-fifth my-3" />
         </>
@@ -31,7 +35,7 @@ const MyBookingCard = ({ variant, serviceName, bookingCreatedDate }: Props) => {
 
         {/* title and description */}
         <div className="">
-          <p className="text-sm font-semibold">{serviceName}</p>
+          <p className="text-sm font-semibold">{booking.serviceName}</p>
           <p className="text-sm mt-1">
             Lorem ipsum dolor sit amet consectetur adipisicing.
           </p>
@@ -56,27 +60,58 @@ const MyBookingCard = ({ variant, serviceName, bookingCreatedDate }: Props) => {
         </ActionButton>
       ) : (
         <div className="flex items-center gap-5 mt-3">
-          <ActionButton
-            variant="secondary"
-            type="button"
-            size="sm"
-            className="rounded-xl w-full"
-            onClick={() => console.log("first")}
-          >
-            {variant === "active" && "Pending"}
-            {variant === "completed" && "Re-Book"}
-          </ActionButton>
-          <ActionButton
-            variant="primary"
-            type="button"
-            size="sm"
-            className="rounded-xl w-full"
-            onClick={() => console.log("first")}
-          >
-            {variant === "active" && "View Booking Detail"}
-            {variant === "completed" && "Write Review"}
-          </ActionButton>
+          {variant === "active" && (
+            <ActionButton
+              variant="secondary"
+              type="button"
+              size="sm"
+              className="rounded-xl w-full"
+              onClick={() => console.log("first")}
+            >
+              Pending
+            </ActionButton>
+          )}
+          {variant === "completed" && (
+            <ActionButton
+              variant="secondary"
+              type="button"
+              size="sm"
+              className="rounded-xl w-full"
+              onClick={() => console.log("first")}
+            >
+              Re-Book
+            </ActionButton>
+          )}
+          {variant === "active" && (
+            <ActionButton
+              variant="primary"
+              type="button"
+              size="sm"
+              className="rounded-xl w-full"
+              onClick={() => setIsDetailModalOpen(true)}
+            >
+              View Booking Detail
+            </ActionButton>
+          )}
+          {variant === "completed" && (
+            <ActionButton
+              variant="primary"
+              type="button"
+              size="sm"
+              className="rounded-xl w-full"
+              onClick={() => console.log("first")}
+            >
+              Write Review
+            </ActionButton>
+          )}
         </div>
+      )}
+      {isDetailModalOpen && (
+        <BookingDetailBottomSheet
+          booking={booking}
+          isOpen={isDetailModalOpen}
+          setOpen={setIsDetailModalOpen}
+        />
       )}
     </div>
   );

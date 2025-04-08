@@ -12,12 +12,7 @@ const CancelBookingCardList = ({ bookings }: Props) => {
         <div className="text-sm text-secondary font-semibold">No Result.</div>
       ) : (
         bookings.map((item: BookingType) => (
-          <MyBookingCard
-            key={item.bookingId}
-            serviceName={item.serviceName}
-            bookingCreatedDate={item.bookingCreatedDate}
-            variant="cancel"
-          />
+          <MyBookingCard key={item.bookingId} booking={item} variant="cancel" />
         ))
       )}
     </div>

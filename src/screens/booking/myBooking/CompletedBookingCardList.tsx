@@ -14,8 +14,7 @@ const CompletedBookingCardList = ({ bookings }: Props) => {
         bookings.map((item: BookingType) => (
           <MyBookingCard
             key={item.bookingId}
-            serviceName={item.serviceName}
-            bookingCreatedDate={item.bookingCreatedDate}
+            booking={item}
             variant="completed"
           />
         ))

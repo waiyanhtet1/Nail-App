@@ -13,12 +13,7 @@ const ActiveBookingCardList = ({ bookings }: Props) => {
         <div className="text-sm text-secondary font-semibold">No Result.</div>
       ) : (
         bookings.map((item) => (
-          <MyBookingCard
-            key={item.bookingId}
-            serviceName={item.serviceName}
-            bookingCreatedDate={item.bookingCreatedDate}
-            variant="active"
-          />
+          <MyBookingCard key={item.bookingId} booking={item} variant="active" />
         ))
       )}
     </div>
