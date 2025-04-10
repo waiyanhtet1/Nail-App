@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CryptoJS from "crypto-js";
 
-const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
+const SECRET_KEY = "ss7IC2FbQhDUXpWUX1Ex2ZV02PaDcpOz4UVZ3JQ5QKQ=";
 
 // Function to encrypt data
 export const encryptData = (data: any) => {

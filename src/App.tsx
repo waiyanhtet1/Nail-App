@@ -1,7 +1,5 @@
-import { PushNotifications } from "@capacitor/push-notifications";
 import { setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
-import { useEffect } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -10,7 +8,6 @@ import {
 } from "react-router-dom"; // Import BrowserRouter
 import { CSSTransition, TransitionGroup } from "react-transition-group"; // Import transition components
 import AppBackButtonHandler from "./AppBackButtonHandler";
-import { getToken, messaging } from "./firebase/firebase-config";
 import MainLayout from "./layouts/MainLayout";
 import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
@@ -27,44 +24,6 @@ setupIonicReact();
 
 const App = () => {
   const location = useLocation();
-
-  useEffect(() => {
-    PushNotifications.requestPermissions().then((result) => {
-      if (result.receive === "granted") {
-        PushNotifications.register();
-      }
-    });
-
-    PushNotifications.addListener("registration", async () => {
-      try {
-        const token = await getToken(messaging, {
-          vapidKey:
-            "BIHYZXilGAZoB9gMe945V4kvGSbUoZWhrwhtx51RGhYgaUd3bLXrNzZUMOAIFY3irbokj70cKO0rK072WXW1FV8", // Only needed for web
-        });
-        console.log("FCM Token:", token);
-      } catch (err) {
-        console.error("Error getting token:", err);
-      }
-    });
-
-    PushNotifications.addListener("registrationError", (err) => {
-      console.error("Registration error:", err);
-    });
-
-    PushNotifications.addListener(
-      "pushNotificationReceived",
-      (notification) => {
-        console.log("Push received:", notification);
-      }
-    );
-
-    PushNotifications.addListener(
-      "pushNotificationActionPerformed",
-      (notification) => {
-        console.log("Push action performed:", notification);
-      }
-    );
-  }, []);
 
   return (
     <>

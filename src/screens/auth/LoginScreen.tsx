@@ -45,6 +45,7 @@ const LoginScreen = () => {
       const response = await axios.post(`${BASE_URL}/login`, {
         username: data.userName,
         password: data.password,
+        // fmToken: "",
       });
 
       localStorage.setItem("userInfo", encryptData(response.data));
