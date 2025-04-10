@@ -12,6 +12,7 @@ import { BASE_URL } from "../../constants/baseUrl";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
+import { useAppSelector } from "../../redux/hook";
 import { loginValidationSchema } from "../../validations/loginValidation";
 import facebookIcon from "/images/facebook.svg";
 import googleIcon from "/images/google.svg";
@@ -25,6 +26,9 @@ const LoginScreen = () => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+
+  const { playerId } = useAppSelector((state) => state.token);
+  alert("playerId from redux state" + playerId);
 
   const {
     register,
@@ -45,7 +49,7 @@ const LoginScreen = () => {
       const response = await axios.post(`${BASE_URL}/login`, {
         username: data.userName,
         password: data.password,
-        // fmToken: "",
+        fcmToken: playerId,
       });
 
       localStorage.setItem("userInfo", encryptData(response.data));

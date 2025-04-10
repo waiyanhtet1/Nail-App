@@ -11,6 +11,7 @@ import Loading from "../../components/Loading";
 import SocialIconButton from "../../components/SocialIconButton";
 import { BASE_URL } from "../../constants/baseUrl";
 import { encryptData } from "../../libs/encryption";
+import { useAppSelector } from "../../redux/hook";
 import { singUpValidation } from "../../validations/signUpValidation";
 import facebookIcon from "/images/facebook.svg";
 import googleIcon from "/images/google.svg";
@@ -30,6 +31,7 @@ const RegisterScreen = () => {
   const [isDOBError, setIsDOBError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { playerId } = useAppSelector((state) => state.token);
 
   const {
     register,
@@ -55,6 +57,7 @@ const RegisterScreen = () => {
           email: data.email,
           password: data.password,
           DOB: `${day}/${month}/${year}`,
+          fcmToken: playerId,
         });
 
         localStorage.setItem("userInfo", encryptData(response.data));

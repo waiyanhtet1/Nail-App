@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import bookingSlice from "./slices/bookingSlice";
+import tokenSlice from "./slices/tokenSlice";
 import userSlice from "./slices/uesrSlice";
 // ...
 
@@ -7,6 +8,7 @@ export const store = configureStore({
   reducer: {
     user: userSlice,
     booking: bookingSlice,
+    token: tokenSlice,
   },
 });
 

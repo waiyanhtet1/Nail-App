@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
+import OneSignal from "onesignal-cordova-plugin";
+import { useEffect } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -9,6 +12,8 @@ import {
 import { CSSTransition, TransitionGroup } from "react-transition-group"; // Import transition components
 import AppBackButtonHandler from "./AppBackButtonHandler";
 import MainLayout from "./layouts/MainLayout";
+import { useAppDispatch } from "./redux/hook";
+import { setToken } from "./redux/slices/tokenSlice";
 import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
 import AddBookingScreen from "./screens/booking/AddBookingScreen";
@@ -63,6 +68,46 @@ const App = () => {
 };
 
 export default function Wrapper() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const initOneSignal = async () => {
+      try {
+        // Set verbose debug logs
+        OneSignal.Debug.setLogLevel(6);
+
+        // Initialize OneSignal
+        OneSignal.initialize("624a863f-5157-4806-8b92-e0b5bc351b76");
+
+        // Request push permission
+        const permissionGranted =
+          await OneSignal.Notifications.requestPermission(true);
+        // console.log("Permission granted:", permissionGranted);
+        alert("Permission granted:" + JSON.stringify(permissionGranted));
+
+        // get playerId
+        await OneSignal.User.getOnesignalId()
+          .then((playerId) => {
+            alert("🎯 Player ID: " + playerId);
+            dispatch(setToken(playerId as string));
+          })
+          .catch((err) => alert(JSON.stringify(err)));
+      } catch (error: any) {
+        console.error("🔥 OneSignal init error:", error);
+        alert("OneSignal error: " + (error?.message || JSON.stringify(error)));
+      }
+    };
+
+    // // Listen for deviceready only on real device
+    // document.addEventListener("deviceready", initOneSignal, false);
+
+    // return () => {
+    //   document.removeEventListener("deviceready", initOneSignal);
+    // };
+
+    initOneSignal();
+  }, []);
+
   return (
     <Router>
       <App />
