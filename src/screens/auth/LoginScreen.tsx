@@ -49,7 +49,7 @@ const LoginScreen = () => {
       const response = await axios.post(`${BASE_URL}/login`, {
         username: data.userName,
         password: data.password,
-        fcmToken: playerId,
+        playerId: playerId,
       });
 
       localStorage.setItem("userInfo", encryptData(response.data));

@@ -106,7 +106,7 @@ export default function Wrapper() {
     // };
 
     initOneSignal();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>

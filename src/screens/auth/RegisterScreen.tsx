@@ -57,7 +57,7 @@ const RegisterScreen = () => {
           email: data.email,
           password: data.password,
           DOB: `${day}/${month}/${year}`,
-          fcmToken: playerId,
+          playerId: playerId,
         });
 
         localStorage.setItem("userInfo", encryptData(response.data));
