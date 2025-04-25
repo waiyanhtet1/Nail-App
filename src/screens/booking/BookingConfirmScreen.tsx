@@ -1,14 +1,15 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { cashOutline } from "ionicons/icons";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import BottomSheetModal from "../../components/bottomSheets/BottomSheetModal";
 import Button from "../../components/Button";
+import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
-import { formatDateString, formatTimeString } from "../../libs/dateUtils";
-import { useAppSelector } from "../../redux/hook";
-import { BookingDetailType } from "../../types/bookingDetailType";
+import { formatDateString } from "../../libs/dateUtils";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { setBookingId } from "../../redux/slices/bookingSlice";
 
 const paymentsList = [
   {
@@ -29,31 +30,46 @@ const paymentsList = [
 ];
 
 const BookingConfirmScreen = () => {
-  const { bookingId } = useAppSelector((state) => state.booking);
-  const [detail, setDetail] = useState<BookingDetailType>();
-
-  const getBookingDetail = useCallback(async () => {
-    try {
-      const { data } = await axios.get(`${BASE_URL}/booking/${bookingId}`);
-      console.log(data);
-      setDetail(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [bookingId]);
-
-  useEffect(() => {
-    getBookingDetail();
-  }, [getBookingDetail]);
-
+  const { selectedBooking, selectedService } = useAppSelector(
+    (state) => state.booking
+  );
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     paymentsList[0].id
   );
   const [sheetModalOpen, setSheetModalOpen] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  console.log(detail);
+  const handleAddBooking = async () => {
+    setCreateLoading(true);
+    try {
+      const response = await axios.post(`${BASE_URL}/booking`, {
+        serviceId: selectedService?._id,
+        customerUserId: selectedBooking?.customerUserId,
+        date: selectedBooking?.date,
+        bookingData: [
+          {
+            personCount: selectedBooking?.personCount,
+            stylistId: selectedBooking?.stylist._id,
+            timeSlot: selectedBooking?.timeSlot,
+          },
+        ],
+      });
+      console.log(response);
+      dispatch(setBookingId(response.data.bookingId));
+      setSheetModalOpen(true);
+    } catch (error) {
+      console.log(error);
+      if (error && isAxiosError(error)) {
+        // setError(error.response?.data.message);
+      } else {
+        // setError("Fail to book on appointment");
+      }
+    }
+    setCreateLoading(false);
+  };
 
   return (
     <div className="mt-10 mx-5">
@@ -64,19 +80,19 @@ const BookingConfirmScreen = () => {
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <p>Booking Date:</p>
-          <p>{formatDateString(detail?.bookingDate as string)}</p>
+          <p>{formatDateString(selectedBooking?.date as string)}</p>
         </div>
         <div className="flex items-center justify-between">
           <p>Booking Time:</p>
-          <p>{formatTimeString(detail?.bookingDate as string)}</p>
+          <p>{selectedBooking?.timeSlot}</p>
         </div>
         <div className="flex items-center justify-between">
           <p>Number of Person:</p>
-          <p>{detail?.personCount}</p>
+          <p>{selectedBooking?.personCount}</p>
         </div>
         <div className="flex items-center justify-between">
           <p>Stylist Name:</p>
-          {/* <p>Su Mon</p> */}
+          <p>{selectedBooking?.stylist.stylistName}</p>
         </div>
       </div>
 
@@ -98,8 +114,10 @@ const BookingConfirmScreen = () => {
       {/* service listing */}
       <div className="flex flex-col gap-2 mt-3">
         <div className="flex items-center justify-between">
-          <p>- {detail?.serviceName}</p>
-          {/* <p>27,000 KS</p> */}
+          <p>
+            - {selectedService?.serviceName}/ {selectedService?.serviceName_mm}
+          </p>
+          <p>{selectedService?.servicePrice.toLocaleString()} KS</p>
         </div>
       </div>
 
@@ -128,11 +146,11 @@ const BookingConfirmScreen = () => {
       <div className="flex flex-col gap-2 mt-3">
         <div className="flex items-center justify-between">
           <p>Sub-Total</p>
-          <p>{detail?.totalCost.toLocaleString()} KS</p>
+          <p>{selectedService?.servicePrice.toLocaleString()} KS</p>
         </div>
         <div className="flex items-center justify-between">
           <p>Discount</p>
-          <p>{detail?.discountedAmount.toLocaleString()} KS</p>
+          <p>-0 KS</p>
         </div>
       </div>
 
@@ -142,10 +160,7 @@ const BookingConfirmScreen = () => {
       <div className="flex items-center justify-between">
         <p>Total Cost</p>
         <p>
-          {detail &&
-            (
-              detail?.totalCost - detail?.discountedAmount
-            ).toLocaleString()}{" "}
+          {(Number(selectedService?.servicePrice) - 0).toLocaleString()}
           KS
         </p>
       </div>
@@ -171,23 +186,19 @@ const BookingConfirmScreen = () => {
       </div>
 
       {/* action buttons */}
-      <div className="flex items-center gap-5 my-10">
-        <Button
-          variant="primary"
-          type="button"
-          onClick={() => setSheetModalOpen(true)}
-        >
-          Confirm
-        </Button>
-        <Button variant="primary" type="button" onClick={() => navigate(-1)}>
-          Cancel
-        </Button>
-      </div>
-      <BottomSheetModal
-        detail={detail as BookingDetailType}
-        isOpen={sheetModalOpen}
-        setOpen={setSheetModalOpen}
-      />
+      {createLoading ? (
+        <Loading />
+      ) : (
+        <div className="flex items-center gap-5 my-10">
+          <Button variant="primary" type="button" onClick={() => navigate(-1)}>
+            Cancel
+          </Button>
+          <Button variant="primary" type="button" onClick={handleAddBooking}>
+            Confirm
+          </Button>
+        </div>
+      )}
+      <BottomSheetModal isOpen={sheetModalOpen} setOpen={setSheetModalOpen} />
     </div>
   );
 };

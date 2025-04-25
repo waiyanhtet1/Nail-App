@@ -1,0 +1,77 @@
+import { useNavigate } from "react-router-dom";
+import ActionButton from "../../components/ActionButton";
+import { formatDateString } from "../../libs/dateUtils";
+import { useAppSelector } from "../../redux/hook";
+
+const SuccessBookingDetail = () => {
+  const navigate = useNavigate();
+  const { selectedBooking, selectedService } = useAppSelector(
+    (state) => state.booking
+  );
+
+  return (
+    <div className="flex flex-col gap-3 mt-20 mx-5">
+      <Item
+        title="Booking Date & Time : "
+        value={formatDateString(selectedBooking?.date as string)}
+      />
+      <Item
+        title="Stylist Name : "
+        value={selectedBooking?.stylist.stylistName as string}
+      />
+      <Item
+        title="Number of Person : "
+        value={selectedBooking?.personCount.toString() as string}
+      />
+
+      <p className="text-lg font-semibold">Service</p>
+
+      <Item
+        title={`${selectedService?.serviceName} / ${selectedService?.serviceName_mm}`}
+        value={`${selectedService?.servicePrice.toLocaleString()} KS`}
+      />
+
+      <hr className="my-3 text-gray-fourth" />
+
+      <Item
+        title="Sub-Total"
+        value={`${selectedService?.servicePrice.toLocaleString()} KS`}
+      />
+      <Item title="Discount" value="-0 KS" />
+
+      <hr className="my-3 text-gray-fourth" />
+
+      <Item
+        title="Total Coast"
+        value={`${(Number(selectedService?.servicePrice) - 0).toLocaleString()}
+          KS`}
+      />
+
+      <ActionButton
+        variant="outline"
+        type="button"
+        size="md"
+        className="w-full rounded-xl py-3 font-bold mt-5"
+        onClick={() => navigate("/")}
+      >
+        Back To Home Screen
+      </ActionButton>
+    </div>
+  );
+};
+
+export default SuccessBookingDetail;
+
+interface ItemProps {
+  title: string;
+  value: string;
+}
+
+const Item = ({ title, value }: ItemProps) => {
+  return (
+    <div className="flex items-center justify-between">
+      <p>{title}</p>
+      <p className="text-right">{value}</p>
+    </div>
+  );
+};

@@ -10,3 +10,15 @@ export type BookingType = {
   bookingUserEmail: string;
   bookingStatus: string;
 };
+
+export type SelectedBookingType = {
+  // serviceId: string;
+  customerUserId: string;
+  date: string;
+  personCount: number;
+  stylist: {
+    _id: string;
+    stylistName: string;
+  };
+  timeSlot: string;
+};

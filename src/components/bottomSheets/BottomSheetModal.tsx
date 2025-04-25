@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
+import { useNavigate } from "react-router-dom";
 import { formatDateString } from "../../libs/dateUtils";
-import { BookingDetailType } from "../../types/bookingDetailType";
+import { useAppSelector } from "../../redux/hook";
 import ActionButton from "../ActionButton";
 import Button from "../Button";
 import successImg from "/images/success.png";
@@ -9,11 +10,14 @@ import successImg from "/images/success.png";
 interface Props {
   isOpen: boolean;
   setOpen: (value: boolean) => void;
-  detail: BookingDetailType;
 }
 
-function BottomSheetModal({ isOpen, setOpen, detail }: Props) {
+function BottomSheetModal({ isOpen, setOpen }: Props) {
   const ref = useRef<SheetRef>(null);
+  const { selectedBooking, selectedService } = useAppSelector(
+    (state) => state.booking
+  );
+  const navigate = useNavigate();
 
   return (
     <>
@@ -22,6 +26,7 @@ function BottomSheetModal({ isOpen, setOpen, detail }: Props) {
         onClose={() => setOpen(false)}
         snapPoints={[600, 450]}
         initialSnap={1}
+        disableDrag
       >
         <Sheet.Container>
           <Sheet.Header />
@@ -49,15 +54,17 @@ function BottomSheetModal({ isOpen, setOpen, detail }: Props) {
               {/* info result */}
               <div className="flex justify-between mt-7">
                 <div className="w-full flex flex-col items-center justify-center p-3 border-t border-r border-b border-gray-fourth">
-                  <p>({detail.serviceName}) Services</p>
-                  <p className="text-sm">{detail.personCount} Persons</p>
+                  <p>({selectedService?.serviceName}) Services</p>
+                  <p className="text-sm">
+                    {selectedBooking?.personCount} Persons
+                  </p>
                 </div>
                 <div className="w-full flex flex-col items-center justify-center gap-2 p-3 border-t border-b border-gray-fourth">
                   <p className="whitespace-nowrap">
-                    Date : {formatDateString(detail.bookingDate)}
+                    Date : {formatDateString(selectedBooking?.date as string)}
                   </p>
                   {/* <p className="text-xs">(Wednesday)</p> */}
-                  <p className="text-sm">{detail.timeSlots[0].timeSlot}</p>
+                  <p className="text-sm">{selectedBooking?.timeSlot}</p>
                 </div>
               </div>
 
@@ -67,6 +74,7 @@ function BottomSheetModal({ isOpen, setOpen, detail }: Props) {
                   variant="primary"
                   type="button"
                   className="rounded-[100px]"
+                  onClick={() => navigate("/success-detail")}
                 >
                   Booking Detail
                 </Button>
@@ -74,8 +82,8 @@ function BottomSheetModal({ isOpen, setOpen, detail }: Props) {
                   variant="outline"
                   type="button"
                   size="md"
-                  className="w-full rounded-[100px] py-3 font-bold"
-                  onClick={() => console.log("first")}
+                  className="w-full rounded-xl py-3 font-bold"
+                  onClick={() => navigate("/")}
                 >
                   Back To Home Screen
                 </ActionButton>

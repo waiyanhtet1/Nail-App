@@ -1,16 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CategoriesType } from "../../types/types";
+import { SelectedBookingType } from "../../types/BookingType";
+import { CategoriesType, ServiceType } from "../../types/types";
 
 type BookingSliceType = {
   selectedCategory: CategoriesType | null;
-  selectedServiceId: string;
+  selectedService: ServiceType | null;
   bookingId: string;
+  selectedBooking: SelectedBookingType | null;
 };
 
 const initialState: BookingSliceType = {
   selectedCategory: null,
-  selectedServiceId: "",
+  selectedService: null,
   bookingId: "",
+  selectedBooking: null,
 };
 
 export const bookingSlice = createSlice({
@@ -23,15 +26,22 @@ export const bookingSlice = createSlice({
     ) => {
       state.selectedCategory = action.payload;
     },
-    setSelectedServiceId: (state, action: PayloadAction<string>) => {
-      state.selectedServiceId = action.payload;
+    setSelectedService: (state, action: PayloadAction<ServiceType>) => {
+      state.selectedService = action.payload;
     },
     setBookingId: (state, action: PayloadAction<string>) => {
       state.bookingId = action.payload;
     },
+    setSelectedBooking: (state, action: PayloadAction<SelectedBookingType>) => {
+      state.selectedBooking = action.payload;
+    },
   },
 });
 
-export const { setSelectedCategory, setSelectedServiceId, setBookingId } =
-  bookingSlice.actions;
+export const {
+  setSelectedCategory,
+  setSelectedService,
+  setBookingId,
+  setSelectedBooking,
+} = bookingSlice.actions;
 export default bookingSlice.reducer;

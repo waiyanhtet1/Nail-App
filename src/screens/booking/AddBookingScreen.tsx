@@ -1,5 +1,5 @@
 import { IonIcon } from "@ionic/react";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 import { arrowBackOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,19 +11,20 @@ import { BASE_URL } from "../../constants/baseUrl";
 import { formatDateString } from "../../libs/dateUtils";
 import { getLoginUser } from "../../libs/userUtils";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { setBookingId } from "../../redux/slices/bookingSlice";
+import { setSelectedBooking } from "../../redux/slices/bookingSlice";
 import SelectArtistSection from "../../sections/bookingSections/SelectArtistSection";
-import { ServiceDetailType } from "../../types/types";
+import { ServiceDetailType, StyleListType } from "../../types/types";
 
 const AddBookingScreen = () => {
-  const { selectedCategory, selectedServiceId } = useAppSelector(
+  const { selectedCategory, selectedService } = useAppSelector(
     (state) => state.booking
   );
   const navigate = useNavigate();
   const [serviceDetail, setServiceDetail] = useState<ServiceDetailType>();
   const [isLoading, setIsLoading] = useState(false);
-  const [createLoading, setCreateLoading] = useState(false);
-  const [selectedArtistId, setSelectedArtistId] = useState<string>("");
+  const [selectedArtist, setSelectedArtist] = useState<StyleListType | null>(
+    null
+  );
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [personCount, setPersonCount] = useState(1);
   const [error, setError] = useState("");
@@ -34,11 +35,11 @@ const AddBookingScreen = () => {
 
   useEffect(() => {
     async function getBookingDetail() {
-      if (selectedServiceId && selectedCategory?.id) {
+      if (selectedService && selectedCategory?.id) {
         setIsLoading(true);
         try {
           const { data } = await axios.get(
-            `${BASE_URL}/booking/${selectedServiceId}/${selectedCategory?.id}`
+            `${BASE_URL}/booking/${selectedService._id}/${selectedCategory?.id}`
           );
           console.log(data);
           setServiceDetail(data);
@@ -49,12 +50,12 @@ const AddBookingScreen = () => {
       }
     }
     getBookingDetail();
-  }, [selectedCategory?.id, selectedServiceId]);
+  }, [selectedCategory?.id, selectedService]);
 
   async function addOnBooking() {
     // check if button disabled or not
     if (
-      selectedArtistId === "" ||
+      selectedArtist === null ||
       selectedTimeSlot === "" ||
       selectedDateInput === ""
     ) {
@@ -64,34 +65,17 @@ const AddBookingScreen = () => {
       setError("Person Count should be at least 1");
       return;
     }
-    // create booking
     setError("");
-    setCreateLoading(true);
-    try {
-      const response = await axios.post(`${BASE_URL}/booking`, {
-        serviceId: selectedServiceId,
-        customerUserId: userInfo.user._id,
+    dispatch(
+      setSelectedBooking({
+        customerUserId: userInfo._id,
         date: selectedDateInput,
-        bookingData: [
-          {
-            personCount,
-            stylistId: selectedArtistId,
-            timeSlot: selectedTimeSlot,
-          },
-        ],
-      });
-      console.log(response);
-      dispatch(setBookingId(response.data.bookingId));
-      navigate("/confirm-booking");
-    } catch (error) {
-      console.log(error);
-      if (error && isAxiosError(error)) {
-        setError(error.response?.data.message);
-      } else {
-        setError("Fail to book on appointment");
-      }
-    }
-    setCreateLoading(false);
+        personCount: personCount,
+        stylist: selectedArtist,
+        timeSlot: selectedTimeSlot,
+      })
+    );
+    navigate("/confirm-booking");
   }
 
   // console.log("here", selectedDateInput);
@@ -134,8 +118,8 @@ const AddBookingScreen = () => {
                 <SelectArtistSection
                   key={item._id}
                   stylist={item}
-                  onClick={() => setSelectedArtistId(item._id)}
-                  selectedArtistId={selectedArtistId as string}
+                  onClick={() => setSelectedArtist(item)}
+                  selectedArtistId={selectedArtist?._id as string}
                 />
               ))}
           </div>
@@ -175,13 +159,9 @@ const AddBookingScreen = () => {
 
           {error !== "" && <p className="text-sm text-red-500">{error}</p>}
 
-          {createLoading ? (
-            <Loading />
-          ) : (
-            <Button variant="primary" type="button" onClick={addOnBooking}>
-              Book on Appointment
-            </Button>
-          )}
+          <Button variant="primary" type="button" onClick={addOnBooking}>
+            Book on Appointment
+          </Button>
         </div>
       )}
       {isDateSheetOpen && (

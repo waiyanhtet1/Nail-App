@@ -9,7 +9,7 @@ import { BASE_URL } from "../../constants/baseUrl";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import {
   setSelectedCategory,
-  setSelectedServiceId,
+  setSelectedService,
 } from "../../redux/slices/bookingSlice";
 import { ServiceType } from "../../types/types";
 
@@ -69,7 +69,7 @@ const ServiceListSection = () => {
                 serviceDescription_mm={item.serviceDescription_mm}
                 servicePrice={item.servicePrice}
                 onClick={() => {
-                  dispatch(setSelectedServiceId(item._id));
+                  dispatch(setSelectedService(item));
                   navigate("/add-booking");
                 }}
               />
