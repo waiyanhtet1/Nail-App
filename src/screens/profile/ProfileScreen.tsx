@@ -8,12 +8,23 @@ import {
   notificationsOutline,
   settingsOutline,
 } from "ionicons/icons";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import showToast from "../../libs/toastUtil";
+import { getLoginUser } from "../../libs/userUtils";
+import { UserType } from "../../types/userType";
 import profileImg from "/images/stylist.jpeg";
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState<UserType | null>(null);
+
+  useEffect(() => {
+    const user = getLoginUser();
+    if (user) {
+      setUserInfo(user);
+    }
+  }, []);
 
   return (
     <>
@@ -37,11 +48,12 @@ const ProfileScreen = () => {
             alt=""
             className="w-[80px] h-[80px] object-cover rounded-full"
           />
-          <div className="flex flex-col gap-2 text-secondary">
-            <p className="font-semibold text-lg">Name: Su Mon</p>
-            <p className="font-light">0912345678</p>
+          <div className="flex flex-col text-secondary">
+            <p className="font-semibold text-lg">{userInfo?.username}</p>
+            {/* <p className="font-light">{userInfo.phone}</p> */}
+            <p className="font-light">{userInfo?.email}</p>
             <p
-              className="px-5 py-1 w-max text-white bg-gray text-sm rounded-lg"
+              className="px-5 py-1 w-max text-white bg-gray text-sm rounded-lg mt-3"
               onClick={() => navigate("edit")}
             >
               Edit

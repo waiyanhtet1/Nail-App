@@ -74,7 +74,9 @@ const ChatHomeScreen = () => {
           leftIcon={chatbubbleOutline}
           rightIcon={chevronForwardOutline}
           className="mt-10"
-          onClick={() => navigate("/chat")}
+          onClick={() => {
+            navigate("/chat");
+          }}
         >
           Contact Live Chat
         </Button>

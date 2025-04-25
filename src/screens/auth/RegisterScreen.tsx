@@ -1,3 +1,4 @@
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
@@ -72,6 +73,17 @@ const RegisterScreen = () => {
     }
   };
 
+  const handleGoogleRegister = async () => {
+    try {
+      const user = await GoogleAuth.signIn();
+      console.log("Native login", JSON.stringify(user));
+      alert("Login" + JSON.stringify(user));
+    } catch (err) {
+      console.error("Native login failed", err);
+      alert("Fail" + JSON.stringify(err));
+    }
+  };
+
   return (
     <div className="flex flex-col gap-3 pt-10 px-5 md:px-52">
       <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
@@ -139,7 +151,7 @@ const RegisterScreen = () => {
       {/* social icon */}
       <div className="flex items-center justify-center gap-5">
         <SocialIconButton icon={facebookIcon} />
-        <SocialIconButton icon={googleIcon} />
+        <SocialIconButton icon={googleIcon} onClick={handleGoogleRegister} />
       </div>
 
       {/* register route */}

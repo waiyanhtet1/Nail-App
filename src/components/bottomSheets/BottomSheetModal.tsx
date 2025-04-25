@@ -1,5 +1,7 @@
 import { useRef } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
+import { formatDateString } from "../../libs/dateUtils";
+import { BookingDetailType } from "../../types/bookingDetailType";
 import ActionButton from "../ActionButton";
 import Button from "../Button";
 import successImg from "/images/success.png";
@@ -7,9 +9,10 @@ import successImg from "/images/success.png";
 interface Props {
   isOpen: boolean;
   setOpen: (value: boolean) => void;
+  detail: BookingDetailType;
 }
 
-function BottomSheetModal({ isOpen, setOpen }: Props) {
+function BottomSheetModal({ isOpen, setOpen, detail }: Props) {
   const ref = useRef<SheetRef>(null);
 
   return (
@@ -28,9 +31,9 @@ function BottomSheetModal({ isOpen, setOpen }: Props) {
               <h1 className="text-center text-secondary text-xl font-bold">
                 Booking Successful
               </h1>
-              <p className="text-xs text-secondary text-center mt-2">
+              {/* <p className="text-xs text-secondary text-center mt-2">
                 Your Booking Number is 000001
-              </p>
+              </p> */}
 
               {/* success image */}
               <div className="flex justify-center mt-5">
@@ -46,19 +49,25 @@ function BottomSheetModal({ isOpen, setOpen }: Props) {
               {/* info result */}
               <div className="flex justify-between mt-7">
                 <div className="w-full flex flex-col items-center justify-center p-3 border-t border-r border-b border-gray-fourth">
-                  <p>(2) Services</p>
-                  <p className="text-sm">2 Persons</p>
+                  <p>({detail.serviceName}) Services</p>
+                  <p className="text-sm">{detail.personCount} Persons</p>
                 </div>
                 <div className="w-full flex flex-col items-center justify-center gap-2 p-3 border-t border-b border-gray-fourth">
-                  <p className="whitespace-nowrap">Date : 22 April,2025</p>
-                  <p className="text-xs">(Wednesday)</p>
-                  <p className="text-sm">11:00 PM</p>
+                  <p className="whitespace-nowrap">
+                    Date : {formatDateString(detail.bookingDate)}
+                  </p>
+                  {/* <p className="text-xs">(Wednesday)</p> */}
+                  <p className="text-sm">{detail.timeSlots[0].timeSlot}</p>
                 </div>
               </div>
 
               {/* action buttons */}
               <div className="flex flex-col gap-3 mt-5">
-                <Button variant="primary" type="button">
+                <Button
+                  variant="primary"
+                  type="button"
+                  className="rounded-[100px]"
+                >
                   Booking Detail
                 </Button>
                 <ActionButton

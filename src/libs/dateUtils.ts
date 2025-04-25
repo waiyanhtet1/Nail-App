@@ -10,6 +10,17 @@ export function formatDateString(dateStr: string) {
   return formattedDate;
 }
 
+export function formatTimeString(isoString: string) {
+  const date = new Date(isoString);
+
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+  return formattedTime;
+}
+
 export function formatDateTimeString(isoDate: string) {
   const date = new Date(isoDate);
 

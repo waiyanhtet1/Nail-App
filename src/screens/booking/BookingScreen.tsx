@@ -34,24 +34,26 @@ const BookingScreen = ({ categoriesData, isLoading }: Props) => {
               {isLoading ? (
                 <Loading />
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3 overflow-y-scroll h-[calc(100vh-290px)] no-scrollbar">
-                  {categoriesData &&
-                    categoriesData.map((item) => (
-                      <CategoryCard
-                        key={item.id}
-                        icon={encodeSvg(item.icon)}
-                        title={item.name}
-                        onClick={() =>
-                          dispatch(
-                            setSelectedCategory({
-                              id: item.id,
-                              name: item.name,
-                              icon: item.icon,
-                            })
-                          )
-                        }
-                      />
-                    ))}
+                <div className="overflow-y-scroll h-[calc(100vh-290px)] no-scrollbar">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
+                    {categoriesData &&
+                      categoriesData.map((item) => (
+                        <CategoryCard
+                          key={item.id}
+                          icon={encodeSvg(item.icon)}
+                          title={item.name}
+                          onClick={() =>
+                            dispatch(
+                              setSelectedCategory({
+                                id: item.id,
+                                name: item.name,
+                                icon: item.icon,
+                              })
+                            )
+                          }
+                        />
+                      ))}
+                  </div>
                 </div>
               )}
             </>

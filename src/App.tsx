@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import "@codetrix-studio/capacitor-google-auth"; // only needed for web
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import OneSignal from "onesignal-cordova-plugin";
@@ -80,33 +82,33 @@ export default function Wrapper() {
         OneSignal.initialize("624a863f-5157-4806-8b92-e0b5bc351b76");
 
         // Request push permission
-        const permissionGranted =
-          await OneSignal.Notifications.requestPermission(true);
+        // const permissionGranted =
+        await OneSignal.Notifications.requestPermission(true);
         // console.log("Permission granted:", permissionGranted);
-        alert("Permission granted:" + JSON.stringify(permissionGranted));
+        // alert("Permission granted:" + JSON.stringify(permissionGranted));
 
         // get playerId
         await OneSignal.User.getOnesignalId()
           .then((playerId) => {
-            alert("🎯 Player ID: " + playerId);
+            // alert("🎯 Player ID: " + playerId);
             dispatch(setToken(playerId as string));
           })
           .catch((err) => alert(JSON.stringify(err)));
       } catch (error: any) {
         console.error("🔥 OneSignal init error:", error);
-        alert("OneSignal error: " + (error?.message || JSON.stringify(error)));
+        // alert("OneSignal error: " + (error?.message || JSON.stringify(error)));
       }
     };
-
-    // // Listen for deviceready only on real device
-    // document.addEventListener("deviceready", initOneSignal, false);
-
-    // return () => {
-    //   document.removeEventListener("deviceready", initOneSignal);
-    // };
-
     initOneSignal();
   }, [dispatch]);
+
+  // google oauth setup for web
+  GoogleAuth.initialize({
+    clientId:
+      "422262531684-nt83vc99hg47n85jtesq4ktk6ono2e7a.apps.googleusercontent.com",
+    scopes: ["profile", "email"],
+    grantOfflineAccess: true,
+  });
 
   return (
     <Router>

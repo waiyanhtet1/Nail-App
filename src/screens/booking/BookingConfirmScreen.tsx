@@ -1,9 +1,14 @@
-import { cardOutline, cashOutline, qrCodeOutline } from "ionicons/icons";
-import { useState } from "react";
+import axios from "axios";
+import { cashOutline } from "ionicons/icons";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import BottomSheetModal from "../../components/bottomSheets/BottomSheetModal";
 import Button from "../../components/Button";
+import { BASE_URL } from "../../constants/baseUrl";
+import { formatDateString, formatTimeString } from "../../libs/dateUtils";
+import { useAppSelector } from "../../redux/hook";
+import { BookingDetailType } from "../../types/bookingDetailType";
 
 const paymentsList = [
   {
@@ -11,26 +16,44 @@ const paymentsList = [
     name: "Cash",
     icon: cashOutline,
   },
-
-  {
-    id: 2,
-    name: "Debit Card",
-    icon: cardOutline,
-  },
-  {
-    id: 3,
-    name: "Digital Pay",
-    icon: qrCodeOutline,
-  },
+  // {
+  //   id: 2,
+  //   name: "Debit Card",
+  //   icon: cardOutline,
+  // },
+  // {
+  //   id: 3,
+  //   name: "Digital Pay",
+  //   icon: qrCodeOutline,
+  // },
 ];
 
 const BookingConfirmScreen = () => {
+  const { bookingId } = useAppSelector((state) => state.booking);
+  const [detail, setDetail] = useState<BookingDetailType>();
+
+  const getBookingDetail = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`${BASE_URL}/booking/${bookingId}`);
+      console.log(data);
+      setDetail(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [bookingId]);
+
+  useEffect(() => {
+    getBookingDetail();
+  }, [getBookingDetail]);
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     paymentsList[0].id
   );
   const [sheetModalOpen, setSheetModalOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  console.log(detail);
 
   return (
     <div className="mt-10 mx-5">
@@ -41,19 +64,19 @@ const BookingConfirmScreen = () => {
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <p>Booking Date:</p>
-          <p>22 Wednesday, 2025</p>
+          <p>{formatDateString(detail?.bookingDate as string)}</p>
         </div>
         <div className="flex items-center justify-between">
           <p>Booking Time:</p>
-          <p>11:30 AM</p>
+          <p>{formatTimeString(detail?.bookingDate as string)}</p>
         </div>
         <div className="flex items-center justify-between">
           <p>Number of Person:</p>
-          <p>4</p>
+          <p>{detail?.personCount}</p>
         </div>
         <div className="flex items-center justify-between">
           <p>Stylist Name:</p>
-          <p>Su Mon</p>
+          {/* <p>Su Mon</p> */}
         </div>
       </div>
 
@@ -62,7 +85,7 @@ const BookingConfirmScreen = () => {
       {/* service listing header*/}
       <div className="flex items-center justify-between">
         <p className="text-lg font-bold text-secondary">Service</p>
-        <ActionButton
+        {/* <ActionButton
           variant="primary"
           size="sm"
           type="button"
@@ -70,17 +93,13 @@ const BookingConfirmScreen = () => {
           onClick={() => console.log("first")}
         >
           Edit
-        </ActionButton>
+        </ActionButton> */}
       </div>
       {/* service listing */}
       <div className="flex flex-col gap-2 mt-3">
         <div className="flex items-center justify-between">
-          <p>- Classic Manicure</p>
-          <p>27,000 KS</p>
-        </div>
-        <div className="flex items-center justify-between">
-          <p>- Classic Manicure</p>
-          <p>27,000 KS</p>
+          <p>- {detail?.serviceName}</p>
+          {/* <p>27,000 KS</p> */}
         </div>
       </div>
 
@@ -92,6 +111,7 @@ const BookingConfirmScreen = () => {
           type="text"
           className="w-full outline-none text-sm"
           placeholder="Promo Code"
+          disabled
         />
         <ActionButton
           variant="primary"
@@ -108,11 +128,11 @@ const BookingConfirmScreen = () => {
       <div className="flex flex-col gap-2 mt-3">
         <div className="flex items-center justify-between">
           <p>Sub-Total</p>
-          <p>57,000 KS</p>
+          <p>{detail?.totalCost.toLocaleString()} KS</p>
         </div>
         <div className="flex items-center justify-between">
           <p>Discount</p>
-          <p>-7,000 KS</p>
+          <p>{detail?.discountedAmount.toLocaleString()} KS</p>
         </div>
       </div>
 
@@ -121,7 +141,13 @@ const BookingConfirmScreen = () => {
       {/* total cost */}
       <div className="flex items-center justify-between">
         <p>Total Cost</p>
-        <p>50,000 KS</p>
+        <p>
+          {detail &&
+            (
+              detail?.totalCost - detail?.discountedAmount
+            ).toLocaleString()}{" "}
+          KS
+        </p>
       </div>
 
       {/* payment methods */}
@@ -157,7 +183,11 @@ const BookingConfirmScreen = () => {
           Cancel
         </Button>
       </div>
-      <BottomSheetModal isOpen={sheetModalOpen} setOpen={setSheetModalOpen} />
+      <BottomSheetModal
+        detail={detail as BookingDetailType}
+        isOpen={sheetModalOpen}
+        setOpen={setSheetModalOpen}
+      />
     </div>
   );
 };

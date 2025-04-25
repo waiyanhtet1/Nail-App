@@ -28,7 +28,6 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { playerId } = useAppSelector((state) => state.token);
-  alert("playerId from redux state" + playerId);
 
   const {
     register,
@@ -51,6 +50,8 @@ const LoginScreen = () => {
         password: data.password,
         playerId: playerId,
       });
+
+      console.log(response.data);
 
       localStorage.setItem("userInfo", encryptData(response.data));
       showToast("Login success");

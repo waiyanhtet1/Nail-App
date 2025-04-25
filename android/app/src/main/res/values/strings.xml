@@ -1,7 +1,10 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8' ?>
 <resources>
     <string name="app_name">Barbie’s Studio</string>
     <string name="title_activity_main">Barbie’s Studio</string>
     <string name="package_name">com.barbiestudio.app</string>
     <string name="custom_url_scheme">com.barbiestudio.app</string>
+    <string
+    name="server_client_id"
+  >422262531684-nt83vc99hg47n85jtesq4ktk6ono2e7a.apps.googleusercontent.com</string>
 </resources>

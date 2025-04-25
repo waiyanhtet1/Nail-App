@@ -10,7 +10,8 @@ import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
 import { formatDateString } from "../../libs/dateUtils";
 import { getLoginUser } from "../../libs/userUtils";
-import { useAppSelector } from "../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { setBookingId } from "../../redux/slices/bookingSlice";
 import SelectArtistSection from "../../sections/bookingSections/SelectArtistSection";
 import { ServiceDetailType } from "../../types/types";
 
@@ -21,6 +22,7 @@ const AddBookingScreen = () => {
   const navigate = useNavigate();
   const [serviceDetail, setServiceDetail] = useState<ServiceDetailType>();
   const [isLoading, setIsLoading] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
   const [selectedArtistId, setSelectedArtistId] = useState<string>("");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [personCount, setPersonCount] = useState(1);
@@ -28,6 +30,7 @@ const AddBookingScreen = () => {
   const [isDateSheetOpen, setIsDateSheetOpen] = useState(false);
   const [selectedDateInput, setSelectedDateInput] = useState("");
   const userInfo = getLoginUser();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     async function getBookingDetail() {
@@ -63,10 +66,11 @@ const AddBookingScreen = () => {
     }
     // create booking
     setError("");
+    setCreateLoading(true);
     try {
       const response = await axios.post(`${BASE_URL}/booking`, {
         serviceId: selectedServiceId,
-        customerUserId: userInfo._id,
+        customerUserId: userInfo.user._id,
         date: selectedDateInput,
         bookingData: [
           {
@@ -77,6 +81,7 @@ const AddBookingScreen = () => {
         ],
       });
       console.log(response);
+      dispatch(setBookingId(response.data.bookingId));
       navigate("/confirm-booking");
     } catch (error) {
       console.log(error);
@@ -86,6 +91,7 @@ const AddBookingScreen = () => {
         setError("Fail to book on appointment");
       }
     }
+    setCreateLoading(false);
   }
 
   // console.log("here", selectedDateInput);
@@ -169,9 +175,13 @@ const AddBookingScreen = () => {
 
           {error !== "" && <p className="text-sm text-red-500">{error}</p>}
 
-          <Button variant="primary" type="button" onClick={addOnBooking}>
-            Book on Appointment
-          </Button>
+          {createLoading ? (
+            <Loading />
+          ) : (
+            <Button variant="primary" type="button" onClick={addOnBooking}>
+              Book on Appointment
+            </Button>
+          )}
         </div>
       )}
       {isDateSheetOpen && (
