@@ -2,7 +2,7 @@ import stampImg from "/images/logo.png";
 
 interface Props {
   isStamped: boolean;
-  isRedColor: boolean;
+  isRedColor?: boolean;
   stampNumber: string;
 }
 

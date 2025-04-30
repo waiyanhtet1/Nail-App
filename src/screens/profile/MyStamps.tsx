@@ -1,13 +1,47 @@
 import { IonIcon } from "@ionic/react";
-import { arrowBackOutline } from "ionicons/icons";
+import axios from "axios";
+import {
+  arrowBackOutline,
+  layersOutline,
+  listOutline,
+  pricetagOutline,
+} from "ionicons/icons";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading";
 import StampCard from "../../components/stamp/StampCard";
+import { BASE_URL } from "../../constants/baseUrl";
+import { formatDateString } from "../../libs/dateUtils";
+import { getLoginUser } from "../../libs/userUtils";
+import { StampType } from "../../types/stampType";
 
 const MyStamps = () => {
   const navigate = useNavigate();
+  const userInfo = getLoginUser();
+  const [stampData, setStampData] = useState<StampType>();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getRoyal = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/loyalty-stamps/${userInfo._id}`
+      );
+      setStampData(data);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  }, [userInfo._id]);
+
+  useEffect(() => {
+    getRoyal();
+  }, [getRoyal]);
+
+  console.log("stampData", stampData);
 
   return (
-    <>
+    <div className="relative">
       <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
         <div className="flex items-center">
           {/* back and title */}
@@ -23,39 +57,65 @@ const MyStamps = () => {
 
         <div className="flex flex-col gap-3 mt-7 text-secondary ">
           <p className="text-lg font-semibold">Loyalty Card</p>
-          <p className="text-sm">Name : Su Su</p>
-          <p className="text-sm">Date of Birth : 08.07.1992</p>
+          <p className="text-sm">Name : {userInfo.username}</p>
+          <p className="text-sm">
+            Date of Birth : {formatDateString(userInfo.DOB)}
+          </p>
         </div>
       </div>
 
       {/* stamps promotion list */}
-      <div className="flex flex-col gap-5 mt-5 items-center justify-center mx-5">
-        <p className="text-center text-sm text-secondary font-semibold">
-          Buy 30,000KS Get 1 stamp
-        </p>
-        <div className="grid grid-cols-5 gap-x-5 gap-y-7">
-          {Array.from({ length: 15 }).map((_, index) => (
-            <StampCard
-              key={index}
-              isStamped={index === 0 ? true : false}
-              isRedColor={
-                index === 4 || index === 9 || index === 14 ? true : false
-              }
-              stampNumber={(index + 1).toString()}
-            />
-          ))}
-        </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="flex flex-col gap-5 mt-5 items-center justify-center mx-5">
+          <p className="text-center text-sm text-secondary font-semibold">
+            Buy 30,000KS Get 1 stamp
+          </p>
+          <div className="grid grid-cols-5 gap-x-5 gap-y-7">
+            {stampData &&
+              stampData.uncollected.map((item) => (
+                <StampCard
+                  key={item._id}
+                  isStamped={item.isDiscountAvailable}
+                  stampNumber={item.stampOrder.toString()}
+                />
+              ))}
+          </div>
 
-        {/* promotion discount percentage */}
-        <div className="self-start text-secondary text-sm font-semibold">
-          <p>5 - 10% off</p>
-          <p>10 - 50% off</p>
-          <p>15 - Free</p>
-        </div>
+          {/* promotion discount percentage */}
+          <div className="w-full text-secondary text-sm font-semibold">
+            {stampData &&
+              stampData.uncollected
+                .filter((item) => item.isDiscountAvailable)
+                .map((stamp) => (
+                  <div
+                    key={stamp._id}
+                    className="bg-white p-2 mb-3 rounded-xl shadow-md"
+                  >
+                    <p className="mb-3">{stamp.stampName}</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col items-center">
+                        <IonIcon icon={layersOutline} className="size-5" />
+                        <p>{stamp.serviceCategory?.categoryName}</p>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <IonIcon icon={listOutline} className="size-5" />
+                        <p>{stamp.service?.serviceName} service</p>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <IonIcon icon={pricetagOutline} className="size-5" />
+                        <p>{stamp.discount} % off</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+          </div>
 
-        <p className="text-gray">Thank You For Your Loyalty !</p>
-      </div>
-    </>
+          <p className="text-gray">Thank You For Your Loyalty !</p>
+        </div>
+      )}
+    </div>
   );
 };
 

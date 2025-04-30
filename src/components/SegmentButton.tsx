@@ -41,7 +41,7 @@ const SegmentButton = () => {
 
       // filter cancelled status bookings
       const cancelledBookingList = data.filter(
-        (item: BookingType) => item.bookingStatus === "cancel"
+        (item: BookingType) => item.bookingStatus === "cancelled"
       );
       setCancelledBookings(cancelledBookingList);
     } catch (error) {

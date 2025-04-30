@@ -1,5 +1,8 @@
-import { useState } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { BASE_URL } from "../../constants/baseUrl";
 import { formatDateTimeString } from "../../libs/dateUtils";
+import { BookingDetailType } from "../../types/bookingDetailType";
 import { BookingType } from "../../types/BookingType";
 import ActionButton from "../ActionButton";
 import BookingDetailBottomSheet from "../bottomSheets/BookingDetailBottomSheet";
@@ -12,6 +15,22 @@ interface Props {
 
 const MyBookingCard = ({ variant, booking }: Props) => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [detail, setDetail] = useState<BookingDetailType | null>(null);
+
+  const getBookingDetail = useCallback(async () => {
+    const { data } = await axios.get(
+      `${BASE_URL}/booking/${booking.bookingId}`
+    );
+
+    setDetail(data);
+    console.log(data);
+  }, [booking.bookingId]);
+
+  useEffect(() => {
+    getBookingDetail();
+  }, [getBookingDetail]);
+
+  console.log("detail", detail);
 
   return (
     <div className="bg-white rounded-xl p-3">
@@ -25,25 +44,29 @@ const MyBookingCard = ({ variant, booking }: Props) => {
       )}
 
       {/* info */}
-      <div className="flex items-center justify-between gap-3">
-        {/* image */}
-        <img
-          src={image}
-          alt=""
-          className="w-[60px] h-[50px] rounded-xl bg-primary object-cover"
-        />
+      <div className="flex items-center justify-between">
+        <div className="flex gap-3">
+          {/* image */}
+          <img
+            src={image}
+            alt=""
+            className="w-[60px] h-[50px] rounded-xl bg-primary object-cover"
+          />
 
-        {/* title and description */}
-        <div className="">
-          <p className="text-sm font-semibold">{booking.serviceName}</p>
-          <p className="text-sm mt-1">
+          {/* title and description */}
+          <p className="text-sm font-semibold">{detail?.serviceName}</p>
+          {/* <p className="text-sm mt-1">
             Lorem ipsum dolor sit amet consectetur adipisicing.
-          </p>
+          </p> */}
         </div>
 
         {/* price */}
         <p className="whitespace-nowrap text-sm font-bold self-start">
-          0,000 KS
+          {detail &&
+            (
+              detail?.totalCost - detail?.discountedAmount
+            ).toLocaleString()}{" "}
+          KS
         </p>
       </div>
 
@@ -109,6 +132,7 @@ const MyBookingCard = ({ variant, booking }: Props) => {
       {isDetailModalOpen && (
         <BookingDetailBottomSheet
           booking={booking}
+          bookingDetail={detail as BookingDetailType}
           isOpen={isDetailModalOpen}
           setOpen={setIsDetailModalOpen}
         />

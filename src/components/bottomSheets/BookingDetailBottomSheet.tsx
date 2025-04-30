@@ -2,14 +2,21 @@ import { useRef } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import { formatDateTimeString } from "../../libs/dateUtils";
 import { BookingType } from "../../types/BookingType";
+import { BookingDetailType } from "../../types/bookingDetailType";
 
 interface Props {
   isOpen: boolean;
   setOpen: (value: boolean) => void;
   booking: BookingType;
+  bookingDetail: BookingDetailType;
 }
 
-const BookingDetailBottomSheet = ({ isOpen, setOpen, booking }: Props) => {
+const BookingDetailBottomSheet = ({
+  isOpen,
+  setOpen,
+  booking,
+  bookingDetail,
+}: Props) => {
   const ref = useRef<SheetRef>(null);
 
   return (
@@ -30,15 +37,33 @@ const BookingDetailBottomSheet = ({ isOpen, setOpen, booking }: Props) => {
                   title="Booking Date & Time"
                   value={formatDateTimeString(booking.bookingCreatedDate)}
                 />
-                <BookingItem title="Booking Number" value={""} />
+                <BookingItem
+                  title="Time Slot"
+                  value={bookingDetail.timeSlots[0].timeSlot}
+                />
                 <BookingItem
                   title="Booking Stylists"
                   value={booking.stylistName.join(",")}
                 />
-                <BookingItem title="Number of Person" value={""} />
-                <BookingItem title="Payment Method" value={""} />
-                {/* <p className="font-semibold text-lg text-secondary">Service</p> */}
+                <BookingItem
+                  title="Number of Person"
+                  value={bookingDetail.personCount.toString()}
+                />
+
+                <hr className="my-3 text-gray-fourth" />
+
+                <p className="font-semibold text-lg text-secondary">Service</p>
                 <BookingItem title="Service" value={booking.serviceName} />
+                <BookingItem
+                  title="Discount"
+                  value={`- ${bookingDetail.discountedAmount.toLocaleString()} KS`}
+                />
+                <BookingItem
+                  title="Total Amount"
+                  value={`${(
+                    bookingDetail.totalCost - bookingDetail.discountedAmount
+                  ).toLocaleString()} KS`}
+                />
               </div>
             </Sheet.Scroller>
           </Sheet.Content>
