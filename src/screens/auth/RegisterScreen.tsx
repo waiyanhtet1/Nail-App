@@ -12,6 +12,7 @@ import Loading from "../../components/Loading";
 import SocialIconButton from "../../components/SocialIconButton";
 import { BASE_URL } from "../../constants/baseUrl";
 import { encryptData } from "../../libs/encryption";
+import showToast from "../../libs/toastUtil";
 import { useAppSelector } from "../../redux/hook";
 import { singUpValidation } from "../../validations/signUpValidation";
 import googleIcon from "/images/google.svg";
@@ -62,8 +63,9 @@ const RegisterScreen = () => {
           playerId: playerId,
         });
 
-        localStorage.setItem("userInfo", encryptData(response.data));
+        localStorage.setItem("userInfo", encryptData(response.data.user));
         navigate("/");
+        showToast("Register success");
       } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
