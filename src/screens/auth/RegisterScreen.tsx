@@ -14,7 +14,6 @@ import { BASE_URL } from "../../constants/baseUrl";
 import { encryptData } from "../../libs/encryption";
 import { useAppSelector } from "../../redux/hook";
 import { singUpValidation } from "../../validations/signUpValidation";
-import facebookIcon from "/images/facebook.svg";
 import googleIcon from "/images/google.svg";
 
 type Inputs = {
@@ -33,6 +32,8 @@ const RegisterScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { playerId } = useAppSelector((state) => state.token);
+
+  GoogleAuth.initialize();
 
   const {
     register,
@@ -75,12 +76,13 @@ const RegisterScreen = () => {
 
   const handleGoogleRegister = async () => {
     try {
-      const user = await GoogleAuth.signIn();
-      console.log("Native login", JSON.stringify(user));
-      alert("Login" + JSON.stringify(user));
+      const userInfo = await GoogleAuth.signIn();
+      console.log("User Info:", userInfo);
+      alert("user info " + JSON.stringify(userInfo));
+      // Send to backend for login/registration handling
     } catch (err) {
-      console.error("Native login failed", err);
-      alert("Fail" + JSON.stringify(err));
+      console.error("Login error:", err);
+      alert("Login error:" + JSON.stringify(err));
     }
   };
 
@@ -150,7 +152,7 @@ const RegisterScreen = () => {
 
       {/* social icon */}
       <div className="flex items-center justify-center gap-5">
-        <SocialIconButton icon={facebookIcon} />
+        {/* <SocialIconButton icon={facebookIcon} /> */}
         <SocialIconButton icon={googleIcon} onClick={handleGoogleRegister} />
       </div>
 

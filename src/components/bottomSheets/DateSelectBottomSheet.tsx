@@ -7,6 +7,7 @@ interface Props {
   setOpen: (value: boolean) => void;
   selectedDateInput: string;
   setSelectedDateInput: (value: string) => void;
+  closingDays: number[];
 }
 
 const DateSelectBottomSheet = ({
@@ -14,6 +15,7 @@ const DateSelectBottomSheet = ({
   setOpen,
   selectedDateInput,
   setSelectedDateInput,
+  closingDays,
 }: Props) => {
   const ref = useRef<SheetRef>(null);
   return (
@@ -24,6 +26,8 @@ const DateSelectBottomSheet = ({
         snapPoints={[600, 450]}
         initialSnap={1}
       >
+        <Sheet.Backdrop onTap={() => setOpen(false)} />
+
         <Sheet.Container>
           <Sheet.Header />
           <Sheet.Content style={{ paddingBottom: ref.current?.y }}>
@@ -35,6 +39,10 @@ const DateSelectBottomSheet = ({
               <IonDatetime
                 presentation="date"
                 value={selectedDateInput}
+                isDateEnabled={(dateString) => {
+                  const date = new Date(dateString);
+                  return !closingDays.includes(date.getDay());
+                }}
                 onIonChange={(e) => {
                   const isoDate = e.detail.value; // e.g., "2025-04-05"
                   const formatted = new Date(isoDate as string)

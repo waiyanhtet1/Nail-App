@@ -8,7 +8,7 @@ import DateSelectBottomSheet from "../../components/bottomSheets/DateSelectBotto
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
-import { formatDateString } from "../../libs/dateUtils";
+import { daysToNumbers, formatDateString } from "../../libs/dateUtils";
 import { getLoginUser } from "../../libs/userUtils";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { setSelectedBooking } from "../../redux/slices/bookingSlice";
@@ -26,10 +26,11 @@ const AddBookingScreen = () => {
     null
   );
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
-  const [personCount, setPersonCount] = useState(1);
+  // const [personCount, setPersonCount] = useState(1);
   const [error, setError] = useState("");
   const [isDateSheetOpen, setIsDateSheetOpen] = useState(false);
   const [selectedDateInput, setSelectedDateInput] = useState("");
+  const [closingDays, setClosingDays] = useState<number[]>([]);
   const userInfo = getLoginUser();
   const dispatch = useAppDispatch();
 
@@ -43,6 +44,7 @@ const AddBookingScreen = () => {
           );
           console.log(data);
           setServiceDetail(data);
+          setClosingDays(daysToNumbers(data.businessConfig.closingDays));
         } catch (error) {
           console.log(error);
         }
@@ -61,24 +63,23 @@ const AddBookingScreen = () => {
     ) {
       setError("Require to select or fill fields");
       return;
-    } else if (personCount <= 0) {
-      setError("Person Count should be at least 1");
-      return;
     }
+    //  else if (personCount <= 0) {
+    //   setError("Person Count should be at least 1");
+    //   return;
+    // }
     setError("");
     dispatch(
       setSelectedBooking({
         customerUserId: userInfo._id,
         date: selectedDateInput,
-        personCount: personCount,
+        personCount: 1,
         stylist: selectedArtist,
         timeSlot: selectedTimeSlot,
       })
     );
     navigate("/confirm-booking");
   }
-
-  // console.log("here", selectedDateInput);
 
   return (
     <div className="mt-10 mx-5">
@@ -140,6 +141,7 @@ const AddBookingScreen = () => {
                   size="sm"
                   className="rounded-lg"
                   onClick={() => setSelectedTimeSlot(item.timeSlot)}
+                  disabled={item.timeSlotStatus !== "available"}
                 >
                   {item.timeSlot}
                 </ActionButton>
@@ -147,7 +149,7 @@ const AddBookingScreen = () => {
           </div>
 
           {/* person count input */}
-          <div className="flex items-center gap-3 w-[100px]">
+          {/* <div className="flex items-center gap-3 w-[100px]">
             <p>Person:</p>
             <input
               type="text"
@@ -155,7 +157,7 @@ const AddBookingScreen = () => {
               defaultValue={personCount.toString()}
               onChange={(e) => setPersonCount(Number(e.target.value))}
             />
-          </div>
+          </div> */}
 
           {error !== "" && <p className="text-sm text-red-500">{error}</p>}
 
@@ -170,6 +172,7 @@ const AddBookingScreen = () => {
           setOpen={setIsDateSheetOpen}
           selectedDateInput={selectedDateInput}
           setSelectedDateInput={setSelectedDateInput}
+          closingDays={closingDays}
         />
       )}
     </div>

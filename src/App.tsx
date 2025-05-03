@@ -5,6 +5,7 @@ import { setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import OneSignal from "onesignal-cordova-plugin";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import {
   Route,
   BrowserRouter as Router,
@@ -35,6 +36,7 @@ const App = () => {
 
   return (
     <>
+      <Toaster position="bottom-center" reverseOrder={false} />
       <AppBackButtonHandler />
       <TransitionGroup>
         <CSSTransition

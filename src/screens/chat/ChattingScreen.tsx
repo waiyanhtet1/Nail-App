@@ -74,6 +74,7 @@ const ChattingScreen = () => {
     });
 
     socketRef.current.send(payload);
+    console.log("sended message");
 
     setMessages((prev) => [
       ...prev,

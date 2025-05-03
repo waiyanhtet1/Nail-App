@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { cashOutline } from "ionicons/icons";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import BottomSheetModal from "../../components/bottomSheets/BottomSheetModal";
@@ -63,9 +64,11 @@ const BookingConfirmScreen = () => {
     } catch (error) {
       console.log(error);
       if (error && isAxiosError(error)) {
-        // setError(error.response?.data.message);
+        toast.error(error.response?.data.message);
+        navigate(-1);
       } else {
-        // setError("Fail to book on appointment");
+        toast.error("Fail to book on appointment");
+        navigate(-1);
       }
     }
     setCreateLoading(false);
@@ -124,7 +127,7 @@ const BookingConfirmScreen = () => {
       <hr className="my-5 text-gray-fourth" />
 
       {/* promo code input */}
-      <div className="bg-white rounded-xl px-3 py-2 flex items-center gap-1 shadow">
+      {/* <div className="bg-white rounded-xl px-3 py-2 flex items-center gap-1 shadow">
         <input
           type="text"
           className="w-full outline-none text-sm"
@@ -140,7 +143,7 @@ const BookingConfirmScreen = () => {
         >
           Apply
         </ActionButton>
-      </div>
+      </div> */}
 
       {/* subtotal and discount */}
       <div className="flex flex-col gap-2 mt-3">

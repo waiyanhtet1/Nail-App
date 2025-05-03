@@ -2,14 +2,13 @@ import { IonIcon } from "@ionic/react";
 import {
   arrowBackOutline,
   calendarOutline,
-  cardOutline,
   extensionPuzzleOutline,
   logOutOutline,
-  notificationsOutline,
-  settingsOutline,
 } from "ionicons/icons";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import ConfirmBottomSlider from "../../components/bottomSheets/ConfirmBottomSlider";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import { UserType } from "../../types/userType";
@@ -18,6 +17,7 @@ import profileImg from "/images/stylist.jpeg";
 const ProfileScreen = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<UserType | null>(null);
+  const [isConfirmSliderOpen, setIsConfirmSliderOpen] = useState(false);
 
   useEffect(() => {
     const user = getLoginUser();
@@ -25,6 +25,13 @@ const ProfileScreen = () => {
       setUserInfo(user);
     }
   }, []);
+
+  function handleLogout() {
+    localStorage.removeItem("userInfo");
+    navigate("/");
+    showToast("logout success");
+    toast.success("logout success");
+  }
 
   return (
     <>
@@ -52,12 +59,12 @@ const ProfileScreen = () => {
             <p className="font-semibold text-lg">{userInfo?.username}</p>
             {/* <p className="font-light">{userInfo.phone}</p> */}
             <p className="font-light">{userInfo?.email}</p>
-            <p
+            {/* <p
               className="px-5 py-1 w-max text-white bg-gray text-sm rounded-lg mt-3"
               onClick={() => navigate("edit")}
             >
               Edit
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
@@ -74,19 +81,29 @@ const ProfileScreen = () => {
           icon={extensionPuzzleOutline}
           onClick={() => navigate("my-stamps")}
         />
-        <CardItem title="Setting" icon={settingsOutline} />
-        <CardItem title="Payment Method" icon={cardOutline} />
-        <CardItem title="Notification" icon={notificationsOutline} />
+        {/* <CardItem title="Setting" icon={settingsOutline} /> */}
+        {/* <CardItem title="Payment Method" icon={cardOutline} /> */}
+        {/* <CardItem title="Notification" icon={notificationsOutline} /> */}
         <CardItem
           title="Logout"
           icon={logOutOutline}
-          onClick={() => {
-            localStorage.removeItem("userInfo");
-            navigate("/");
-            showToast("logout success");
-          }}
+          onClick={() => setIsConfirmSliderOpen(true)}
         />
       </div>
+
+      {isConfirmSliderOpen && (
+        <ConfirmBottomSlider
+          variant="error"
+          isOpen={isConfirmSliderOpen}
+          setOpen={(value) => {
+            setIsConfirmSliderOpen(value);
+          }}
+          title="Logout?"
+          description="sure to logout?"
+          actionButtonText="Logout"
+          actionButtonHandler={handleLogout}
+        />
+      )}
     </>
   );
 };

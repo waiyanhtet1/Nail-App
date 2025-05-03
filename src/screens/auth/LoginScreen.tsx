@@ -14,7 +14,6 @@ import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import { useAppSelector } from "../../redux/hook";
 import { loginValidationSchema } from "../../validations/loginValidation";
-import facebookIcon from "/images/facebook.svg";
 import googleIcon from "/images/google.svg";
 
 type Inputs = {
@@ -129,7 +128,7 @@ const LoginScreen = () => {
 
       {/* social icon */}
       <div className="flex items-center justify-center gap-5">
-        <SocialIconButton icon={facebookIcon} />
+        {/* <SocialIconButton icon={facebookIcon} /> */}
         <SocialIconButton icon={googleIcon} />
       </div>
 

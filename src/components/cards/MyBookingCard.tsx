@@ -1,11 +1,19 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants/baseUrl";
 import { formatDateTimeString } from "../../libs/dateUtils";
+import { useAppDispatch } from "../../redux/hook";
+import {
+  setSelectedCategory,
+  setSelectedService,
+} from "../../redux/slices/bookingSlice";
 import { BookingDetailType } from "../../types/bookingDetailType";
 import { BookingType } from "../../types/BookingType";
+import { ServiceType } from "../../types/types";
 import ActionButton from "../ActionButton";
 import BookingDetailBottomSheet from "../bottomSheets/BookingDetailBottomSheet";
+import ConfirmBottomSlider from "../bottomSheets/ConfirmBottomSlider";
 import image from "/images/category.png";
 
 interface Props {
@@ -16,6 +24,9 @@ interface Props {
 const MyBookingCard = ({ variant, booking }: Props) => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [detail, setDetail] = useState<BookingDetailType | null>(null);
+  const [isReBookConfirmOpen, setIsReBookConfirmOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const getBookingDetail = useCallback(async () => {
     const { data } = await axios.get(
@@ -30,7 +41,19 @@ const MyBookingCard = ({ variant, booking }: Props) => {
     getBookingDetail();
   }, [getBookingDetail]);
 
-  console.log("detail", detail);
+  async function handleReBooking() {
+    dispatch(
+      setSelectedCategory({
+        id: booking.serviceCategory._id,
+        name: booking.serviceCategory.categoryName,
+        icon: "",
+      })
+    );
+    dispatch(setSelectedService(booking.service as ServiceType));
+    navigate("/add-booking");
+  }
+
+  console.log("booking", booking);
 
   return (
     <div className="bg-white rounded-xl p-3">
@@ -77,7 +100,7 @@ const MyBookingCard = ({ variant, booking }: Props) => {
           type="button"
           size="sm"
           className="rounded-xl w-full mt-3"
-          onClick={() => console.log("first")}
+          onClick={() => setIsReBookConfirmOpen(true)}
         >
           Re-Book
         </ActionButton>
@@ -100,7 +123,7 @@ const MyBookingCard = ({ variant, booking }: Props) => {
               type="button"
               size="sm"
               className="rounded-xl w-full"
-              onClick={() => console.log("first")}
+              onClick={() => setIsReBookConfirmOpen(true)}
             >
               Re-Book
             </ActionButton>
@@ -122,9 +145,9 @@ const MyBookingCard = ({ variant, booking }: Props) => {
               type="button"
               size="sm"
               className="rounded-xl w-full"
-              onClick={() => console.log("first")}
+              onClick={() => setIsDetailModalOpen(true)}
             >
-              Write Review
+              View Booking Detail
             </ActionButton>
           )}
         </div>
@@ -135,6 +158,17 @@ const MyBookingCard = ({ variant, booking }: Props) => {
           bookingDetail={detail as BookingDetailType}
           isOpen={isDetailModalOpen}
           setOpen={setIsDetailModalOpen}
+        />
+      )}
+      {isReBookConfirmOpen && (
+        <ConfirmBottomSlider
+          isOpen={isReBookConfirmOpen}
+          setOpen={(value) => setIsReBookConfirmOpen(value)}
+          title="Re-Booking?"
+          description={`Sure to re-booking "${booking.service?.serviceName}" Service?`}
+          actionButtonText="Re-Book"
+          actionButtonHandler={handleReBooking}
+          variant="primary"
         />
       )}
     </div>

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
-import { formatDateTimeString } from "../../libs/dateUtils";
+import { formatDateString } from "../../libs/dateUtils";
 import { BookingType } from "../../types/BookingType";
 import { BookingDetailType } from "../../types/bookingDetailType";
 
@@ -19,6 +19,8 @@ const BookingDetailBottomSheet = ({
 }: Props) => {
   const ref = useRef<SheetRef>(null);
 
+  console.log(booking);
+
   return (
     <>
       <Sheet
@@ -27,6 +29,8 @@ const BookingDetailBottomSheet = ({
         snapPoints={[600, 450]}
         initialSnap={1}
       >
+        <Sheet.Backdrop onTap={() => setOpen(false)} />
+
         <Sheet.Container>
           <Sheet.Header />
           <Sheet.Content style={{ paddingBottom: ref.current?.y }}>
@@ -34,26 +38,29 @@ const BookingDetailBottomSheet = ({
               {/* Some content here that makes the sheet content scrollable */}
               <div className="flex flex-col gap-3">
                 <BookingItem
-                  title="Booking Date & Time"
-                  value={formatDateTimeString(booking.bookingCreatedDate)}
+                  title="Booking Date"
+                  value={formatDateString(bookingDetail.bookingDate)}
                 />
                 <BookingItem
                   title="Time Slot"
                   value={bookingDetail.timeSlots[0].timeSlot}
                 />
                 <BookingItem
-                  title="Booking Stylists"
+                  title="Booking Stylist"
                   value={booking.stylistName.join(",")}
                 />
-                <BookingItem
+                {/* <BookingItem
                   title="Number of Person"
                   value={bookingDetail.personCount.toString()}
-                />
+                /> */}
 
                 <hr className="my-3 text-gray-fourth" />
 
                 <p className="font-semibold text-lg text-secondary">Service</p>
-                <BookingItem title="Service" value={booking.serviceName} />
+                <BookingItem
+                  title="Service"
+                  value={booking.service?.serviceName as string}
+                />
                 <BookingItem
                   title="Discount"
                   value={`- ${bookingDetail.discountedAmount.toLocaleString()} KS`}

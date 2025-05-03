@@ -16,20 +16,27 @@ import {
 } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../constants/baseUrl";
+import { getLoginUser } from "../libs/userUtils";
 import BookingScreen from "../screens/booking/BookingScreen";
 import ChatHomeScreen from "../screens/chat/ChatHomeScreen";
 import HomeScreen from "../screens/HomeScreen";
+import { StampType } from "../types/stampType";
 import { CategoriesType, HomePageDataType } from "../types/types";
+import HomeStamp from "./HomeStamp";
 
 const MainLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("home");
   const [homeData, setHomeData] = useState<HomePageDataType>();
   const [categoriesData, setCategoriesData] = useState<CategoriesType[]>();
+  const [stampData, setStampData] = useState<StampType>();
   const [isLoading, setSetIsLoading] = useState({
     home: false,
     categories: false,
+    stamp: false,
   });
+
+  const userInfo = getLoginUser();
 
   // Function to fetch home data
   const getHomeData = async () => {
@@ -68,12 +75,35 @@ const MainLayout = () => {
     }));
   };
 
+  // function to fetch stamp royal data
+  const getRoyal = async () => {
+    setSetIsLoading((prev) => ({
+      ...prev,
+      stamp: true,
+    }));
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/loyalty-stamps/${userInfo._id}`
+      );
+      setStampData(data);
+    } catch (error) {
+      console.log(error);
+    }
+    setSetIsLoading((prev) => ({
+      ...prev,
+      stamp: false,
+    }));
+  };
+
   useEffect(() => {
     if (activeTab === "home") {
       getHomeData();
     }
     if (activeTab === "book") {
       getCategoriesData();
+    }
+    if (activeTab === "promo") {
+      getRoyal();
     }
   }, [activeTab]);
 
@@ -92,9 +122,14 @@ const MainLayout = () => {
             isLoading={isLoading.categories}
           />
         </IonTab>
-        <IonTab tab="promo">
-          <div>Library content</div>
-        </IonTab>
+        {userInfo && (
+          <IonTab tab="promo">
+            <HomeStamp
+              stampData={stampData as StampType}
+              isLoading={isLoading.stamp}
+            />
+          </IonTab>
+        )}
         <IonTab tab="chat">
           <ChatHomeScreen />
         </IonTab>
@@ -112,12 +147,14 @@ const MainLayout = () => {
               <p className="text-sm">Book</p>
             </div>
           </IonTabButton>
-          <IonTabButton tab="promo">
-            <div className="flex items-center gap-2">
-              <IonIcon icon={pricetagsOutline} className="size-5" />
-              <p className="text-sm">Promo</p>
-            </div>
-          </IonTabButton>
+          {userInfo && (
+            <IonTabButton tab="promo">
+              <div className="flex items-center gap-2">
+                <IonIcon icon={pricetagsOutline} className="size-5" />
+                <p className="text-sm">Promo</p>
+              </div>
+            </IonTabButton>
+          )}
           <IonTabButton tab="chat">
             <div className="flex items-center gap-2">
               <IonIcon icon={chatbubbleEllipsesOutline} className="size-5" />

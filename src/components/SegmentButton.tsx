@@ -27,6 +27,8 @@ const SegmentButton = () => {
     try {
       const { data } = await axios.get(`${BASE_URL}/bookings/${userInfo._id}`);
 
+      console.log(data);
+
       // filter active status bookings
       const activeBookingList = data.filter(
         (item: BookingType) => item.bookingStatus === "active"

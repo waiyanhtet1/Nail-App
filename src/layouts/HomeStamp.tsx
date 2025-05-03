@@ -1,58 +1,22 @@
 import { IonIcon } from "@ionic/react";
-import axios from "axios";
-import {
-  arrowBackOutline,
-  layersOutline,
-  listOutline,
-  pricetagOutline,
-} from "ionicons/icons";
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../components/Loading";
-import StampCard from "../../components/stamp/StampCard";
-import { BASE_URL } from "../../constants/baseUrl";
-import { formatDateString } from "../../libs/dateUtils";
-import { getLoginUser } from "../../libs/userUtils";
-import { StampType } from "../../types/stampType";
+import { layersOutline, listOutline, pricetagOutline } from "ionicons/icons";
+import Loading from "../components/Loading";
+import StampCard from "../components/stamp/StampCard";
+import { formatDateString } from "../libs/dateUtils";
+import { getLoginUser } from "../libs/userUtils";
+import { StampType } from "../types/stampType";
 
-const MyStamps = () => {
-  const navigate = useNavigate();
+interface Props {
+  stampData: StampType;
+  isLoading: boolean;
+}
+
+const HomeStamp = ({ stampData, isLoading }: Props) => {
   const userInfo = getLoginUser();
-  const [stampData, setStampData] = useState<StampType>();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const getRoyal = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const { data } = await axios.get(
-        `${BASE_URL}/loyalty-stamps/${userInfo._id}`
-      );
-      setStampData(data);
-    } catch (error) {
-      console.log(error);
-    }
-    setIsLoading(false);
-  }, [userInfo._id]);
-
-  useEffect(() => {
-    getRoyal();
-  }, [getRoyal]);
 
   return (
     <div className="overflow-y-scroll no-scrollbar">
       <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
-        <div className="flex items-center">
-          {/* back and title */}
-          <IonIcon
-            icon={arrowBackOutline}
-            className="size-6"
-            onClick={() => navigate(-1)}
-          />
-          <p className="text-secondary font-bold text-center flex justify-center w-full">
-            My Stamps
-          </p>
-        </div>
-
         <div className="flex flex-col gap-3 mt-7 text-secondary ">
           <p className="text-lg font-semibold">Loyalty Card</p>
           <p className="text-sm">Name : {userInfo.username}</p>
@@ -117,4 +81,4 @@ const MyStamps = () => {
   );
 };
 
-export default MyStamps;
+export default HomeStamp;
