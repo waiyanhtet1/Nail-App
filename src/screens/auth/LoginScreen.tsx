@@ -1,14 +1,23 @@
+import { Capacitor } from "@capacitor/core";
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import {
+  GoogleAuthProvider,
+  signInWithCredential,
+  signInWithPopup,
+} from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import SocialIconButton from "../../components/SocialIconButton";
 import { BASE_URL } from "../../constants/baseUrl";
+import { auth } from "../../firebase";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
@@ -70,6 +79,67 @@ const LoginScreen = () => {
     if (userInfo) navigate("/");
   }, [navigate]);
 
+  const loginWithGoogleWeb = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      console.log("Firebase Web User:", result.user);
+      return result.user;
+    } catch (err) {
+      console.error("Google web sign-in error:", err);
+      throw err;
+    }
+  };
+
+  const loginWithGoogleMobile = async () => {
+    try {
+      const googleUser = await GoogleAuth.signIn();
+
+      const { idToken } = googleUser.authentication;
+      if (!idToken) throw new Error("No ID token found");
+
+      const credential = GoogleAuthProvider.credential(idToken);
+      const userCredential = await signInWithCredential(auth, credential);
+
+      console.log("Firebase User:", userCredential.user);
+      // alert("Firebase User:" + JSON.stringify(userCredential.user));
+
+      return userCredential.user;
+    } catch (err) {
+      console.error("Google mobile sign-in error:", err);
+      alert("Google mobile sign-in error:" + JSON.stringify(err));
+      throw err;
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const user = Capacitor.isNativePlatform()
+        ? await loginWithGoogleMobile()
+        : await loginWithGoogleWeb();
+
+      // Optionally, send user info to your backend here
+
+      if (user) {
+        console.log("Signed in user:", user);
+
+        const response = await axios.post(`${BASE_URL}/login`, {
+          username: user.displayName,
+          password: user.uid,
+          playerId: playerId,
+        });
+
+        localStorage.setItem("userInfo", encryptData(response.data));
+        showToast("Login success");
+        navigate("/");
+      }
+    } catch (error) {
+      alert("Login failed: " + JSON.stringify(error));
+      showToast("Login Fail!");
+      toast.error("Login Fail");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">
       <div className="flex flex-col items-center">
@@ -129,7 +199,7 @@ const LoginScreen = () => {
       {/* social icon */}
       <div className="flex items-center justify-center gap-5">
         {/* <SocialIconButton icon={facebookIcon} /> */}
-        <SocialIconButton icon={googleIcon} />
+        <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} />
       </div>
 
       {/* register route */}

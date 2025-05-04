@@ -1,9 +1,16 @@
+import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import {
+  GoogleAuthProvider,
+  signInWithCredential,
+  signInWithPopup,
+} from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import DOBSelect from "../../components/DOBSelect";
@@ -11,6 +18,7 @@ import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import SocialIconButton from "../../components/SocialIconButton";
 import { BASE_URL } from "../../constants/baseUrl";
+import { auth } from "../../firebase";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { useAppSelector } from "../../redux/hook";
@@ -76,15 +84,68 @@ const RegisterScreen = () => {
     }
   };
 
+  const loginWithGoogleWeb = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      console.log("Firebase Web User:", result.user);
+      return result.user;
+    } catch (err) {
+      console.error("Google web sign-in error:", err);
+      throw err;
+    }
+  };
+
+  const loginWithGoogleMobile = async () => {
+    try {
+      const googleUser = await GoogleAuth.signIn();
+
+      const { idToken } = googleUser.authentication;
+      if (!idToken) throw new Error("No ID token found");
+
+      const credential = GoogleAuthProvider.credential(idToken);
+      const userCredential = await signInWithCredential(auth, credential);
+
+      console.log("Firebase User:", userCredential.user);
+      // alert("Firebase User:" + JSON.stringify(userCredential.user));
+
+      return userCredential.user;
+    } catch (err) {
+      console.error("Google mobile sign-in error:", err);
+      alert("Google mobile sign-in error:" + JSON.stringify(err));
+      throw err;
+    }
+  };
+
   const handleGoogleRegister = async () => {
     try {
-      const userInfo = await GoogleAuth.signIn();
-      console.log("User Info:", userInfo);
-      alert("user info " + JSON.stringify(userInfo));
-      // Send to backend for login/registration handling
-    } catch (err) {
-      console.error("Login error:", err);
-      alert("Login error:" + JSON.stringify(err));
+      const user = Capacitor.isNativePlatform()
+        ? await loginWithGoogleMobile()
+        : await loginWithGoogleWeb();
+
+      // Optionally, send user info to your backend here
+
+      if (user) {
+        console.log("Signed in user:", user);
+
+        const response = await axios.post(`${BASE_URL}/register`, {
+          username: user.displayName,
+          // phone: data.phone,
+          email: user.email,
+          password: user.uid,
+          // DOB: `${day}/${month}/${year}`,
+          playerId: playerId,
+        });
+
+        localStorage.setItem("userInfo", encryptData(response.data.user));
+        navigate("/");
+        showToast("Register success");
+        toast.success("Register success");
+      }
+    } catch (error) {
+      alert("Login failed: " + JSON.stringify(error));
+      showToast("Register Fail!");
+      toast.error("Register Fail");
     }
   };
 

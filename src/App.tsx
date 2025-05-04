@@ -28,6 +28,7 @@ import ChattingScreen from "./screens/chat/ChattingScreen";
 import EditProfile from "./screens/profile/EditProfile";
 import MyStamps from "./screens/profile/MyStamps";
 import ProfileScreen from "./screens/profile/ProfileScreen";
+import SettingScreen from "./screens/profile/SettingScreen";
 
 setupIonicReact();
 
@@ -65,6 +66,7 @@ const App = () => {
               <Route path="/profile/edit" element={<EditProfile />} />
               <Route path="/profile/booking" element={<MyBookingScreen />} />
               <Route path="/profile/my-stamps" element={<MyStamps />} />
+              <Route path="/profile/settings" element={<SettingScreen />} />
 
               {/* chat screens */}
               <Route path="/chat-home" element={<ChatHomeScreen />} />

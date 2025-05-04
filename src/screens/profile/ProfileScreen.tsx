@@ -1,9 +1,11 @@
+import { Device } from "@capacitor/device";
 import { IonIcon } from "@ionic/react";
 import {
   arrowBackOutline,
   calendarOutline,
   extensionPuzzleOutline,
   logOutOutline,
+  settingsOutline,
 } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -18,6 +20,21 @@ const ProfileScreen = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<UserType | null>(null);
   const [isConfirmSliderOpen, setIsConfirmSliderOpen] = useState(false);
+  const [platform, setPlatform] = useState<string | null>(null);
+
+  // check device platform
+  useEffect(() => {
+    const fetchPlatform = async () => {
+      const info = await Device.getInfo();
+      setPlatform(info.platform); // 'ios', 'android', 'web'
+    };
+    fetchPlatform();
+
+    const user = getLoginUser();
+    if (user) {
+      setUserInfo(user);
+    }
+  }, []);
 
   useEffect(() => {
     const user = getLoginUser();
@@ -81,7 +98,14 @@ const ProfileScreen = () => {
           icon={extensionPuzzleOutline}
           onClick={() => navigate("my-stamps")}
         />
-        {/* <CardItem title="Setting" icon={settingsOutline} /> */}
+        {platform === "ios" && (
+          <CardItem
+            title="Setting"
+            icon={settingsOutline}
+            onClick={() => navigate("settings")}
+          />
+        )}
+
         {/* <CardItem title="Payment Method" icon={cardOutline} /> */}
         {/* <CardItem title="Notification" icon={notificationsOutline} /> */}
         <CardItem
