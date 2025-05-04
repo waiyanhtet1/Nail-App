@@ -143,9 +143,12 @@ const RegisterScreen = () => {
         toast.success("Register success");
       }
     } catch (error) {
-      alert("Login failed: " + JSON.stringify(error));
+      // alert("Login failed: " + JSON.stringify(error));
       showToast("Register Fail!");
       toast.error("Register Fail");
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.msg);
+      }
     }
   };
 
