@@ -133,7 +133,7 @@ const RegisterScreen = () => {
           // phone: data.phone,
           email: user.email,
           password: user.uid,
-          // DOB: `${day}/${month}/${year}`,
+          DOB: null,
           playerId: playerId,
         });
 
