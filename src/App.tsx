@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import "@codetrix-studio/capacitor-google-auth"; // only needed for web
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+// import "@codetrix-studio/capacitor-google-auth"; // only needed for web
+// import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import OneSignal from "onesignal-cordova-plugin";
@@ -113,12 +113,12 @@ export default function Wrapper() {
   }, [dispatch]);
 
   // google oauth setup for web
-  GoogleAuth.initialize({
-    clientId:
-      "422262531684-nt83vc99hg47n85jtesq4ktk6ono2e7a.apps.googleusercontent.com",
-    scopes: ["profile", "email"],
-    grantOfflineAccess: true,
-  });
+  // GoogleAuth.initialize({
+  //   clientId:
+  //     "422262531684-nt83vc99hg47n85jtesq4ktk6ono2e7a.apps.googleusercontent.com",
+  //   scopes: ["profile", "email"],
+  //   grantOfflineAccess: true,
+  // });
 
   return (
     <Router>
