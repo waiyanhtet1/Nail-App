@@ -1,5 +1,6 @@
+import { IonIcon } from "@ionic/react";
 import axios, { isAxiosError } from "axios";
-import { cashOutline } from "ionicons/icons";
+import { arrowBackOutline, cashOutline } from "ionicons/icons";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +77,14 @@ const BookingConfirmScreen = () => {
 
   return (
     <div className="mt-10 mx-5">
-      <p className="text-xl font-bold text-secondary">Booking Detail</p>
+      <div className="flex items-center gap-3">
+        <IonIcon
+          icon={arrowBackOutline}
+          className="size-6"
+          onClick={() => navigate(-1)}
+        />
+        <p className="text-xl font-bold text-secondary">Booking Detail</p>
+      </div>
       <hr className="mt-3 mb-5 text-gray-fourth" />
 
       {/* booking info */}
@@ -193,11 +201,11 @@ const BookingConfirmScreen = () => {
         <Loading />
       ) : (
         <div className="flex items-center gap-5 my-10">
-          <Button variant="primary" type="button" onClick={() => navigate(-1)}>
+          {/* <Button variant="primary" type="button" onClick={() => navigate(-1)}>
             Cancel
-          </Button>
+          </Button> */}
           <Button variant="primary" type="button" onClick={handleAddBooking}>
-            Confirm
+            Add on appointment
           </Button>
         </div>
       )}

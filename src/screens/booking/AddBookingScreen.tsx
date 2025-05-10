@@ -161,9 +161,25 @@ const AddBookingScreen = () => {
 
           {error !== "" && <p className="text-sm text-red-500">{error}</p>}
 
-          <Button variant="primary" type="button" onClick={addOnBooking}>
-            Book on Appointment
-          </Button>
+          <div className="flex items-center gap-5 w-full">
+            <ActionButton
+              variant="outline"
+              className="w-full rounded-[100px]"
+              type="button"
+              size="md"
+              onClick={() => navigate(-1)}
+            >
+              Back
+            </ActionButton>
+            <Button
+              variant="primary"
+              type="button"
+              onClick={addOnBooking}
+              className="w-full"
+            >
+              Continue
+            </Button>
+          </div>
         </div>
       )}
       {isDateSheetOpen && (

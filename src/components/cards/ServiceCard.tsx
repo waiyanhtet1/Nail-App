@@ -34,6 +34,7 @@ const ServiceCard = ({
           variant="primary"
           size="sm"
           type="button"
+          className="rounded-md"
           onClick={onClick}
         >
           Book Now

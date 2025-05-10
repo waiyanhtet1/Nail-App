@@ -22,6 +22,7 @@ import RegisterScreen from "./screens/auth/RegisterScreen";
 import AddBookingScreen from "./screens/booking/AddBookingScreen";
 import BookingConfirmScreen from "./screens/booking/BookingConfirmScreen";
 import MyBookingScreen from "./screens/booking/myBooking/MyBookingScreen";
+import ServiceListScreen from "./screens/booking/ServiceListScreen";
 import SuccessBookingDetail from "./screens/booking/SuccessBookingDetail";
 import ChatHomeScreen from "./screens/chat/ChatHomeScreen";
 import ChattingScreen from "./screens/chat/ChattingScreen";
@@ -51,6 +52,8 @@ const App = () => {
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               {/* booking screens */}
+
+              <Route path="/service-listing" element={<ServiceListScreen />} />
               <Route path="/add-booking" element={<AddBookingScreen />} />
               <Route
                 path="confirm-booking"

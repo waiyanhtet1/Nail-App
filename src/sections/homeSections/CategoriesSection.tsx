@@ -51,8 +51,8 @@ const CategoriesSection = ({ services }: Props) => {
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>
-              <p className="text-secondary text-sm font-semibold text-center">
-                {item.categoryName}
+              <p className="text-secondary text-xs font-semibold text-center">
+                {item.categoryName.substring(0, 10)}
               </p>
             </div>
           ))}

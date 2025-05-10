@@ -27,7 +27,7 @@ const RegisterScreen = () => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
-  const [isDOBError, setIsDOBError] = useState(false);
+  // const [isDOBError, setIsDOBError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { playerId } = useAppSelector((state) => state.token);
@@ -44,34 +44,36 @@ const RegisterScreen = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (day === "" || month === "" || year === "") {
-      setIsDOBError(true);
-      return;
-    } else {
-      setIsDOBError(false);
-      setIsLoading(true);
+    // if (day === "" || month === "" || year === "") {
+    //   setIsDOBError(true);
+    //   return;
+    // } else {
+    //   setIsDOBError(false);
+    setIsLoading(true);
 
-      try {
-        const response = await axios.post(`${BASE_URL}/register`, {
-          username: data.userName,
-          phone: data.phone,
-          email: data.email,
-          password: data.password,
-          DOB: `${day}/${month}/${year}`,
-          playerId: playerId,
-        });
+    const dateProps = day && month && year ? `${day}/${month}/${year}` : null;
 
-        localStorage.setItem("userInfo", encryptData(response.data.user));
-        navigate("/");
-        showToast("Register success");
-      } catch (error) {
-        console.log(error);
-        if (axios.isAxiosError(error)) {
-          setError("userName", { message: error.response?.data?.msg });
-        }
+    try {
+      const response = await axios.post(`${BASE_URL}/register`, {
+        username: data.userName,
+        phone: data.phone,
+        email: data.email,
+        password: data.password,
+        DOB: dateProps,
+        playerId: playerId,
+      });
+
+      localStorage.setItem("userInfo", encryptData(response.data.user));
+      navigate("/");
+      showToast("Register success");
+    } catch (error) {
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        setError("userName", { message: error.response?.data?.msg });
       }
-      setIsLoading(false);
     }
+    setIsLoading(false);
+    // }
   };
 
   // const loginWithGoogleWeb = async () => {
@@ -178,9 +180,9 @@ const RegisterScreen = () => {
 
         <div className="flex items-center justify-between">
           <p className="text-gray">Date of Birth</p>
-          {isDOBError && (
+          {/* {isDOBError && (
             <p className="text-xs text-red-500">Date of Birth is required</p>
-          )}
+          )} */}
         </div>
         <DOBSelect
           day={day}

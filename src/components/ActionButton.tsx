@@ -26,18 +26,14 @@ const ActionButton = ({
     <button
       type={type}
       className={`
-    ${variant === "primary" && !disabled && "bg-gray text-white rounded-md"}
+    ${variant === "primary" && !disabled && "bg-gray text-white "}
     ${
       variant === "outline" &&
       !disabled &&
-      "bg-transparent text-secondary border border-secondary rounded-md"
+      "bg-transparent text-secondary border border-secondary"
     }
     ${variant === "secondary" && !disabled && "bg-primary-second"}
-    ${
-      variant === "error" &&
-      !disabled &&
-      "bg-red-primary text-primary rounded-md"
-    }
+    ${variant === "error" && !disabled && "bg-red-primary text-primary "}
     ${size === "sm" && "p-2 text-xs"}
     ${size === "md" && "px-3 py-2 text-sm"} 
        ${disabled && "bg-gray-300 text-gray-500 cursor-not-allowed"}

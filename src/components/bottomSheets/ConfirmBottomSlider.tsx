@@ -28,7 +28,7 @@ const ConfirmBottomSlider = ({
       <Sheet
         isOpen={isOpen}
         onClose={() => setOpen(false)}
-        snapPoints={[180, 180]}
+        snapPoints={[200, 200]}
         initialSnap={1}
       >
         <Sheet.Backdrop onTap={() => setOpen(false)} />
@@ -46,7 +46,7 @@ const ConfirmBottomSlider = ({
                     variant="outline"
                     size="md"
                     type="button"
-                    className="w-full"
+                    className="w-full rounded-lg"
                     onClick={() => setOpen(false)}
                   >
                     Cancel
@@ -55,7 +55,7 @@ const ConfirmBottomSlider = ({
                     variant={variant}
                     size="md"
                     type="button"
-                    className="w-full"
+                    className="w-full rounded-lg"
                     onClick={actionButtonHandler}
                   >
                     {actionButtonText}
