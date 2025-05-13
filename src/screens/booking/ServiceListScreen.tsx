@@ -37,6 +37,7 @@ const ServiceListScreen = () => {
     getServicesData();
   }, [selectedCategory]);
 
+  console.log(servicesData);
   return (
     <div>
       <div className="h-[100px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">

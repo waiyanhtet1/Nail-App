@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import img1 from "/images/promotion-1.jpeg";
-import img2 from "/images/promotion-2.jpg";
-import img3 from "/images/promotion-3.jpg";
+import img4 from "/images/promotion-4.jpg";
 
-const images = [img1, img2, img3];
+const images = [img4, img1];
 
 const PromotionSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

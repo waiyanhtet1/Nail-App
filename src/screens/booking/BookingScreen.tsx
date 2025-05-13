@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import CategoryCard from "../../components/cards/CategoryCard";
 import Header from "../../components/Header";
 import Loading from "../../components/Loading";
-import { encodeSvg } from "../../libs/imgUtils";
+import { BASE_URL } from "../../constants/baseUrl";
 import { getLoginUser } from "../../libs/userUtils";
 import { useAppDispatch } from "../../redux/hook";
 import { setSelectedCategory } from "../../redux/slices/bookingSlice";
@@ -43,7 +43,7 @@ const BookingScreen = ({ categoriesData, isLoading }: Props) => {
                       categoriesData.map((item) => (
                         <CategoryCard
                           key={item.id}
-                          icon={encodeSvg(item.icon)}
+                          icon={`${BASE_URL}${item.icon}`}
                           title={item.name}
                           onClick={() => {
                             dispatch(

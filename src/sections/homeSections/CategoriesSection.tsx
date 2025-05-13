@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { encodeSvg } from "../../libs/imgUtils";
+import { BASE_URL } from "../../constants/baseUrl";
 import { serviceCategoriesType } from "../../types/types";
 
 interface Props {
@@ -46,13 +46,13 @@ const CategoriesSection = ({ services }: Props) => {
             >
               <div className="bg-white w-[60px] h-[60px] rounded-full">
                 <img
-                  src={encodeSvg(item.categoryIcon)}
+                  src={`${BASE_URL}${item.categoryIcon}`}
                   alt=""
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>
-              <p className="text-secondary text-xs font-semibold text-center">
-                {item.categoryName.substring(0, 10)}
+              <p className="text-secondary text-xs font-semibold">
+                {item.categoryName.substring(0, 8)}
               </p>
             </div>
           ))}

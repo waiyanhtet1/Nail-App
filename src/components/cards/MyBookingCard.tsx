@@ -114,7 +114,7 @@ const MyBookingCard = ({ variant, booking }: Props) => {
               className="rounded-xl w-full"
               onClick={() => console.log("first")}
             >
-              Pending
+              Active
             </ActionButton>
           )}
           {variant === "completed" && (

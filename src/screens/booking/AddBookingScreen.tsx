@@ -111,7 +111,7 @@ const AddBookingScreen = () => {
 
           {/* artist list */}
           <p className="text-secondary text-lg font-semibold">
-            Choose Nail Stylists
+            Choose Nail Artists
           </p>
           <div className="flex items-center">
             {serviceDetail?.stylists &&
