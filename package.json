@@ -24,6 +24,7 @@
     "@tailwindcss/vite": "^4.0.16",
     "axios": "^1.8.4",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
     "ionicons": "^7.4.0",
     "motion": "^12.6.3",
     "onesignal-cordova-plugin": "^5.2.11",

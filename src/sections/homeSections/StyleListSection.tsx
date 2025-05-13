@@ -7,7 +7,6 @@ interface Props {
 }
 
 const StyleListSection = ({ stylists }: Props) => {
-  console.log(stylists);
   return (
     <div className="px-5">
       {/* title */}
