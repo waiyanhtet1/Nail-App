@@ -53,8 +53,6 @@ const MyBookingCard = ({ variant, booking }: Props) => {
     navigate("/add-booking");
   }
 
-  console.log("booking", booking);
-
   return (
     <div className="bg-white rounded-xl p-3">
       {variant === "active" && (

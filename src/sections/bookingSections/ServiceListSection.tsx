@@ -37,8 +37,6 @@ const ServiceListSection = () => {
     getServicesData();
   }, [selectedCategory]);
 
-  console.log(servicesData);
-
   return (
     <div>
       <div className="flex items-center gap-3 font-semibold">
