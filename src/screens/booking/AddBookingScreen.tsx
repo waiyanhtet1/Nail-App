@@ -110,8 +110,8 @@ const AddBookingScreen = () => {
           </div>
 
           {/* artist list */}
-          <p className="text-center text-secondary text-lg font-semibold">
-            Choose Available Artists
+          <p className="text-secondary text-lg font-semibold">
+            Choose Nail Artists
           </p>
           <div className="flex items-center">
             {serviceDetail?.stylists &&
@@ -126,7 +126,7 @@ const AddBookingScreen = () => {
           </div>
 
           {/* choose slot list */}
-          <p className="text-center text-secondary text-lg font-semibold">
+          <p className="text-secondary text-lg font-semibold">
             Choose Available Slots
           </p>
           <div className="grid grid-cols-2 gap-3">

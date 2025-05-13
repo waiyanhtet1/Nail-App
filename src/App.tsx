@@ -30,7 +30,10 @@ import MyStamps from "./screens/profile/MyStamps";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 import SettingScreen from "./screens/profile/SettingScreen";
 
-setupIonicReact();
+setupIonicReact({
+  rippleEffect: false,
+  mode: "md",
+});
 
 const App = () => {
   const location = useLocation();

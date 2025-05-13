@@ -1,5 +1,6 @@
 import { IonIcon } from "@ionic/react";
 import { checkmarkCircle } from "ionicons/icons";
+import { BASE_URL } from "../../constants/baseUrl";
 import { StyleListType } from "../../types/types";
 import stylistImg from "/images/stylist.jpeg";
 
@@ -13,12 +14,14 @@ const SelectArtistSection = ({ stylist, onClick, selectedArtistId }: Props) => {
   return (
     <div
       key={stylist._id}
-      className="mx-3 flex flex-col gap-1 items-center"
+      className="mx-3 flex flex-col gap-1"
       onClick={onClick}
     >
       <div className="relative w-[70px] h-[80px] rounded-2xl overflow-hidden">
         <img
-          src={stylist.image || stylistImg}
+          src={
+            stylist.image === "" ? stylistImg : `${BASE_URL}${stylist.image}`
+          }
           alt=""
           className="w-full h-full object-cover"
         />
@@ -33,7 +36,7 @@ const SelectArtistSection = ({ stylist, onClick, selectedArtistId }: Props) => {
           </>
         )}
       </div>
-      <p className="text-secondary text-center font-semibold text-sm">
+      <p className="text-secondary font-semibold text-sm">
         {stylist.stylistName}
       </p>
     </div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { encodeSvg } from "../../libs/imgUtils";
+import { BASE_URL } from "../../constants/baseUrl";
 import { serviceCategoriesType } from "../../types/types";
 
 interface Props {
@@ -30,7 +30,7 @@ const CategoriesSection = ({ services }: Props) => {
       {/* title */}
       <div className="flex items-center justify-between text-secondary mb-2">
         <p className="font-bold">Categories</p>
-        <p className="text-sm">See All</p>
+        {/* <p className="text-sm">See All</p> */}
       </div>
 
       {/* services list */}
@@ -40,19 +40,16 @@ const CategoriesSection = ({ services }: Props) => {
       >
         {services &&
           services.map((item) => (
-            <div
-              key={item._id}
-              className="mx-3 flex flex-col gap-1 items-center"
-            >
+            <div key={item._id} className="mx-3 flex flex-col gap-1">
               <div className="bg-white w-[60px] h-[60px] rounded-full">
                 <img
-                  src={encodeSvg(item.categoryIcon)}
+                  src={`${BASE_URL}${item.categoryIcon}`}
                   alt=""
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>
-              <p className="text-secondary text-sm font-semibold text-center">
-                {item.categoryName}
+              <p className="text-secondary text-xs font-semibold">
+                {item.categoryName.substring(0, 8)}
               </p>
             </div>
           ))}

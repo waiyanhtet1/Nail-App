@@ -28,7 +28,7 @@ const ConfirmBottomSlider = ({
       <Sheet
         isOpen={isOpen}
         onClose={() => setOpen(false)}
-        snapPoints={[180, 180]}
+        snapPoints={[200, 200]}
         initialSnap={1}
       >
         <Sheet.Backdrop onTap={() => setOpen(false)} />
