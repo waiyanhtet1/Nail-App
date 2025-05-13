@@ -183,11 +183,11 @@ const LoginScreen = () => {
         )}
       </form>
 
-      <div className="w-full px-5 md:px-52 my-5 flex items-center justify-center gap-5">
+      {/* <div className="w-full px-5 md:px-52 my-5 flex items-center justify-center gap-5">
         <p className="w-full border border-gray-second" />
         <p className="whitespace-nowrap text-sm text-gray">Or signin with</p>
         <p className="w-full border border-gray-second" />
-      </div>
+      </div> */}
 
       {/* social icon */}
       {/* <div className="flex items-center justify-center gap-5">
