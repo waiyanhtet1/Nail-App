@@ -147,7 +147,7 @@ const AddBookingScreen = () => {
                   size="sm"
                   className="rounded-lg"
                   onClick={() => setSelectedTimeSlot(item.timeSlot)}
-                  disabled={item.timeSlotStatus !== "available"}
+                  // disabled={item.timeSlotStatus !== "available"}
                 >
                   {item.timeSlot}
                 </ActionButton>

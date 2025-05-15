@@ -177,9 +177,11 @@ const LoginScreen = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <Button type="submit" variant="primary" className="mt-3">
-            Sign In
-          </Button>
+          <div className="w-full flex items-center justify-center mt-3">
+            <Button type="submit" variant="primary">
+              Sign In
+            </Button>
+          </div>
         )}
       </form>
 

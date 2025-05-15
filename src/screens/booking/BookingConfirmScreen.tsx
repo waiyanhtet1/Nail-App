@@ -209,7 +209,10 @@ const BookingConfirmScreen = () => {
           </Button>
         </div>
       )}
-      <BottomSheetModal isOpen={sheetModalOpen} setOpen={setSheetModalOpen} />
+
+      {sheetModalOpen && (
+        <BottomSheetModal isOpen={sheetModalOpen} setOpen={setSheetModalOpen} />
+      )}
     </div>
   );
 };

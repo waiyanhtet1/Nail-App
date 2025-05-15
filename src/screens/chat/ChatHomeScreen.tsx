@@ -68,18 +68,19 @@ const ChatHomeScreen = () => {
         </div>
 
         {/* button */}
-        <Button
-          type="button"
-          variant="primary"
-          leftIcon={chatbubbleOutline}
-          rightIcon={chevronForwardOutline}
-          className="mt-10"
-          onClick={() => {
-            navigate("/chat");
-          }}
-        >
-          Contact Live Chat
-        </Button>
+        <div className="mt-10 flex items-center justify-center">
+          <Button
+            type="button"
+            variant="primary"
+            leftIcon={chatbubbleOutline}
+            rightIcon={chevronForwardOutline}
+            onClick={() => {
+              navigate("/chat");
+            }}
+          >
+            Contact Live Chat
+          </Button>
+        </div>
       </div>
     </div>
   );

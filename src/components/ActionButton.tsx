@@ -30,13 +30,13 @@ const ActionButton = ({
     ${
       variant === "outline" &&
       !disabled &&
-      "bg-transparent text-secondary border border-secondary"
+      "bg-white text-secondary border border-secondary"
     }
     ${variant === "secondary" && !disabled && "bg-primary-second"}
     ${variant === "error" && !disabled && "bg-red-primary text-primary "}
     ${size === "sm" && "p-2 text-xs"}
     ${size === "md" && "px-3 py-2 text-sm"} 
-       ${disabled && "bg-gray-300 text-gray-500 cursor-not-allowed"}
+       ${disabled && "bg-primary-second text-gray-500 cursor-not-allowed"}
     whitespace-nowrap flex items-center justify-center font-semibold
     ${className}
     `}

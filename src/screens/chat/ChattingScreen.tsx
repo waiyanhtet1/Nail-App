@@ -120,7 +120,7 @@ const ChattingScreen = () => {
             ref={inputRef}
             type="text"
             placeholder="Type your text message"
-            className="w-full outline-none text-sm"
+            className="w-full outline-none"
             value={inputValue}
             // disabled={isConnecting}
             onChange={(e) => setInputValue(e.target.value)}

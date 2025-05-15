@@ -70,14 +70,16 @@ function BottomSheetModal({ isOpen, setOpen }: Props) {
 
               {/* action buttons */}
               <div className="flex flex-col gap-3 mt-5">
-                <Button
-                  variant="primary"
-                  type="button"
-                  className="rounded-[100px]"
-                  onClick={() => navigate("/success-detail")}
-                >
-                  Booking Detail
-                </Button>
+                <div className="flex items-center justify-center">
+                  <Button
+                    variant="primary"
+                    type="button"
+                    className="rounded-[100px]"
+                    onClick={() => navigate("/success-detail")}
+                  >
+                    Booking Detail
+                  </Button>
+                </div>
                 <ActionButton
                   variant="outline"
                   type="button"
