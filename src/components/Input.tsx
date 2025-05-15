@@ -32,7 +32,7 @@ const Input = ({
       >
         <input
           type={type}
-          className="w-full text-sm outline-none"
+          className="w-full text-base outline-none"
           {...inputProps}
         />
         {Icon && (
