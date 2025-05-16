@@ -9,9 +9,12 @@ import {
 } from "ionicons/icons";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import { getLoginUser } from "../../libs/userUtils";
 
 const ChatHomeScreen = () => {
   const navigate = useNavigate();
+
+  const userInfo = getLoginUser();
 
   return (
     <div className="mt-10">
@@ -69,17 +72,29 @@ const ChatHomeScreen = () => {
 
         {/* button */}
         <div className="mt-10 flex items-center justify-center">
-          <Button
-            type="button"
-            variant="primary"
-            leftIcon={chatbubbleOutline}
-            rightIcon={chevronForwardOutline}
-            onClick={() => {
-              navigate("/chat");
-            }}
-          >
-            Contact Live Chat
-          </Button>
+          {userInfo ? (
+            <Button
+              type="button"
+              variant="primary"
+              leftIcon={chatbubbleOutline}
+              rightIcon={chevronForwardOutline}
+              onClick={() => {
+                navigate("/chat");
+              }}
+            >
+              Contact Live Chat
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Go to Login
+            </Button>
+          )}
         </div>
       </div>
     </div>
