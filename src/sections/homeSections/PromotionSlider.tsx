@@ -19,7 +19,7 @@ const PromotionSlider = () => {
       {/* title */}
       <div className="flex items-center justify-between text-secondary mb-2">
         <p className="font-bold">Promotion</p>
-        <p className="text-sm">See All</p>
+        {/* <p className="text-sm">See All</p> */}
       </div>
       <div className="flex flex-col gap-2">
         <div className="w-full h-[10rem] overflow-hidden rounded-lg">

@@ -12,7 +12,7 @@ const StyleListSection = ({ stylists }: Props) => {
       {/* title */}
       <div className="flex items-center justify-between text-secondary mb-2">
         <p className="font-bold">Nail Artists</p>
-        <p className="text-sm">See All</p>
+        {/* <p className="text-sm">See All</p> */}
       </div>
 
       {/* services list */}

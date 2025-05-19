@@ -77,8 +77,8 @@ const AddBookingScreen = () => {
 
   return (
     <div className="">
-      <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
-        <div className="flex items-center">
+      <div className="h-max rounded-b-[2.5rem] bg-primary shadow-lg p-5">
+        <div className="flex items-center mt-8">
           {/* back and title */}
           <IonIcon
             icon={arrowBackOutline}
@@ -104,7 +104,7 @@ const AddBookingScreen = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-110px)] no-scrollbar">
+        <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-260px)] no-scrollbar">
           {/* choose date button */}
           {/* <div
             className="bg-primary p-3 rounded-xl shadow-md text-secondary font-semibold text-center"
@@ -147,9 +147,9 @@ const AddBookingScreen = () => {
                   size="sm"
                   className="rounded-lg"
                   onClick={() => setSelectedTimeSlot(item.timeSlot)}
-                  // disabled={item.timeSlotStatus !== "available"}
+                  disabled={item.timeSlotStatus !== "available"}
                 >
-                  {item.timeSlot}
+                  {item.timeSlot.split("-")[0]}
                 </ActionButton>
               ))}
           </div>
@@ -170,7 +170,7 @@ const AddBookingScreen = () => {
           <div className="flex items-center gap-5 w-full">
             <ActionButton
               variant="outline"
-              className="w-full rounded-[100px]"
+              className="w-full rounded-[100px] py-3"
               type="button"
               size="md"
               onClick={() => navigate(-1)}

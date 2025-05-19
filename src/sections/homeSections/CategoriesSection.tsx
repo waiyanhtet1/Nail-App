@@ -30,7 +30,7 @@ const CategoriesSection = ({ services }: Props) => {
       {/* title */}
       <div className="flex items-center justify-between text-secondary mb-2">
         <p className="font-bold">Categories</p>
-        <p className="text-sm">See All</p>
+        {/* <p className="text-sm">See All</p> */}
       </div>
 
       {/* services list */}
