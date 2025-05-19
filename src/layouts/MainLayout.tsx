@@ -20,16 +20,14 @@ import { getLoginUser } from "../libs/userUtils";
 import BookingScreen from "../screens/booking/BookingScreen";
 import ChatHomeScreen from "../screens/chat/ChatHomeScreen";
 import HomeScreen from "../screens/HomeScreen";
-import { StampType } from "../types/stampType";
+import PromotionScreen from "../screens/promotion/PromotionScreen";
 import { CategoriesType, HomePageDataType } from "../types/types";
-import HomeStamp from "./HomeStamp";
 
 const MainLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("home");
   const [homeData, setHomeData] = useState<HomePageDataType>();
   const [categoriesData, setCategoriesData] = useState<CategoriesType[]>();
-  const [stampData, setStampData] = useState<StampType>();
   const [isLoading, setSetIsLoading] = useState({
     home: false,
     categories: false,
@@ -76,24 +74,6 @@ const MainLayout = () => {
   };
 
   // function to fetch stamp royal data
-  const getRoyal = async () => {
-    setSetIsLoading((prev) => ({
-      ...prev,
-      stamp: true,
-    }));
-    try {
-      const { data } = await axios.get(
-        `${BASE_URL}/loyalty-stamps/${userInfo._id}`
-      );
-      setStampData(data);
-    } catch (error) {
-      console.log(error);
-    }
-    setSetIsLoading((prev) => ({
-      ...prev,
-      stamp: false,
-    }));
-  };
 
   useEffect(() => {
     if (activeTab === "home") {
@@ -103,7 +83,7 @@ const MainLayout = () => {
       getCategoriesData();
     }
     if (activeTab === "promo") {
-      getRoyal();
+      console.log("promo");
     }
   }, [activeTab]);
 
@@ -124,10 +104,11 @@ const MainLayout = () => {
         </IonTab>
         {userInfo && (
           <IonTab tab="promo">
-            <HomeStamp
+            {/* <HomeStamp
               stampData={stampData as StampType}
               isLoading={isLoading.stamp}
-            />
+            /> */}
+            <PromotionScreen />
           </IonTab>
         )}
         <IonTab tab="chat">

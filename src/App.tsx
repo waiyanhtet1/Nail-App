@@ -29,6 +29,7 @@ import EditProfile from "./screens/profile/EditProfile";
 import MyStamps from "./screens/profile/MyStamps";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 import SettingScreen from "./screens/profile/SettingScreen";
+import AllStylistScreen from "./screens/stylist/AllStylistScreen";
 
 setupIonicReact({
   rippleEffect: false,
@@ -63,6 +64,7 @@ const App = () => {
                 path="/success-detail"
                 element={<SuccessBookingDetail />}
               />
+              <Route path="/stylists" element={<AllStylistScreen />} />
 
               {/* profile screens */}
               <Route path="/profile" element={<ProfileScreen />} />

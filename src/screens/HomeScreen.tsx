@@ -24,6 +24,8 @@ const HomeScreen = ({ homePageData, isLoading }: Props) => {
     setStyleList(homePageData?.stylists);
   }, [homePageData]);
 
+  console.log(styleList);
+
   return (
     <div>
       <Header />
