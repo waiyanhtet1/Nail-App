@@ -23,7 +23,9 @@ const ServiceCard = ({
         <p className="text-sm">
           {serviceName} {serviceName_mm}
         </p>
-        <p className="text-sm">{servicePrice.toLocaleString()} KS</p>
+        <p className="text-sm whitespace-nowrap">
+          {servicePrice.toLocaleString()} KS
+        </p>
       </div>
 
       <div className="flex items-center justify-between gap-1">

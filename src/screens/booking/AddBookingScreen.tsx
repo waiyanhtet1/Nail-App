@@ -108,7 +108,7 @@ const AddBookingScreen = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-110px)] no-scrollbar">
+        <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-250px)] no-scrollbar">
           {/* choose date button */}
           {/* <div
             className="bg-primary p-3 rounded-xl shadow-md text-secondary font-semibold text-center"
@@ -150,10 +150,13 @@ const AddBookingScreen = () => {
                   }
                   size="sm"
                   className="rounded-lg"
-                  onClick={() => setSelectedTimeSlot(item.timeSlot)}
+                  onClick={() => {
+                    if (item.timeSlotStatus === "available")
+                      setSelectedTimeSlot(item.timeSlot);
+                  }}
                   disabled={item.timeSlotStatus !== "available"}
                 >
-                  {item.timeSlot}
+                  {item.timeSlot.split("-")[0]}
                 </ActionButton>
               ))}
           </div>
