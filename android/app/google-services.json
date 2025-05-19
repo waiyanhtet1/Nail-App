@@ -12,7 +12,12 @@
           "package_name": "com.barbiestudio.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCVMtiAfZ98dsyV5O-QkOZWDZQ3Fug-NdY"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "103072032496-eshh54us7j8mriv22ebu0iberhqb4j15.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.barbiestudio.app"
+              }
+            }
+          ]
         }
       }
     }
