@@ -1,10 +1,33 @@
 import { IonIcon } from "@ionic/react";
+import axios from "axios";
 import { arrowBackOutline } from "ionicons/icons";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StylistCard from "../../components/cards/StylistCard";
+import Loading from "../../components/Loading";
+import { BASE_URL } from "../../constants/baseUrl";
+import { StylistType } from "../../types/stylistType";
 
 const AllStylistScreen = () => {
   const navigate = useNavigate();
+  const [stylists, setStylists] = useState<StylistType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getStylistData = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(`${BASE_URL}/admin/stylists`);
+      console.log(data);
+      setStylists(data);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getStylistData();
+  }, []);
 
   return (
     <>
@@ -20,16 +43,29 @@ const AllStylistScreen = () => {
         </div>
       </div>
 
-      <div className="mx-5 md:mx-20 overflow-y-scroll h-[calc(100vh-110px)] no-scrollbar">
-        <p className="font-semibold text-secondary text-xl my-5">
-          Nail Artists <span className="text-red-800">(10)</span>
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:place-self-center">
-          {Array.from({ length: 10 }).map((_, index) => (
-            <StylistCard key={index} name={`Ester ${index + 1}`} />
-          ))}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="mx-5 md:mx-20 overflow-y-scroll h-[calc(100vh-110px)] no-scrollbar">
+          <p className="font-semibold text-secondary text-xl my-5">
+            Nail Artists{" "}
+            <span className="text-red-800">
+              ({stylists && stylists.length})
+            </span>
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:place-self-center">
+            {stylists &&
+              stylists.map((item) => (
+                <StylistCard
+                  key={item.id}
+                  name={item.stylistName}
+                  position={item.position}
+                  image={item.image}
+                />
+              ))}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

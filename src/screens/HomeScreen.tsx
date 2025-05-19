@@ -21,7 +21,9 @@ const HomeScreen = ({ homePageData, isLoading }: Props) => {
 
   useEffect(() => {
     setServices(homePageData?.serviceCategories);
-    setStyleList(homePageData?.stylists);
+
+    const updatedStylistData = homePageData?.stylists.slice(0, 5);
+    setStyleList(updatedStylistData);
   }, [homePageData]);
 
   console.log(styleList);
