@@ -17,7 +17,6 @@ const AllStylistScreen = () => {
     setIsLoading(true);
     try {
       const { data } = await axios.get(`${BASE_URL}/admin/stylists`);
-      console.log(data);
       setStylists(data);
     } catch (error) {
       console.log(error);
