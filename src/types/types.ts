@@ -44,6 +44,11 @@ export type ServiceType = {
   ];
   createdAt: string;
   updatedAt: string;
+  isPromotionService: boolean;
+  promotionDiscount: number;
+  promotionEndDate: string;
+  promotionName: string;
+  promotionStartDate: string;
 };
 
 export type ServiceDetailType = {

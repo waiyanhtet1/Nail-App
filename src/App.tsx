@@ -30,6 +30,7 @@ import EditProfile from "./screens/profile/EditProfile";
 import MyStamps from "./screens/profile/MyStamps";
 import ProfileScreen from "./screens/profile/ProfileScreen";
 import SettingScreen from "./screens/profile/SettingScreen";
+import AllStylistScreen from "./screens/stylist/AllStylistScreen";
 
 setupIonicReact({
   rippleEffect: false,
@@ -66,6 +67,8 @@ const App = () => {
                 path="/success-detail"
                 element={<SuccessBookingDetail />}
               />
+
+              <Route path="stylists" element={<AllStylistScreen />} />
 
               {/* profile screens */}
               <Route path="/profile" element={<ProfileScreen />} />
@@ -117,14 +120,6 @@ export default function Wrapper() {
     };
     initOneSignal();
   }, [dispatch]);
-
-  // google oauth setup for web
-  // GoogleAuth.initialize({
-  //   clientId:
-  //     "422262531684-nt83vc99hg47n85jtesq4ktk6ono2e7a.apps.googleusercontent.com",
-  //   scopes: ["profile", "email"],
-  //   grantOfflineAccess: true,
-  // });
 
   return (
     <Router>

@@ -27,12 +27,9 @@ const RegisterScreen = () => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
-  // const [isDOBError, setIsDOBError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { playerId } = useAppSelector((state) => state.token);
-
-  // GoogleAuth.initialize();
 
   const {
     register,
@@ -44,11 +41,6 @@ const RegisterScreen = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // if (day === "" || month === "" || year === "") {
-    //   setIsDOBError(true);
-    //   return;
-    // } else {
-    //   setIsDOBError(false);
     setIsLoading(true);
 
     const dateProps = day && month && year ? `${day}/${month}/${year}` : null;
@@ -73,76 +65,7 @@ const RegisterScreen = () => {
       }
     }
     setIsLoading(false);
-    // }
   };
-
-  // const loginWithGoogleWeb = async () => {
-  //   try {
-  //     const provider = new GoogleAuthProvider();
-  //     const result = await signInWithPopup(auth, provider);
-  //     console.log("Firebase Web User:", result.user);
-  //     return result.user;
-  //   } catch (err) {
-  //     console.error("Google web sign-in error:", err);
-  //     throw err;
-  //   }
-  // };
-
-  // const loginWithGoogleMobile = async () => {
-  //   try {
-  //     const googleUser = await GoogleAuth.signIn();
-
-  //     const { idToken } = googleUser.authentication;
-  //     if (!idToken) throw new Error("No ID token found");
-
-  //     const credential = GoogleAuthProvider.credential(idToken);
-  //     const userCredential = await signInWithCredential(auth, credential);
-
-  //     console.log("Firebase User:", userCredential.user);
-  //     // alert("Firebase User:" + JSON.stringify(userCredential.user));
-
-  //     return userCredential.user;
-  //   } catch (err) {
-  //     console.error("Google mobile sign-in error:", err);
-  //     alert("Google mobile sign-in error:" + JSON.stringify(err));
-  //     throw err;
-  //   }
-  // };
-
-  // const handleGoogleRegister = async () => {
-  //   try {
-  //     const user = Capacitor.isNativePlatform()
-  //       ? await loginWithGoogleMobile()
-  //       : await loginWithGoogleWeb();
-
-  //     // Optionally, send user info to your backend here
-
-  //     if (user) {
-  //       console.log("Signed in user:", user);
-
-  //       const response = await axios.post(`${BASE_URL}/register`, {
-  //         username: user.displayName,
-  //         // phone: data.phone,
-  //         email: user.email,
-  //         password: user.uid,
-  //         DOB: null,
-  //         playerId: playerId,
-  //       });
-
-  //       localStorage.setItem("userInfo", encryptData(response.data.user));
-  //       navigate("/");
-  //       showToast("Register success");
-  //       toast.success("Register success");
-  //     }
-  //   } catch (error) {
-  //     // alert("Login failed: " + JSON.stringify(error));
-  //     showToast("Register Fail!");
-  //     toast.error("Register Fail");
-  //     if (axios.isAxiosError(error)) {
-  //       toast.error(error.response?.data.msg);
-  //     }
-  //   }
-  // };
 
   return (
     <div className="flex flex-col gap-3 pt-10 px-5 md:px-52">
@@ -180,9 +103,6 @@ const RegisterScreen = () => {
 
         <div className="flex items-center justify-between">
           <p className="text-gray">Date of Birth</p>
-          {/* {isDOBError && (
-            <p className="text-xs text-red-500">Date of Birth is required</p>
-          )} */}
         </div>
         <DOBSelect
           day={day}
@@ -203,17 +123,6 @@ const RegisterScreen = () => {
           </div>
         )}
       </form>
-
-      {/* <div className="w-full px-5 my-5 flex items-center justify-center gap-5">
-        <p className="w-full border border-gray-second" />
-        <p className="whitespace-nowrap text-sm text-gray">Or Signup with</p>
-        <p className="w-full border border-gray-second" />
-      </div> */}
-
-      {/* social icon */}
-      {/* <div className="flex items-center justify-center gap-5">
-        <SocialIconButton icon={googleIcon} onClick={handleGoogleRegister} />
-      </div> */}
 
       {/* register route */}
       <p className="my-5 text-center text-gray-second text-sm">

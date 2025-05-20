@@ -54,6 +54,7 @@ const MyBookingCard = ({ variant, booking }: Props) => {
   }
 
   console.log("booking", booking);
+  console.log(detail);
 
   return (
     <div className="bg-white rounded-xl p-3">
@@ -85,11 +86,7 @@ const MyBookingCard = ({ variant, booking }: Props) => {
 
         {/* price */}
         <p className="whitespace-nowrap text-sm font-bold self-start">
-          {detail &&
-            (
-              detail?.totalCost - detail?.discountedAmount
-            ).toLocaleString()}{" "}
-          KS
+          {detail && detail?.totalCost.toLocaleString()} KS
         </p>
       </div>
 

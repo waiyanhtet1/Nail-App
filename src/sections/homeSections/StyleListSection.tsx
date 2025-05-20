@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants/baseUrl";
 import { StyleListType } from "../../types/types";
 import stylistImg from "/images/stylist.jpeg";
@@ -7,12 +8,16 @@ interface Props {
 }
 
 const StyleListSection = ({ stylists }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <div className="px-5">
       {/* title */}
       <div className="flex items-center justify-between text-secondary mb-2">
         <p className="font-bold">Nail Artists</p>
-        {/* <p className="text-sm">See All</p> */}
+        <p className="text-sm" onClick={() => navigate("/stylists")}>
+          See All
+        </p>
       </div>
 
       {/* services list */}

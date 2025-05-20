@@ -69,70 +69,6 @@ const LoginScreen = () => {
     if (userInfo) navigate("/");
   }, [navigate]);
 
-  // const loginWithGoogleWeb = async () => {
-  //   try {
-  //     const provider = new GoogleAuthProvider();
-  //     const result = await signInWithPopup(auth, provider);
-  //     console.log("Firebase Web User:", result.user);
-  //     return result.user;
-  //   } catch (err) {
-  //     console.error("Google web sign-in error:", err);
-  //     throw err;
-  //   }
-  // };
-
-  // const loginWithGoogleMobile = async () => {
-  //   try {
-  //     const googleUser = await GoogleAuth.signIn();
-
-  //     const { idToken } = googleUser.authentication;
-  //     if (!idToken) throw new Error("No ID token found");
-
-  //     const credential = GoogleAuthProvider.credential(idToken);
-  //     const userCredential = await signInWithCredential(auth, credential);
-
-  //     console.log("Firebase User:", userCredential.user);
-  //     // alert("Firebase User:" + JSON.stringify(userCredential.user));
-
-  //     return userCredential.user;
-  //   } catch (err) {
-  //     console.error("Google mobile sign-in error:", err);
-  //     alert("Google mobile sign-in error:" + JSON.stringify(err));
-  //     throw err;
-  //   }
-  // };
-
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     const user = Capacitor.isNativePlatform()
-  //       ? await loginWithGoogleMobile()
-  //       : await loginWithGoogleWeb();
-
-  //     // Optionally, send user info to your backend here
-
-  //     if (user) {
-  //       console.log("Signed in user:", user);
-
-  //       const response = await axios.post(`${BASE_URL}/login`, {
-  //         username: user.displayName,
-  //         password: user.uid,
-  //         playerId: playerId,
-  //       });
-
-  //       localStorage.setItem("userInfo", encryptData(response.data));
-  //       showToast("Login success");
-  //       navigate("/");
-  //     }
-  //   } catch (error) {
-  //     // alert("Login failed: " + JSON.stringify(error));
-  //     showToast("Login Fail!");
-  //     toast.error("Login Fail");
-  //     if (axios.isAxiosError(error)) {
-  //       toast.error(error.response?.data.msg);
-  //     }
-  //   }
-  // };
-
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">
       <div className="flex flex-col items-center">
@@ -142,9 +78,6 @@ const LoginScreen = () => {
         <p className="uppercase text-xl">NAIL BAR</p>
       </div>
 
-      {/* <div className="flex justify-center">
-        <img src={logo} alt="" className="h-[200px]" />
-      </div> */}
       <form
         className="w-full mt-10 px-5 md:px-52"
         onSubmit={handleSubmit(onSubmit)}
@@ -184,17 +117,6 @@ const LoginScreen = () => {
           </div>
         )}
       </form>
-
-      {/* <div className="w-full px-5 md:px-52 my-5 flex items-center justify-center gap-5">
-        <p className="w-full border border-gray-second" />
-        <p className="whitespace-nowrap text-sm text-gray">Or signin with</p>
-        <p className="w-full border border-gray-second" />
-      </div> */}
-
-      {/* social icon */}
-      {/* <div className="flex items-center justify-center gap-5">
-        <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} />
-      </div> */}
 
       {/* register route */}
       <p className="my-5 text-center text-gray-second text-sm">
