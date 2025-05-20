@@ -62,14 +62,8 @@ const BookingDetailBottomSheet = ({
                   value={booking.service?.serviceName as string}
                 />
                 <BookingItem
-                  title="Discount"
-                  value={`- ${bookingDetail.discountedAmount.toLocaleString()} KS`}
-                />
-                <BookingItem
                   title="Total Amount"
-                  value={`${(
-                    bookingDetail.totalCost - bookingDetail.discountedAmount
-                  ).toLocaleString()} KS`}
+                  value={`${bookingDetail.totalCost.toLocaleString()} KS`}
                 />
               </div>
             </Sheet.Scroller>

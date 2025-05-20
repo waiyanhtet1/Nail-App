@@ -83,10 +83,7 @@ const MyBookingCard = ({ variant, booking }: Props) => {
 
         {/* price */}
         <p className="whitespace-nowrap text-sm font-bold self-start">
-          {detail &&
-            (
-              detail?.totalCost - detail?.discountedAmount
-            ).toLocaleString()}{" "}
+          {detail && detail?.totalCost.toLocaleString()}
           KS
         </p>
       </div>

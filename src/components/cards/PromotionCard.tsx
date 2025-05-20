@@ -1,39 +1,60 @@
+import { formatDateString } from "../../libs/dateUtils";
 import ActionButton from "../ActionButton";
-import promotionImg from "/images/promotion.jpg";
+import Loading from "../Loading";
+import priceTagImg from "/images/price-tag.png";
 
 interface Props {
   title: string;
+  discount: number;
+  promotionStartDate: string;
+  promotionEndDate: string;
+  onClick: () => void;
+  buttonLoading: boolean;
 }
 
-const PromotionCard = ({ title }: Props) => {
+const PromotionCard = ({
+  title,
+  discount,
+  promotionStartDate,
+  promotionEndDate,
+  onClick,
+  buttonLoading,
+}: Props) => {
   return (
     <div className="bg-white rounded-xl shadow px-5 py-2">
       <div className="flex items-center justify-between gap-5">
         <img
-          src={promotionImg}
+          src={priceTagImg}
           alt=""
-          className="w-[80px] h-[80px] object-cover
-          border border-secondary rounded-full"
+          className="w-[60px] h-[60px] object-cover
+        "
         />
 
         {/* info */}
         <div className="flex flex-col gap-1">
           <p className="text-secondary font-semibold">{title}</p>
-          <p className="text-xl text-red-900 font-bold">50% Off</p>
-          <p className="text-sm">Valid Until : 01.03.2025 to 05.03.2025 </p>
+          <p className="text-xl text-red-900 font-bold">{discount}% Off</p>
+          <p className="text-sm">
+            Valid Until : {formatDateString(promotionStartDate)} to{" "}
+            {formatDateString(promotionEndDate)}{" "}
+          </p>
         </div>
       </div>
 
       <div className="flex justify-end">
-        <ActionButton
-          variant="primary"
-          size="sm"
-          onClick={() => console.log("first")}
-          type="button"
-          className=""
-        >
-          Use Now
-        </ActionButton>
+        {buttonLoading ? (
+          <Loading />
+        ) : (
+          <ActionButton
+            variant="primary"
+            size="sm"
+            onClick={onClick}
+            type="button"
+            className="rounded-lg"
+          >
+            Use Now
+          </ActionButton>
+        )}
       </div>
     </div>
   );
