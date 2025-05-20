@@ -36,13 +36,15 @@ const AddBookingScreen = () => {
   const [error, setError] = useState("");
   const [selectedDateInput, setSelectedDateInput] = useState("");
   const [closingDays, setClosingDays] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const userInfo = getLoginUser();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     async function getBookingDetail() {
       if (selectedService && selectedCategory?.id) {
-        // setIsLoading(true);
+        setIsLoading(true);
         try {
           const { data } = await axios.get(
             `${BASE_URL}/booking/${selectedService._id}/${selectedCategory?.id}?date=${selectedDateInput}`
@@ -52,7 +54,7 @@ const AddBookingScreen = () => {
         } catch (error) {
           console.log(error);
         }
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     }
     getBookingDetail();
@@ -99,7 +101,7 @@ const AddBookingScreen = () => {
   }
 
   return (
-    <div className="">
+    <div>
       <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
         <div className="flex items-center">
           {/* back and title */}
@@ -127,6 +129,7 @@ const AddBookingScreen = () => {
         </div>
       </div>
 
+      {isLoading && <p className="text-center">Loading Info...</p>}
       <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-250px)] no-scrollbar">
         {/* artist list */}
         <p className="text-secondary text-lg font-semibold">

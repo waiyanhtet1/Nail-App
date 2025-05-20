@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import BottomSheetModal from "../../components/bottomSheets/BottomSheetModal";
+import ErrorMessageSlider from "../../components/bottomSheets/ErrorMessageSlider";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
@@ -40,6 +41,8 @@ const BookingConfirmScreen = () => {
   const [sheetModalOpen, setSheetModalOpen] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
   const [stylistNames, setStylistNames] = useState<string[]>([]);
+  const [errorMessageSliderOpen, setErrorMessageSliderOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -59,8 +62,9 @@ const BookingConfirmScreen = () => {
     } catch (error) {
       console.log(error);
       if (error && isAxiosError(error)) {
-        toast.error(error.response?.data.message);
-        navigate(-1);
+        // toast.error(error.response?.data.message);
+        setErrorMessageSliderOpen(true);
+        setErrorMessage(error.response?.data.message);
       } else {
         toast.error("Fail to book on appointment");
         navigate(-1);
@@ -233,7 +237,17 @@ const BookingConfirmScreen = () => {
           </Button>
         </div>
       )}
-      <BottomSheetModal isOpen={sheetModalOpen} setOpen={setSheetModalOpen} />
+      {sheetModalOpen && (
+        <BottomSheetModal isOpen={sheetModalOpen} setOpen={setSheetModalOpen} />
+      )}
+
+      {errorMessageSliderOpen && (
+        <ErrorMessageSlider
+          message={errorMessage}
+          isOpen={errorMessageSliderOpen}
+          setOpen={setErrorMessageSliderOpen}
+        />
+      )}
     </div>
   );
 };
