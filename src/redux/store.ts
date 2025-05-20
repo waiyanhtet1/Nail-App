@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import bookingSlice from "./slices/bookingSlice";
+import personCountSlice from "./slices/personCountSlice";
 import tokenSlice from "./slices/tokenSlice";
 import userSlice from "./slices/uesrSlice";
 // ...
@@ -9,6 +10,7 @@ export const store = configureStore({
     user: userSlice,
     booking: bookingSlice,
     token: tokenSlice,
+    personCount: personCountSlice,
   },
 });
 

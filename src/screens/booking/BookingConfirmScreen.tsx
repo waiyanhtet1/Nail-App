@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from "axios";
 import { cashOutline } from "ionicons/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
@@ -39,6 +39,7 @@ const BookingConfirmScreen = () => {
   );
   const [sheetModalOpen, setSheetModalOpen] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
+  const [stylistNames, setStylistNames] = useState<string[]>([]);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -50,13 +51,7 @@ const BookingConfirmScreen = () => {
         serviceId: selectedService?._id,
         customerUserId: selectedBooking?.customerUserId,
         date: selectedBooking?.date,
-        bookingData: [
-          {
-            personCount: selectedBooking?.personCount,
-            stylistId: selectedBooking?.stylist._id,
-            timeSlot: selectedBooking?.timeSlot,
-          },
-        ],
+        bookingData: selectedBooking?.bookingData,
       });
       console.log(response);
       dispatch(setBookingId(response.data.bookingId));
@@ -74,6 +69,26 @@ const BookingConfirmScreen = () => {
     setCreateLoading(false);
   };
 
+  useEffect(() => {
+    const fetchStylists = async () => {
+      if (!selectedBooking?.bookingData) return;
+
+      try {
+        const promises = selectedBooking.bookingData.map((item) =>
+          axios.get(`${BASE_URL}/admin/stylists/${item.stylistId}`)
+        );
+
+        const responses = await Promise.all(promises);
+        const names = responses.map((res) => res.data.stylistName);
+        setStylistNames(names);
+      } catch (err) {
+        console.error("Error fetching stylists:", err);
+      }
+    };
+
+    fetchStylists();
+  }, [selectedBooking?.bookingData]);
+
   return (
     <div className="mt-10 mx-5">
       <p className="text-xl font-bold text-secondary">Booking Detail</p>
@@ -85,17 +100,28 @@ const BookingConfirmScreen = () => {
           <p>Booking Date:</p>
           <p>{formatDateString(selectedBooking?.date as string)}</p>
         </div>
+
         <div className="flex items-center justify-between">
           <p>Booking Time:</p>
-          <p>{selectedBooking?.timeSlot}</p>
+          <div className="flex items-center">
+            <p>
+              {selectedBooking?.bookingData
+                .map((item) => item.timeSlot.split("-")[0])
+                .join(", ")}
+            </p>
+          </div>
         </div>
+
         <div className="flex items-center justify-between">
           <p>Number of Person:</p>
-          <p>{selectedBooking?.personCount}</p>
+          <p>{selectedBooking?.bookingData.length}</p>
         </div>
+
         <div className="flex items-center justify-between">
           <p>Stylist Name:</p>
-          <p>{selectedBooking?.stylist.stylistName}</p>
+          <div className="flex items-center">
+            <p>{stylistNames.join(", ")}</p>
+          </div>
         </div>
       </div>
 
