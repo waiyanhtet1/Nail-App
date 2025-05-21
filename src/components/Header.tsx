@@ -2,7 +2,6 @@ import { IonIcon } from "@ionic/react";
 import { personOutline } from "ionicons/icons";
 import { useNavigate } from "react-router-dom";
 import { getLoginUser } from "../libs/userUtils";
-import SearchInput from "./SearchInput";
 import logo from "/images/logo.png";
 
 const Header = () => {
@@ -10,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-[160px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
+    <div className="h-max rounded-b-[2.5rem] bg-primary shadow-lg p-5">
       <div className="flex items-center justify-between mb-1">
         {/* logo and name */}
         <div className="flex items-center">
@@ -42,7 +41,7 @@ const Header = () => {
         )}
       </div>
 
-      <SearchInput />
+      {/* <SearchInput /> */}
     </div>
   );
 };

@@ -11,7 +11,7 @@ const config: CapacitorConfig = {
       launchFadeOutDuration: 3000,
       backgroundColor: "rgba(244, 233, 231, 1)",
       androidSplashResourceName: "splash",
-      androidScaleType: "CENTER_CROP",
+      androidScaleType: "FIT_CENTER",
       showSpinner: true,
       androidSpinnerStyle: "large",
       iosSpinnerStyle: "small",
@@ -20,6 +20,7 @@ const config: CapacitorConfig = {
       splashImmersive: true,
       layoutName: "launch_screen",
       useDialog: true,
+      scale: "fit",
     },
     GoogleAuth: {
       scopes: ["profile", "email"],

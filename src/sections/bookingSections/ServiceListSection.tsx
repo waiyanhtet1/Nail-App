@@ -54,7 +54,7 @@ const ServiceListSection = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="overflow-y-scroll h-[calc(100vh-320px)] no-scrollbar">
+        <div className="overflow-y-scroll h-[calc(100vh-290px)] no-scrollbar">
           {servicesData && servicesData.length === 0 ? (
             <p className="text-sm text-center font-semibold">No Result</p>
           ) : (

@@ -150,7 +150,15 @@ const BookingConfirmScreen = () => {
           <p>
             - {selectedService?.serviceName}/ {selectedService?.serviceName_mm}
           </p>
-          <p>{selectedService?.servicePrice.toLocaleString()} KS</p>
+          <p>
+            {selectedBooking &&
+              selectedService &&
+              (
+                selectedService?.servicePrice *
+                selectedBooking?.bookingData.length
+              ).toLocaleString()}
+            KS
+          </p>
         </div>
 
         {selectedService?.isPromotionService && (
@@ -158,6 +166,10 @@ const BookingConfirmScreen = () => {
             {selectedService.promotionDiscount}% off
           </p>
         )}
+
+        <p className="text-sm text-secondary font-semibold">
+          For x{selectedBooking?.bookingData.length} Person
+        </p>
       </div>
 
       <hr className="my-5 text-gray-fourth" />
@@ -199,7 +211,12 @@ const BookingConfirmScreen = () => {
       <div className="flex items-center justify-between">
         <p>Total Cost</p>
         <p>
-          {Number(selectedService?.servicePrice).toLocaleString()}
+          {selectedBooking &&
+            selectedService &&
+            (
+              selectedService?.servicePrice *
+              selectedBooking?.bookingData.length
+            ).toLocaleString()}
           KS
         </p>
       </div>
