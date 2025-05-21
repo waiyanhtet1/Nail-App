@@ -40,6 +40,7 @@ const MyStamps = () => {
 
   return (
     <div className="overflow-y-scroll no-scrollbar">
+      {/* header */}
       <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
         <div className="flex items-center">
           {/* back and title */}
@@ -62,30 +63,42 @@ const MyStamps = () => {
         </div>
       </div>
 
-      {/* stamps promotion list */}
       {isLoading ? (
         <Loading />
       ) : (
         <div className="flex flex-col gap-5 mt-5 items-center justify-center mx-5">
-          <p className="text-center text-sm text-secondary font-semibold">
+          {/* <p className="text-center text-sm text-secondary font-semibold">
             Buy 30,000KS Get 1 stamp
-          </p>
+          </p> */}
+
+          {/* Sorted stamp grid */}
           <div className="grid grid-cols-5 gap-x-5 gap-y-7">
             {stampData &&
-              stampData.uncollected.map((item) => (
-                <StampCard
-                  key={item._id}
-                  isStamped={item.isDiscountAvailable}
-                  stampNumber={item.stampOrder.toString()}
-                />
-              ))}
+              [...stampData.collected, ...stampData.uncollected]
+                .sort((a, b) => a.stampOrder - b.stampOrder)
+                .map((item) => {
+                  const isCollected = stampData.collected.some(
+                    (collectedItem) => collectedItem._id === item._id
+                  );
+
+                  return (
+                    <StampCard
+                      key={item._id}
+                      stampNumber={item.stampOrder.toString()}
+                      {...(isCollected
+                        ? { isRedColor: true }
+                        : { isStamped: item.isDiscountAvailable })}
+                    />
+                  );
+                })}
           </div>
 
-          {/* promotion discount percentage */}
+          {/* Sorted promotions list */}
           <div className="w-full text-secondary text-sm font-semibold">
             {stampData &&
-              stampData.uncollected
+              [...stampData.uncollected]
                 .filter((item) => item.isDiscountAvailable)
+                .sort((a, b) => a.stampOrder - b.stampOrder)
                 .map((stamp) => (
                   <div
                     key={stamp._id}
@@ -95,11 +108,11 @@ const MyStamps = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col items-center">
                         <IonIcon icon={layersOutline} className="size-5" />
-                        <p>{stamp.serviceCategory?.categoryName}</p>
+                        <p>{stamp.serviceCategory?.categoryName || "N/A"}</p>
                       </div>
                       <div className="flex flex-col items-center">
                         <IonIcon icon={listOutline} className="size-5" />
-                        <p>{stamp.service?.serviceName} service</p>
+                        <p>{stamp.service?.serviceName || "N/A"} service</p>
                       </div>
                       <div className="flex flex-col items-center">
                         <IonIcon icon={pricetagOutline} className="size-5" />
