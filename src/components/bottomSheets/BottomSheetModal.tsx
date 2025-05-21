@@ -56,7 +56,7 @@ function BottomSheetModal({ isOpen, setOpen }: Props) {
                 <div className="w-full flex flex-col items-center justify-center p-3 border-t border-r border-b border-gray-fourth">
                   <p>({selectedService?.serviceName}) Services</p>
                   <p className="text-sm">
-                    {selectedBooking?.personCount} Persons
+                    {selectedBooking?.bookingData.length} Persons
                   </p>
                 </div>
                 <div className="w-full flex flex-col items-center justify-center gap-2 p-3 border-t border-b border-gray-fourth">
@@ -64,7 +64,11 @@ function BottomSheetModal({ isOpen, setOpen }: Props) {
                     Date : {formatDateString(selectedBooking?.date as string)}
                   </p>
                   {/* <p className="text-xs">(Wednesday)</p> */}
-                  <p className="text-sm">{selectedBooking?.timeSlot}</p>
+                  <p className="text-sm">
+                    {selectedBooking?.bookingData
+                      .map((item) => item.timeSlot.split("-")[0])
+                      .join(", ")}
+                  </p>
                 </div>
               </div>
 

@@ -37,7 +37,7 @@ const BookingScreen = ({ categoriesData, isLoading }: Props) => {
               {isLoading ? (
                 <Loading />
               ) : (
-                <div className="overflow-y-scroll h-[calc(100vh-290px)] no-scrollbar">
+                <div className="overflow-y-scroll h-[calc(100vh-240px)] no-scrollbar">
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
                     {categoriesData &&
                       categoriesData.map((item) => (

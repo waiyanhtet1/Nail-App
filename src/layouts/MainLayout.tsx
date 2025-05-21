@@ -21,13 +21,14 @@ import BookingScreen from "../screens/booking/BookingScreen";
 import ChatHomeScreen from "../screens/chat/ChatHomeScreen";
 import HomeScreen from "../screens/HomeScreen";
 import PromotionScreen from "../screens/promotion/PromotionScreen";
-import { CategoriesType, HomePageDataType } from "../types/types";
+import { CategoriesType, HomePageDataType, ServiceType } from "../types/types";
 
 const MainLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("home");
   const [homeData, setHomeData] = useState<HomePageDataType>();
   const [categoriesData, setCategoriesData] = useState<CategoriesType[]>();
+  const [promotions, setPromotions] = useState<ServiceType[]>([]);
   const [isLoading, setSetIsLoading] = useState({
     home: false,
     categories: false,
@@ -73,6 +74,16 @@ const MainLayout = () => {
     }));
   };
 
+  // function to get promotion data
+  const getPromotionData = async () => {
+    try {
+      const { data } = await axios.get(`${BASE_URL}/promotions/active`);
+      setPromotions(data.promotions);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === "home") {
       getHomeData();
@@ -81,7 +92,7 @@ const MainLayout = () => {
       getCategoriesData();
     }
     if (activeTab === "promo") {
-      console.log("promo");
+      getPromotionData();
     }
   }, [activeTab]);
 
@@ -102,7 +113,7 @@ const MainLayout = () => {
         </IonTab>
         {userInfo && (
           <IonTab tab="promo">
-            <PromotionScreen />
+            <PromotionScreen promotions={promotions} />
           </IonTab>
         )}
         <IonTab tab="chat">

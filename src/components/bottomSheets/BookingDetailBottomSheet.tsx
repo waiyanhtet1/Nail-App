@@ -61,10 +61,15 @@ const BookingDetailBottomSheet = ({
                   title="Service"
                   value={booking.service?.serviceName as string}
                 />
-                {/* <BookingItem
-                  title="Discount"
-                  value={`- ${bookingDetail.discountedAmount.toLocaleString()} KS`}
-                /> */}
+
+                {booking?.service?.isPromotionService && (
+                  <p className="flex justify-end text-sm text-secondary font-semibold">
+                    {booking.service.promotionDiscount}% off
+                  </p>
+                )}
+
+                <hr className="my-3 text-gray-fourth" />
+
                 <BookingItem
                   title="Total Amount"
                   value={`${bookingDetail.totalCost.toLocaleString()} KS`}

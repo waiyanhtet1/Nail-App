@@ -1,16 +1,23 @@
-import { IonIcon } from "@ionic/react";
-import { checkmarkCircle } from "ionicons/icons";
 import { BASE_URL } from "../../constants/baseUrl";
+import { useAppSelector } from "../../redux/hook";
 import { StyleListType } from "../../types/types";
 import stylistImg from "/images/stylist.jpeg";
 
 interface Props {
   stylist: StyleListType;
   onClick: () => void;
-  selectedArtistId: string;
 }
 
-const SelectArtistSection = ({ stylist, onClick, selectedArtistId }: Props) => {
+const SelectArtistSection = ({ stylist, onClick }: Props) => {
+  const personCount = useAppSelector((state) => state.personCount);
+
+  // Check if this stylist is selected
+  const currentPerson = personCount.find(
+    (item) => item.stylistId === stylist._id
+  );
+
+  const isSelected = Boolean(currentPerson);
+
   return (
     <div
       key={stylist._id}
@@ -25,14 +32,14 @@ const SelectArtistSection = ({ stylist, onClick, selectedArtistId }: Props) => {
           alt=""
           className="w-full h-full object-cover"
         />
-        {/* Gradient Overlay */}
-        {selectedArtistId === stylist._id && (
+
+        {/* Show overlay if stylist is selected (exists in personCount) */}
+        {isSelected && (
           <>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-            <IonIcon
-              icon={checkmarkCircle}
-              className="absolute bottom-0 size-7 text-white"
-            />
+            <span className="absolute bottom-1 text-xs w-full text-center text-white">
+              Person {currentPerson?.id}
+            </span>
           </>
         )}
       </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PromotionCard from "../../components/cards/PromotionCard";
 import { BASE_URL } from "../../constants/baseUrl";
@@ -10,24 +10,14 @@ import {
 } from "../../redux/slices/bookingSlice";
 import { ServiceType } from "../../types/types";
 
-const PromotionScreen = () => {
-  const [promotions, setPromotions] = useState<ServiceType[]>([]);
+interface Props {
+  promotions: ServiceType[];
+}
+
+const PromotionScreen = ({ promotions }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const getPromotionData = async () => {
-    try {
-      const { data } = await axios.get(`${BASE_URL}/promotions/active`);
-      setPromotions(data.promotions);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getPromotionData();
-  }, []);
 
   const getCategoryDetail = async (serviceId: string) => {
     setIsLoading(true);
