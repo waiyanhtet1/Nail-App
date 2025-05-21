@@ -153,7 +153,7 @@ const AddBookingScreen = () => {
         <p className="text-secondary text-lg font-semibold">
           Choose Available Slots
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           {serviceDetail?.timeSlots &&
             serviceDetail.timeSlots.map((slot, index) => {
               const personsForSlot = pCount.filter(

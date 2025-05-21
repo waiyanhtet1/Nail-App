@@ -50,7 +50,13 @@ const SuccessBookingDetail = () => {
 
       <Item
         title={`${selectedService?.serviceName} / ${selectedService?.serviceName_mm}`}
-        value={`${selectedService?.servicePrice.toLocaleString()} KS`}
+        value={`${
+          selectedBooking &&
+          selectedService &&
+          (
+            selectedService?.servicePrice * selectedBooking?.bookingData.length
+          ).toLocaleString()
+        } KS`}
       />
 
       {selectedService?.isPromotionService && (
@@ -67,7 +73,13 @@ const SuccessBookingDetail = () => {
 
       <Item
         title="Total Coast"
-        value={`${(Number(selectedService?.servicePrice) - 0).toLocaleString()}
+        value={`${
+          selectedBooking &&
+          selectedService &&
+          (
+            selectedService?.servicePrice * selectedBooking?.bookingData.length
+          ).toLocaleString()
+        }
           KS`}
       />
 
