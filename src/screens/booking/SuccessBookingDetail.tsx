@@ -52,11 +52,16 @@ const SuccessBookingDetail = () => {
         title={`${selectedService?.serviceName} / ${selectedService?.serviceName_mm}`}
         value={`${selectedService?.servicePrice.toLocaleString()} KS`}
       />
+
       {selectedService?.isPromotionService && (
         <p className="text-sm text-secondary font-semibold">
           {selectedService.promotionDiscount}% off
         </p>
       )}
+
+      <p className="text-sm text-secondary font-semibold">
+        For x{selectedBooking?.bookingData.length} Person
+      </p>
 
       <hr className="my-3 text-gray-fourth" />
 
