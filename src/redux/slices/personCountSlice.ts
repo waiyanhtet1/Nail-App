@@ -15,7 +15,7 @@ export const personCountSlice = createSlice({
   initialState,
   reducers: {
     // Step 1: Initialize empty slots
-    initializePersonArray: (state, action: PayloadAction<number>) => {
+    initializePersonArray: (_state, action: PayloadAction<number>) => {
       const newArray: PersonCountType = Array.from(
         { length: action.payload },
         (_, index) => ({

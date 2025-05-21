@@ -1,5 +1,8 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
+import { BASE_URL } from "../../constants/baseUrl";
 import { formatDateString } from "../../libs/dateUtils";
 import { useAppSelector } from "../../redux/hook";
 
@@ -9,19 +12,38 @@ const SuccessBookingDetail = () => {
     (state) => state.booking
   );
 
+  const [stylistNames, setStylistNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchStylists = async () => {
+      if (!selectedBooking?.bookingData) return;
+
+      try {
+        const promises = selectedBooking.bookingData.map((item) =>
+          axios.get(`${BASE_URL}/admin/stylists/${item.stylistId}`)
+        );
+
+        const responses = await Promise.all(promises);
+        const names = responses.map((res) => res.data.stylistName);
+        setStylistNames(names);
+      } catch (err) {
+        console.error("Error fetching stylists:", err);
+      }
+    };
+
+    fetchStylists();
+  }, [selectedBooking?.bookingData]);
+
   return (
     <div className="flex flex-col gap-3 mt-20 mx-5">
       <Item
         title="Booking Date & Time : "
         value={formatDateString(selectedBooking?.date as string)}
       />
-      <Item
-        title="Stylist Name : "
-        value={selectedBooking?.stylist.stylistName as string}
-      />
+      <Item title="Stylist Name : " value={stylistNames.join(", ")} />
       <Item
         title="Number of Person : "
-        value={selectedBooking?.personCount.toString() as string}
+        value={selectedBooking?.bookingData.length.toString() as string}
       />
 
       <p className="text-lg font-semibold">Service</p>
@@ -30,14 +52,11 @@ const SuccessBookingDetail = () => {
         title={`${selectedService?.serviceName} / ${selectedService?.serviceName_mm}`}
         value={`${selectedService?.servicePrice.toLocaleString()} KS`}
       />
-
-      <hr className="my-3 text-gray-fourth" />
-
-      <Item
-        title="Sub-Total"
-        value={`${selectedService?.servicePrice.toLocaleString()} KS`}
-      />
-      <Item title="Discount" value="-0 KS" />
+      {selectedService?.isPromotionService && (
+        <p className="text-sm text-secondary font-semibold">
+          {selectedService.promotionDiscount}% off
+        </p>
+      )}
 
       <hr className="my-3 text-gray-fourth" />
 
