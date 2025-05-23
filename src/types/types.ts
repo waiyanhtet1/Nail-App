@@ -49,6 +49,7 @@ export type ServiceType = {
   promotionEndDate: string;
   promotionName: string;
   promotionStartDate: string;
+  promotionPrice: number;
 };
 
 export type ServiceDetailType = {

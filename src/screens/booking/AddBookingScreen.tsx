@@ -101,6 +101,11 @@ const AddBookingScreen = () => {
     navigate("/confirm-booking");
   }
 
+  // const handleRemoveTimeSlot = (stylistId: string, timeSlot: string) => {
+  //   dispatch(removeTimeSlotDispatch({ stylistId, timeSlot }));
+  //   dispatch(initializePersonArray(personCount));
+  // };
+
   return (
     <div>
       <div className="h-max rounded-b-[2.5rem] bg-primary shadow-lg p-5">
@@ -136,7 +141,7 @@ const AddBookingScreen = () => {
         <p className="text-secondary text-lg font-semibold">
           Choose Nail Artists
         </p>
-        <div className="flex items-center">
+        <div className="flex items-center overflow-x-scroll min-h-max no-scrollbar">
           {serviceDetail?.stylists &&
             serviceDetail.stylists.map((item) => (
               <SelectArtistSection
@@ -146,6 +151,7 @@ const AddBookingScreen = () => {
                   setSelectedArtist(item);
                   dispatch(setStylistDispatch(item._id));
                 }}
+                personCountInput={personCount}
               />
             ))}
         </div>
@@ -154,7 +160,7 @@ const AddBookingScreen = () => {
         <p className="text-secondary text-lg font-semibold">
           Choose Available Slots
         </p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-x-3 gap-y-5">
           {serviceDetail?.timeSlots &&
             serviceDetail.timeSlots.map((slot, index) => {
               const personsForSlot = pCount.filter(
@@ -168,7 +174,28 @@ const AddBookingScreen = () => {
               const isSelected = Boolean(currentPerson);
 
               return (
-                <div className="flex flex-col" key={index}>
+                <div className="flex flex-col relative" key={index}>
+                  {/* Show all assigned person numbers */}
+                  {personsForSlot.length > 0 && (
+                    <div className="absolute top-[-20px] left-[10px] text-[10px] text-center mt-1 space-y-1 flex items-center justify-between w-full">
+                      {personsForSlot.map((p) => (
+                        <div
+                          key={p.id}
+                          className="relative flex items-center justify-between w-full"
+                        >
+                          <p className="mr-2">Person {p.id}</p>
+                          {/* <IonIcon
+                            icon={closeCircleOutline}
+                            className="size-5 text-red-500"
+                            onClick={() =>
+                              handleRemoveTimeSlot(p.stylistId, p.timeSlot)
+                            }
+                          /> */}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <ActionButton
                     type="button"
                     variant={isSelected ? "primary" : "outline"}
@@ -189,15 +216,6 @@ const AddBookingScreen = () => {
                   >
                     {slot.timeSlot.split("-")[0]}
                   </ActionButton>
-
-                  {/* Show all assigned person numbers */}
-                  {personsForSlot.length > 0 && (
-                    <div className="text-xs text-center mt-1 space-y-1">
-                      {personsForSlot.map((p) => (
-                        <p key={p.id}>Person {p.id}</p>
-                      ))}
-                    </div>
-                  )}
                 </div>
               );
             })}

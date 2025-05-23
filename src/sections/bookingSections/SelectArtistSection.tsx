@@ -1,14 +1,22 @@
+import { IonIcon } from "@ionic/react";
+import { closeCircleOutline } from "ionicons/icons";
 import { BASE_URL } from "../../constants/baseUrl";
-import { useAppSelector } from "../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import {
+  initializePersonArray,
+  removeStylist,
+} from "../../redux/slices/personCountSlice";
 import { StyleListType } from "../../types/types";
 import stylistImg from "/images/stylist.jpeg";
 
 interface Props {
   stylist: StyleListType;
   onClick: () => void;
+  personCountInput: number;
 }
 
-const SelectArtistSection = ({ stylist, onClick }: Props) => {
+const SelectArtistSection = ({ stylist, onClick, personCountInput }: Props) => {
+  const dispatch = useAppDispatch();
   const personCount = useAppSelector((state) => state.personCount);
 
   // Check if this stylist is selected
@@ -18,12 +26,27 @@ const SelectArtistSection = ({ stylist, onClick }: Props) => {
 
   const isSelected = Boolean(currentPerson);
 
+  const handleRemoveSelected = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(removeStylist(stylist._id));
+    dispatch(initializePersonArray(personCountInput));
+  };
+
   return (
     <div
       key={stylist._id}
-      className="mx-3 flex flex-col gap-1"
+      className="mx-3 flex flex-col gap-1 relative"
       onClick={onClick}
     >
+      {isSelected && (
+        <div
+          className="absolute top-0 right-0 z-50"
+          onClick={handleRemoveSelected}
+        >
+          <IonIcon icon={closeCircleOutline} className="size-6 text-red-500" />
+        </div>
+      )}
+
       <div className="relative w-[70px] h-[80px] rounded-2xl overflow-hidden">
         <img
           src={

@@ -134,15 +134,6 @@ const BookingConfirmScreen = () => {
       {/* service listing header*/}
       <div className="flex items-center justify-between">
         <p className="text-lg font-bold text-secondary">Service</p>
-        {/* <ActionButton
-          variant="primary"
-          size="sm"
-          type="button"
-          className="px-6 py-1.5 font-bold"
-          onClick={() => console.log("first")}
-        >
-          Edit
-        </ActionButton> */}
       </div>
       {/* service listing */}
       <div className="flex flex-col gap-2 mt-3">
@@ -150,18 +141,10 @@ const BookingConfirmScreen = () => {
           <p>
             - {selectedService?.serviceName}/ {selectedService?.serviceName_mm}
           </p>
-          <p>
-            {selectedBooking &&
-              selectedService &&
-              (
-                selectedService?.servicePrice *
-                selectedBooking?.bookingData.length
-              ).toLocaleString()}
-            KS
-          </p>
+          <p>{selectedService?.servicePrice.toLocaleString()} KS</p>
         </div>
 
-        {selectedService?.isPromotionService && (
+        {/* {selectedService?.isPromotionService && (
           <p className="text-sm text-secondary font-semibold">
             {selectedService.promotionDiscount}% off
           </p>
@@ -169,43 +152,34 @@ const BookingConfirmScreen = () => {
 
         <p className="text-sm text-secondary font-semibold">
           For x{selectedBooking?.bookingData.length} Person
-        </p>
+        </p> */}
       </div>
 
       <hr className="my-5 text-gray-fourth" />
 
-      {/* promo code input */}
-      {/* <div className="bg-white rounded-xl px-3 py-2 flex items-center gap-1 shadow">
-        <input
-          type="text"
-          className="w-full outline-none text-sm"
-          placeholder="Promo Code"
-          disabled
-        />
-        <ActionButton
-          variant="primary"
-          size="sm"
-          type="button"
-          className="px-4 py-1.5 font-bold"
-          onClick={() => console.log("first")}
-        >
-          Apply
-        </ActionButton>
-      </div> */}
-
       {/* subtotal and discount */}
-      {/* <div className="flex flex-col gap-2 mt-3">
-        <div className="flex items-center justify-between">
-          <p>Sub-Total</p>
-          <p>{selectedService?.servicePrice.toLocaleString()} KS</p>
+      {selectedService?.isPromotionService && (
+        <div className="flex flex-col gap-2 mt-3">
+          <div className="flex items-center justify-between">
+            <p>Sub-Total</p>
+            <p>
+              {selectedBooking &&
+                selectedService &&
+                (
+                  selectedService?.servicePrice *
+                  selectedBooking?.bookingData.length
+                ).toLocaleString()}{" "}
+              KS
+            </p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p>Promotion Discount</p>
+            <p>{selectedService.promotionDiscount}% Off</p>
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <p>Discount</p>
-          <p>-0 KS</p>
-        </div>
-      </div> */}
+      )}
 
-      {/* <hr className="my-5 text-gray-fourth" /> */}
+      <hr className="my-5 text-gray-fourth" />
 
       {/* total cost */}
       <div className="flex items-center justify-between">
@@ -214,7 +188,7 @@ const BookingConfirmScreen = () => {
           {selectedBooking &&
             selectedService &&
             (
-              selectedService?.servicePrice *
+              selectedService?.promotionPrice *
               selectedBooking?.bookingData.length
             ).toLocaleString()}
           KS
