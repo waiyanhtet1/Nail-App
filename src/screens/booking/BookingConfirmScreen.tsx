@@ -159,45 +159,58 @@ const BookingConfirmScreen = () => {
 
       {/* subtotal and discount */}
       {selectedService?.isPromotionService && (
-        <div className="flex flex-col gap-2 mt-3">
-          <div className="flex items-center justify-between">
-            <p>Sub-Total</p>
-            <p>
-              {selectedBooking &&
-                selectedService &&
-                (
-                  selectedService?.servicePrice *
-                  selectedBooking?.bookingData.length
-                ).toLocaleString()}{" "}
-              KS
-            </p>
+        <>
+          <div className="flex flex-col gap-2 mt-3">
+            <div className="flex items-center justify-between">
+              <p>Sub-Total</p>
+              <p>
+                {selectedBooking &&
+                  selectedService &&
+                  (
+                    selectedService?.servicePrice *
+                    selectedBooking?.bookingData.length
+                  ).toLocaleString()}{" "}
+                KS
+              </p>
+            </div>
+            <div className="flex items-center justify-between">
+              <p>Promotion Discount</p>
+              <p>{selectedService.promotionDiscount}% Off</p>
+            </div>
           </div>
-          <div className="flex items-center justify-between">
-            <p>Promotion Discount</p>
-            <p>{selectedService.promotionDiscount}% Off</p>
-          </div>
-        </div>
+          <hr className="my-5 text-gray-fourth" />
+        </>
       )}
-
-      <hr className="my-5 text-gray-fourth" />
 
       {/* total cost */}
       <div className="flex items-center justify-between">
         <p>Total Cost</p>
-        <p>
-          {selectedBooking &&
-            selectedService &&
-            (
-              selectedService?.promotionPrice *
-              selectedBooking?.bookingData.length
-            ).toLocaleString()}
-          KS
-        </p>
+        {selectedService?.isPromotionService ? (
+          <p>
+            {selectedBooking &&
+              selectedService &&
+              (
+                selectedService?.promotionPrice *
+                selectedBooking?.bookingData.length
+              ).toLocaleString()}
+            KS
+          </p>
+        ) : (
+          <p>
+            {selectedBooking &&
+              selectedService &&
+              (
+                selectedService?.servicePrice *
+                selectedBooking?.bookingData.length
+              ).toLocaleString()}{" "}
+            KS
+          </p>
+        )}
       </div>
 
       {/* payment methods */}
       <p className="text-lg font-bold text-secondary mt-7">Payment Method</p>
-      <div className="flex items-center justify-center flex-wrap gap-5 mt-3">
+      <div className="flex items-center flex-wrap gap-5 mt-3">
         {paymentsList.map((item) => (
           <ActionButton
             key={item.id}
