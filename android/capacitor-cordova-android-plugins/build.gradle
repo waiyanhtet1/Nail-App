@@ -46,7 +46,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
     implementation "org.apache.cordova:framework:$cordovaAndroidVersion"
     // SUB-PROJECT DEPENDENCIES START
-    implementation "com.onesignal:OneSignal:5.1.29"
+    implementation "com.onesignal:OneSignal:5.1.33"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
     // SUB-PROJECT DEPENDENCIES END
 }
