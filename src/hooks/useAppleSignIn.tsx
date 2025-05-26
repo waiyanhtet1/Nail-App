@@ -36,6 +36,9 @@ export const useAppleSignIn = () => {
     }
 
     try {
+      console.log("[Apple] Waiting for Apple Sign-In response...");
+      alert("[Apple] Waiting for Apple Sign-In response...");
+
       const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
         cordova.plugins.SignInWithApple.signin(
           {
@@ -46,16 +49,26 @@ export const useAppleSignIn = () => {
         );
       });
 
+      console.log("[Apple] Got Apple Sign-In response:", res);
+      alert("[Apple] Got Apple Sign-In response:" + JSON.stringify(res));
+
       const provider = new OAuthProvider("apple.com");
       const credential = provider.credential({
         idToken: res.identityToken,
         rawNonce: undefined,
       });
 
+      console.log("[Firebase] Signing in with credential...");
+      alert("[Firebase] Signing in with credential...");
+
       const firebaseResult = await signInWithCredential(auth, credential);
-      console.log("Firebase user:", firebaseResult.user);
+
+      console.log("[Firebase] Sign-In success:", firebaseResult.user);
+      alert(
+        "[Firebase] Sign-In success:" + JSON.stringify(firebaseResult.user)
+      );
     } catch (error) {
-      console.error("Apple Sign-In error:", error);
+      console.error("[Apple Sign-In error]:", error);
     }
   };
 
