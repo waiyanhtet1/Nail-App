@@ -24,6 +24,7 @@ export const useAppleSignIn = () => {
       "deviceready",
       () => {
         setIsCordovaReady(true);
+        console.log("[Cordova] Device is ready.");
       },
       false
     );
@@ -31,7 +32,8 @@ export const useAppleSignIn = () => {
 
   const signInWithApple = async () => {
     if (!isCordovaReady) {
-      console.warn("Cordova not ready yet");
+      console.warn("[Cordova] Not ready yet");
+      alert("[Cordova] Not ready yet");
       return;
     }
 
@@ -50,7 +52,11 @@ export const useAppleSignIn = () => {
       });
 
       console.log("[Apple] Got Apple Sign-In response:", res);
-      alert("[Apple] Got Apple Sign-In response:" + JSON.stringify(res));
+      alert("[Apple] Got Apple Sign-In response:\n" + JSON.stringify(res));
+
+      if (!res.identityToken) {
+        throw new Error("No identityToken received from Apple.");
+      }
 
       const provider = new OAuthProvider("apple.com");
       const credential = provider.credential({
@@ -61,15 +67,31 @@ export const useAppleSignIn = () => {
       console.log("[Firebase] Signing in with credential...");
       alert("[Firebase] Signing in with credential...");
 
-      const firebaseResult = await signInWithCredential(auth, credential);
+      const firebaseResult = await signInWithCredential(auth, credential).catch(
+        (err) => {
+          console.error(
+            "[Firebase] Caught error during signInWithCredential:",
+            err
+          );
+          alert(
+            "[Firebase] Caught error: " + (err?.message || JSON.stringify(err))
+          );
+          throw err;
+        }
+      );
 
       console.log("[Firebase] Sign-In success:", firebaseResult.user);
       alert(
-        "[Firebase] Sign-In success:" + JSON.stringify(firebaseResult.user)
+        "[Firebase] Sign-In success:\n" + JSON.stringify(firebaseResult.user)
       );
-    } catch (error) {
-      console.error("[Firebase Sign-In error]:", error);
-      alert("[Firebase Sign-In error]: " + error);
+    } catch (error: any) {
+      console.error("[Apple/Firebase Sign-In error]:", error);
+      alert(
+        "[Sign-In Error]:\n" +
+          (error?.code || "no-code") +
+          " - " +
+          (error?.message || JSON.stringify(error))
+      );
     }
   };
 
