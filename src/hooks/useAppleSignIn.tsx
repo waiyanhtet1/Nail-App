@@ -55,7 +55,7 @@ export const useAppleSignIn = () => {
       const provider = new OAuthProvider("apple.com");
       const credential = provider.credential({
         idToken: res.identityToken,
-        rawNonce: undefined,
+        // rawNonce: undefined,
       });
 
       console.log("[Firebase] Signing in with credential...");
@@ -68,7 +68,8 @@ export const useAppleSignIn = () => {
         "[Firebase] Sign-In success:" + JSON.stringify(firebaseResult.user)
       );
     } catch (error) {
-      console.error("[Apple Sign-In error]:", error);
+      console.error("[Firebase Sign-In error]:", error);
+      alert("[Firebase Sign-In error]: " + error);
     }
   };
 
