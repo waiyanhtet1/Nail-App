@@ -81,13 +81,17 @@ const MyStamps = () => {
                     (collectedItem) => collectedItem._id === item._id
                   );
 
+                  const showRed = isCollected;
+                  const showImage =
+                    (isCollected && item.isDiscountAvailable) ||
+                    (!isCollected && item.isDiscountAvailable);
+
                   return (
                     <StampCard
                       key={item._id}
                       stampNumber={item.stampOrder.toString()}
-                      {...(isCollected
-                        ? { isRedColor: true }
-                        : { isStamped: item.isDiscountAvailable })}
+                      isRedColor={showRed}
+                      isStamped={showImage}
                     />
                   );
                 })}

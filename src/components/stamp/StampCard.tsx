@@ -10,9 +10,9 @@ const StampCard = ({ isStamped, isRedColor, stampNumber }: Props) => {
   return (
     <div
       className={`w-[40px] h-[50px] rounded-tl-3xl rounded-tr-3xl rounded-bl-lg rounded-br-lg
-    flex items-center justify-center ${
-      isRedColor ? "bg-red-primary" : "border border-gray-second"
-    }`}
+      flex items-center justify-center ${
+        isRedColor ? "bg-red-primary" : "border border-gray-second"
+      }`}
     >
       {isStamped ? (
         <img src={stampImg} className="w-full h-full object-contain" />
