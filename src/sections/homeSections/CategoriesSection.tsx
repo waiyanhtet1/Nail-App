@@ -35,7 +35,7 @@ const CategoriesSection = ({ services }: Props) => {
 
       {/* services list */}
       <div
-        className="mt-3 flex items-center overflow-x-scroll no-scrollbar"
+        className="mt-3 flex items-start overflow-x-scroll no-scrollbar"
         ref={elementRef}
       >
         {services &&
