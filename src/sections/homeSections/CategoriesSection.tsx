@@ -26,7 +26,7 @@ const CategoriesSection = ({ services }: Props) => {
   }, []);
 
   return (
-    <div className="px-5 pb-7">
+    <div className="px-5 pb-5">
       {/* title */}
       <div className="flex items-center justify-between text-secondary mb-2">
         <p className="font-bold">Categories</p>
@@ -35,7 +35,7 @@ const CategoriesSection = ({ services }: Props) => {
 
       {/* services list */}
       <div
-        className="mt-3 flex items-center overflow-x-scroll no-scrollbar"
+        className="mt-3 flex items-start overflow-x-scroll no-scrollbar"
         ref={elementRef}
       >
         {services &&
