@@ -1,0 +1,41 @@
+{
+	"appId": "com.barbiestudio.app",
+	"appName": "Barbie’s Studio",
+	"webDir": "dist",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 3000,
+			"launchAutoHide": true,
+			"launchFadeOutDuration": 3000,
+			"backgroundColor": "rgba(244, 233, 231, 1)",
+			"showSpinner": true,
+			"spinnerColor": "rgba(157, 48, 32, 1)",
+			"iosSpinnerStyle": "small",
+			"androidSpinnerStyle": "large",
+			"androidScaleType": "FIT_CENTER",
+			"androidSplashResourceName": "splash",
+			"splashFullScreen": true,
+			"splashImmersive": true,
+			"layoutName": "launch_screen",
+			"useDialog": true,
+			"scale": "fit"
+		},
+		"GoogleAuth": {
+			"scopes": [
+				"profile",
+				"email"
+			],
+			"serverClientId": "422262531684-nt83vc99hg47n85jtesq4ktk6ono2e7a.apps.googleusercontent.com",
+			"forceCodeForRefreshToken": true
+		}
+	},
+	"packageClassList": [
+		"AppPlugin",
+		"DevicePlugin",
+		"DialogPlugin",
+		"SplashScreenPlugin",
+		"ToastPlugin",
+		"GoogleAuth",
+		"CDVPlugin"
+	]
+}

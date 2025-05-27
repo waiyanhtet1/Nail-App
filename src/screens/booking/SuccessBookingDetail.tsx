@@ -48,30 +48,44 @@ const SuccessBookingDetail = () => {
 
       <p className="text-lg font-semibold">Service</p>
 
+      {/* service list */}
       <Item
         title={`${selectedService?.serviceName} / ${selectedService?.serviceName_mm}`}
         value={`${
           selectedBooking &&
           selectedService &&
-          (
-            selectedService?.servicePrice * selectedBooking?.bookingData.length
-          ).toLocaleString()
+          selectedService?.servicePrice.toLocaleString()
         } KS`}
       />
 
-      {selectedService?.isPromotionService && (
-        <p className="text-sm text-secondary font-semibold">
-          {selectedService.promotionDiscount}% off
-        </p>
-      )}
-
-      <p className="text-sm text-secondary font-semibold">
-        For x{selectedBooking?.bookingData.length} Person
-      </p>
-
       <hr className="my-3 text-gray-fourth" />
 
-      <Item
+      {/* subtotal and discount */}
+      {selectedService?.isPromotionService && (
+        <>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <p>Sub-Total</p>
+              <p>
+                {selectedBooking &&
+                  selectedService &&
+                  (
+                    selectedService?.servicePrice *
+                    selectedBooking?.bookingData.length
+                  ).toLocaleString()}{" "}
+                KS
+              </p>
+            </div>
+            <div className="flex items-center justify-between mt-3">
+              <p>Promotion Discount</p>
+              <p>{selectedService.promotionDiscount}% Off</p>
+            </div>
+          </div>
+          <hr className="my-5 text-gray-fourth" />
+        </>
+      )}
+
+      {/* <Item
         title="Total Coast"
         value={`${
           selectedBooking &&
@@ -81,7 +95,32 @@ const SuccessBookingDetail = () => {
           ).toLocaleString()
         }
           KS`}
-      />
+      /> */}
+      {/* total cost */}
+      <div className="flex items-center justify-between">
+        <p>Total Cost</p>
+        {selectedService?.isPromotionService ? (
+          <p>
+            {selectedBooking &&
+              selectedService &&
+              (
+                selectedService?.promotionPrice *
+                selectedBooking?.bookingData.length
+              ).toLocaleString()}
+            KS
+          </p>
+        ) : (
+          <p>
+            {selectedBooking &&
+              selectedService &&
+              (
+                selectedService?.servicePrice *
+                selectedBooking?.bookingData.length
+              ).toLocaleString()}{" "}
+            KS
+          </p>
+        )}
+      </div>
 
       <ActionButton
         variant="outline"

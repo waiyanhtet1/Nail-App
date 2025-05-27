@@ -26,6 +26,7 @@ export type HomePageDataType = {
 };
 
 export type ServiceType = {
+  promotionPrice: number;
   _id: string;
   serviceName: string;
   serviceName_mm: string;

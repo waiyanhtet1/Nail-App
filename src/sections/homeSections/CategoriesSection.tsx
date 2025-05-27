@@ -26,7 +26,7 @@ const CategoriesSection = ({ services }: Props) => {
   }, []);
 
   return (
-    <div className="px-5 pb-7">
+    <div className="px-5 pb-5">
       {/* title */}
       <div className="flex items-center justify-between text-secondary mb-2">
         <p className="font-bold">Categories</p>
@@ -35,21 +35,24 @@ const CategoriesSection = ({ services }: Props) => {
 
       {/* services list */}
       <div
-        className="mt-3 flex items-center flex-nowrap overflow-x-scroll no-scrollbar"
+        className="mt-3 flex items-center overflow-x-scroll no-scrollbar"
         ref={elementRef}
       >
         {services &&
           services.map((item) => (
-            <div key={item._id} className="mx-3 flex flex-col gap-1">
-              <div className="bg-white w-[60px] h-[60px] rounded-full">
+            <div
+              key={item._id}
+              className="min-w-[100px] min-h-[100px] flex flex-col gap-3 items-center"
+            >
+              <div className="bg-white w-[70px] h-[70px] rounded-full">
                 <img
                   src={`${BASE_URL}${item.categoryIcon}`}
                   alt=""
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>
-              <p className="text-secondary text-xs font-semibold">
-                {item.categoryName.substring(0, 8)}
+              <p className="text-secondary text-center text-xs font-semibold">
+                {item.categoryName}
               </p>
             </div>
           ))}

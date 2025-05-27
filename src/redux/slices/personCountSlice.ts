@@ -62,6 +62,23 @@ export const personCountSlice = createSlice({
       }
     },
 
+    removeStylist: (state, action: PayloadAction<string>) => {
+      return state.filter((person) => person.stylistId !== action.payload);
+    },
+
+    removeTimeSlotDispatch: (
+      state,
+      action: PayloadAction<{ stylistId: string; timeSlot: string }>
+    ) => {
+      const { stylistId, timeSlot } = action.payload;
+      const target = state.find(
+        (p) => p.stylistId === stylistId && p.timeSlot === timeSlot
+      );
+      if (target) {
+        target.timeSlot = "";
+      }
+    },
+
     resetPersonCount: () => initialState,
   },
 });
@@ -71,6 +88,8 @@ export const {
   setStylistDispatch,
   setTimeSlotDispatch,
   resetPersonCount,
+  removeStylist,
+  removeTimeSlotDispatch,
 } = personCountSlice.actions;
 
 export default personCountSlice.reducer;
