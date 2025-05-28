@@ -43,7 +43,9 @@ const ServiceListSection = () => {
         <IonIcon
           icon={arrowBackOutline}
           className="size-5"
-          onClick={() => dispatch(setSelectedCategory(null))}
+          onClick={() => {
+            dispatch(setSelectedCategory(null));
+          }}
         />
         <p className="text-sm text-secondary">
           Categories / {selectedCategory?.name}
