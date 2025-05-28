@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { BASE_URL } from "../../constants/baseUrl";
+import { useAppDispatch } from "../../redux/hook";
+import { setSelectedCategory } from "../../redux/slices/bookingSlice";
 import { serviceCategoriesType } from "../../types/types";
 
 interface Props {
@@ -8,6 +10,7 @@ interface Props {
 
 const CategoriesSection = ({ services }: Props) => {
   const elementRef = useRef<HTMLDivElement | null>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,8 +46,17 @@ const CategoriesSection = ({ services }: Props) => {
             <div
               key={item._id}
               className="min-w-[100px] min-h-[100px] flex flex-col gap-3 items-center"
+              onClick={() =>
+                dispatch(
+                  setSelectedCategory({
+                    id: item._id,
+                    name: item.categoryName,
+                    icon: item.categoryIcon,
+                  })
+                )
+              }
             >
-              <div className="bg-white w-[60px] h-[60px] rounded-full">
+              <div className="bg-white w-[70px] h-[70px] rounded-full">
                 <img
                   src={`${BASE_URL}${item.categoryIcon}`}
                   alt=""

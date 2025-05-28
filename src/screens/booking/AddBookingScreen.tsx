@@ -1,6 +1,6 @@
 import { IonIcon } from "@ionic/react";
 import axios from "axios";
-import { arrowBackOutline } from "ionicons/icons";
+import { arrowBackOutline, closeCircleOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { setSelectedBooking } from "../../redux/slices/bookingSlice";
 import {
   initializePersonArray,
+  removeTimeSlotDispatch,
   resetPersonCount,
   setStylistDispatch,
   setTimeSlotDispatch,
@@ -101,10 +102,10 @@ const AddBookingScreen = () => {
     navigate("/confirm-booking");
   }
 
-  // const handleRemoveTimeSlot = (stylistId: string, timeSlot: string) => {
-  //   dispatch(removeTimeSlotDispatch({ stylistId, timeSlot }));
-  //   dispatch(initializePersonArray(personCount));
-  // };
+  const handleRemoveTimeSlot = (stylistId: string, timeSlot: string) => {
+    dispatch(removeTimeSlotDispatch({ stylistId, timeSlot }));
+    // dispatch(initializePersonArray(personCount));
+  };
 
   return (
     <div>
@@ -136,7 +137,7 @@ const AddBookingScreen = () => {
       </div>
 
       {isLoading && <p className="text-center">Loading Info...</p>}
-      <div className="flex flex-col gap-5 m-5 overflow-y-scroll h-[calc(100vh-250px)] no-scrollbar">
+      <div className="flex flex-col gap-5 p-5 overflow-y-scroll h-[calc(100vh-250px)] no-scrollbar">
         {/* artist list */}
         <p className="text-secondary text-lg font-semibold">
           Choose Nail Artists
@@ -184,13 +185,13 @@ const AddBookingScreen = () => {
                           className="relative flex items-center justify-between w-full"
                         >
                           <p className="mr-2">Person {p.id}</p>
-                          {/* <IonIcon
+                          <IonIcon
                             icon={closeCircleOutline}
                             className="size-5 text-red-500"
                             onClick={() =>
                               handleRemoveTimeSlot(p.stylistId, p.timeSlot)
                             }
-                          /> */}
+                          />
                         </div>
                       ))}
                     </div>
