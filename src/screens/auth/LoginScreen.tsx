@@ -182,7 +182,6 @@ const LoginScreen = () => {
 
     try {
       console.log("[Apple] Waiting for Apple Sign-In response...");
-      alert("[Apple] Waiting for Apple Sign-In response...");
 
       const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
         cordova.plugins.SignInWithApple.signin(
@@ -195,7 +194,6 @@ const LoginScreen = () => {
       });
 
       console.log("[Apple] Got Apple Sign-In response:", res);
-      alert("[Apple] Got Apple Sign-In response:\n" + JSON.stringify(res));
 
       if (!res.identityToken) {
         throw new Error("No identityToken received from Apple.");
@@ -209,13 +207,9 @@ const LoginScreen = () => {
       });
 
       console.log("[Firebase] OAuth Credential:", credential);
-      alert("[Firebase] Signing in with credential...");
 
       const firebaseResult = await signInWithCredential(auth, credential);
       console.log("[Firebase] Sign-In success:", firebaseResult.user);
-      alert(
-        "[Firebase] Sign-In success:\n" + JSON.stringify(firebaseResult.user)
-      );
 
       const user = firebaseResult.user;
 
