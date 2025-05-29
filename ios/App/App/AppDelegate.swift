@@ -1,7 +1,7 @@
 import UIKit
 import Capacitor
 import FirebaseCore
-import GoogleSignIn // <--- !!! IMPORTANT: This import is crucial for GIDSignIn !!!
+import GoogleSignIn // <<< IMPORTANT: This import is essential for GIDSignIn to be recognized >>>
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,81 +9,76 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.OpenURLOptionsKey: Any]?) -> Bool {
-        // Initialize Firebase. This should be one of the first things you do.
+        // 1. Initialize Firebase
+        // This is typically the first step to set up Firebase services in your app.
         FirebaseApp.configure()
 
-        // Configure Google Sign-In with your client ID.
-        // This client ID must be your REVERSED_CLIENT_ID from your GoogleService-Info.plist.
-        // Example: "com.googleusercontent.apps.1234567890-abcdefghijklmnop"
-        // Ensure that the value below exactly matches your REVERSED_CLIENT_ID.
-        GIDSignIn.sharedInstance.clientID = "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15"
+        // 2. Configure Google Sign-In
+        // For Google Sign-In SDK versions 5.0 and later, you must use GIDConfiguration.
+        // Replace "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15"
+        // with your actual REVERSED_CLIENT_ID obtained from your GoogleService-Info.plist.
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15")
 
-        // *** ESSENTIAL for Capacitor ***
-        // This call ensures that Capacitor's core and its plugins are properly initialized
-        // when your application launches. Do not remove this.
-        ApplicationDelegateProxy.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        // 3. Initialize Capacitor
+        // This line is absolutely CRITICAL for Capacitor to set up its core
+        // and initialize all your installed Capacitor plugins correctly at app launch.
+        // The error "Extra argument 'didFinishLaunchingWithOptions'" is fixed by using
+        // the correct label 'launchOptions:' as expected by Capacitor's proxy.
+        ApplicationDelegateProxy.shared.application(application, launchOptions: launchOptions)
 
         return true
     }
 
-    // This method is called when your app receives a URL, which is vital for
-    // handling redirects from Google Sign-In and other deep links/URL schemes.
+    // This method is called when your app receives a URL. It's vital for:
+    // - Handling redirects from Google Sign-In (OAuth flow).
+    // - Processing deep links and custom URL schemes for other parts of your app or other plugins.
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // First, attempt to handle the URL with Google Sign-In.
-        // If GIDSignIn.sharedInstance.handle(url) returns true, it means Google Sign-In
-        // has processed its specific redirect URL. In this case, we're done,
-        // and we return true.
+        // The `handle()` method returns true if the URL was a Google Sign-In specific redirect.
         let googleHandled = GIDSignIn.sharedInstance.handle(url)
 
+        // If Google Sign-In successfully processed the URL, we can stop here.
         if googleHandled {
             return true
         }
 
-        // If the URL was not handled by Google Sign-In, pass it to Capacitor's
-        // ApplicationDelegateProxy. This allows other Capacitor plugins (like App, Browser,
-        // or any custom plugins handling URL schemes) to process the URL.
+        // If the URL was NOT handled by Google Sign-In, pass it to Capacitor's
+        // ApplicationDelegateProxy. This allows other Capacitor plugins (e.g., App, Browser,
+        // or any custom plugins that handle URL schemes) to process it.
         return ApplicationDelegateProxy.shared.application(app, open: url, options: options)
     }
 
     // This method is for handling Universal Links (also known as iOS Universal Links or Deep Links).
-    // It's important for Capacitor plugins that might use Universal Links (e.g., App, Browser, etc.).
+    // It's important for Capacitor plugins that might use Universal Links (e.g., sharing, app routing).
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        // Pass the user activity to Capacitor's ApplicationDelegateProxy
-        // to ensure Universal Links are processed correctly by Capacitor plugins.
+        // Pass the user activity (which contains the Universal Link URL) to Capacitor's handler.
+        // This ensures Universal Links are processed correctly by Capacitor plugins.
         return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
 
-    // MARK: - App Lifecycle Methods (Optional, can be left as is or removed if unused)
-    // These are standard AppDelegate lifecycle methods that you can use for
-    // pausing tasks, saving data, etc., as your app changes states.
+    // MARK: - Optional App Lifecycle Methods
+    // These are standard UIApplicationDelegate methods. You can keep them if you need
+    // to perform specific actions when your app changes its lifecycle state (e.g., pauses, enters background).
+    // If you don't need them, you can remove the empty implementations.
+
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state.
-        // This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message)
-        // or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks.
-        // Games should use this method to pause the game.
+        // Use this method to pause ongoing tasks, disable timers, etc.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers,
-        // and store enough application state information to restore your application to its
-        // current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead
-        // of applicationWillTerminate: when the user quits.
+        // Use this method to release shared resources, save user data, etc., when the app enters background.
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state;
-        // here you can undo many of the changes made on entering the background.
+        // Called as part of the transition from the background to the active state.
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive.
-        // If the application was previously in the background, optionally refresh the user interface.
+        // Restart any tasks that were paused while the application was inactive.
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate.
-        // See also applicationDidEnterBackground:.
+        // Called when the application is about to terminate.
     }
 }
