@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import {
   GoogleAuthProvider,
+  OAuthProvider,
   signInWithCredential,
   signInWithPopup,
 } from "firebase/auth";
@@ -18,7 +20,6 @@ import Loading from "../../components/Loading";
 import SocialIconButton from "../../components/SocialIconButton";
 import { BASE_URL } from "../../constants/baseUrl";
 import { auth } from "../../firebase";
-import { useAppleSignIn } from "../../hooks/useAppleSignIn";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
@@ -26,6 +27,19 @@ import { useAppSelector } from "../../redux/hook";
 import { loginValidationSchema } from "../../validations/loginValidation";
 import appleIcon from "/images/apple.svg";
 import googleIcon from "/images/google.svg";
+
+declare let cordova: any;
+
+type AppleSignInResponse = {
+  identityToken: string;
+  authorizationCode: string;
+  user?: string;
+  email?: string;
+  fullName?: {
+    givenName?: string;
+    familyName?: string;
+  };
+};
 
 type Inputs = {
   userName: string;
@@ -36,6 +50,7 @@ const LoginScreen = () => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isCordovaReady, setIsCordovaReady] = useState(false);
 
   const { playerId } = useAppSelector((state) => state.token);
 
@@ -146,7 +161,91 @@ const LoginScreen = () => {
   };
 
   // =============== apple login ==========================
-  const { signInWithApple } = useAppleSignIn();
+
+  useEffect(() => {
+    document.addEventListener(
+      "deviceready",
+      () => {
+        setIsCordovaReady(true);
+        console.log("[Cordova] Device is ready.");
+      },
+      false
+    );
+  }, []);
+
+  const signInWithApple = async () => {
+    if (!isCordovaReady) {
+      console.warn("[Cordova] Not ready yet");
+      alert("[Cordova] Not ready yet");
+      return;
+    }
+
+    try {
+      console.log("[Apple] Waiting for Apple Sign-In response...");
+      alert("[Apple] Waiting for Apple Sign-In response...");
+
+      const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
+        cordova.plugins.SignInWithApple.signin(
+          {
+            requestedScopes: [0, 1], // 0: Full Name, 1: Email
+          },
+          resolve,
+          reject
+        );
+      });
+
+      console.log("[Apple] Got Apple Sign-In response:", res);
+      alert("[Apple] Got Apple Sign-In response:\n" + JSON.stringify(res));
+
+      if (!res.identityToken) {
+        throw new Error("No identityToken received from Apple.");
+      }
+
+      const provider = new OAuthProvider("apple.com");
+      const credential = provider.credential({
+        idToken: res.identityToken,
+        // You can include rawNonce if you're using that for security
+        // rawNonce: nonce,
+      });
+
+      console.log("[Firebase] OAuth Credential:", credential);
+      alert("[Firebase] Signing in with credential...");
+
+      const firebaseResult = await signInWithCredential(auth, credential);
+      console.log("[Firebase] Sign-In success:", firebaseResult.user);
+      alert(
+        "[Firebase] Sign-In success:\n" + JSON.stringify(firebaseResult.user)
+      );
+
+      const user = firebaseResult.user;
+
+      if (user) {
+        const nameFromApple =
+          user.displayName ||
+          (res.fullName?.givenName
+            ? `${res.fullName?.givenName} ${res.fullName?.familyName}`
+            : "AppleUser");
+
+        const response = await axios.post(`${BASE_URL}/login`, {
+          username: nameFromApple,
+          password: user.uid,
+          playerId: playerId,
+        });
+
+        localStorage.setItem("userInfo", encryptData(response.data));
+        showToast("Login success");
+        navigate("/");
+      }
+    } catch (error: any) {
+      console.error("[Apple/Firebase Sign-In error]:", error);
+      alert(
+        "[Sign-In Error]:\n" +
+          (error?.code || "no-code") +
+          " - " +
+          (error?.message || JSON.stringify(error))
+      );
+    }
+  };
 
   // =============== apple login ==========================
 
