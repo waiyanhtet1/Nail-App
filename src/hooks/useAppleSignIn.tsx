@@ -44,7 +44,7 @@ export const useAppleSignIn = () => {
       const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
         cordova.plugins.SignInWithApple.signin(
           {
-            requestedScopes: [0, 1],
+            requestedScopes: [0, 1], // 0: Full Name, 1: Email
           },
           resolve,
           reject
@@ -61,25 +61,14 @@ export const useAppleSignIn = () => {
       const provider = new OAuthProvider("apple.com");
       const credential = provider.credential({
         idToken: res.identityToken,
-        // rawNonce: undefined,
+        // You can include rawNonce if you're using that for security
+        // rawNonce: nonce,
       });
 
-      console.log("[Firebase] Signing in with credential...");
+      console.log("[Firebase] OAuth Credential:", credential);
       alert("[Firebase] Signing in with credential...");
 
-      const firebaseResult = await signInWithCredential(auth, credential).catch(
-        (err) => {
-          console.error(
-            "[Firebase] Caught error during signInWithCredential:",
-            err
-          );
-          alert(
-            "[Firebase] Caught error: " + (err?.message || JSON.stringify(err))
-          );
-          throw err;
-        }
-      );
-
+      const firebaseResult = await signInWithCredential(auth, credential);
       console.log("[Firebase] Sign-In success:", firebaseResult.user);
       alert(
         "[Firebase] Sign-In success:\n" + JSON.stringify(firebaseResult.user)
