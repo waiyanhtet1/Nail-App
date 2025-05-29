@@ -17,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // For Google Sign-In SDK versions 5.0 and later, you must use GIDConfiguration.
         // Replace "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15"
         // with your actual REVERSED_CLIENT_ID obtained from your GoogleService-Info.plist.
-        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15")
+       GIDSignIn.sharedInstance().clientID = "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15"
+
 
         // 3. Initialize Capacitor
         // This line is absolutely CRITICAL for Capacitor to set up its core
