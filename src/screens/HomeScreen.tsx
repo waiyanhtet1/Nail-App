@@ -34,7 +34,7 @@ const HomeScreen = ({ homePageData, isLoading }: Props) => {
   return (
     <div>
       <Header />
-      <div className="overflow-y-scroll h-[calc(100vh-190px)] no-scrollbar">
+      <div className="overflow-y-scroll h-[calc(100vh-230px)] no-scrollbar">
         {isLoading ? (
           <Loading />
         ) : selectedCategory !== null ? (

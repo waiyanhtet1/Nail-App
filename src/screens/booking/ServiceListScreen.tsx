@@ -41,7 +41,7 @@ const ServiceListScreen = () => {
 
   return (
     <div>
-      <div className="h-[100px] rounded-b-[2.5rem] bg-primary shadow-lg p-5 flex items-end">
+      <div className="h-[130px] rounded-b-[2.5rem] bg-primary shadow-lg p-5 flex items-end">
         <div className="flex items-center w-full">
           {/* back and title */}
           <IonIcon

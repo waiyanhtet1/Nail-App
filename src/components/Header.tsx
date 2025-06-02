@@ -9,8 +9,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-max rounded-b-[2.5rem] bg-primary shadow-lg p-5">
-      <div className="flex items-center justify-between mb-1">
+    <div className="h-[150px] relative rounded-b-[2.5rem] bg-primary shadow-lg p-5">
+      <div className="flex items-center justify-between absolute bottom-0 right-0 left-0 p-5">
         {/* logo and name */}
         <div className="flex items-center">
           <img src={logo} alt="" className="h-[70px]" />

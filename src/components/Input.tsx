@@ -8,6 +8,8 @@ interface Props {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   isBorderRed?: boolean;
   errorMessage?: string;
+  value?: string;
+  setValue?: (value: string) => void;
 }
 
 const Input = ({
@@ -18,6 +20,8 @@ const Input = ({
   inputProps,
   isBorderRed,
   errorMessage,
+  value,
+  setValue,
 }: Props) => {
   return (
     <div>
@@ -32,6 +36,8 @@ const Input = ({
       >
         <input
           type={type}
+          defaultValue={value}
+          onChange={(e) => setValue && setValue(e.target.value)}
           className="w-full text-base outline-none"
           {...inputProps}
         />

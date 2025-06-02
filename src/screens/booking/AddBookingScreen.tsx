@@ -110,7 +110,7 @@ const AddBookingScreen = () => {
   return (
     <div>
       <div className="h-max rounded-b-[2.5rem] bg-primary shadow-lg p-5">
-        <div className="flex items-center mt-8">
+        <div className="flex items-center mt-12">
           {/* back and title */}
           <IonIcon
             icon={arrowBackOutline}
@@ -126,7 +126,7 @@ const AddBookingScreen = () => {
         </div>
 
         {/* info */}
-        <div className="mt-8">
+        <div className="mt-5">
           <ChooseDateInput
             closingDays={closingDays}
             onDateChange={(dateString: string) =>
