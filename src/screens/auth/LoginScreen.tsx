@@ -169,17 +169,21 @@ const LoginScreen = () => {
         />
 
         {/* password input */}
-        <div className="my-3">
-          <Input
-            type={isPasswordShow ? "text" : "password"}
-            label="Password"
-            Icon={isPasswordShow ? eyeOutline : eyeOffOutline}
-            IconOnClick={() => setIsPasswordShow((prev) => !prev)}
-            inputProps={{ ...register("password") }}
-            isBorderRed={errors.password !== undefined}
-            errorMessage={errors.password?.message}
-          />
-          <p className="mt-2 text-gray-second text-sm flex justify-end">
+        <Input
+          type={isPasswordShow ? "text" : "password"}
+          label="Password"
+          Icon={isPasswordShow ? eyeOutline : eyeOffOutline}
+          IconOnClick={() => setIsPasswordShow((prev) => !prev)}
+          inputProps={{ ...register("password") }}
+          isBorderRed={errors.password !== undefined}
+          errorMessage={errors.password?.message}
+        />
+
+        <div className="flex justify-end">
+          <p
+            className="my-3 text-gray-second text-sm  w-max"
+            onClick={() => navigate("/forgot-password")}
+          >
             Forget Password?
           </p>
         </div>

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { SplashScreen } from "@capacitor/splash-screen";
 import "@codetrix-studio/capacitor-google-auth"; // only needed for web
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { setupIonicReact } from "@ionic/react";
@@ -17,7 +18,10 @@ import AppBackButtonHandler from "./AppBackButtonHandler";
 import MainLayout from "./layouts/MainLayout";
 import { useAppDispatch } from "./redux/hook";
 import { setToken } from "./redux/slices/tokenSlice";
+import ForgotPassword from "./screens/auth/ForgotPassword";
 import LoginScreen from "./screens/auth/LoginScreen";
+import NewPasswordScreen from "./screens/auth/NewPasswordScreen";
+import OTPScreen from "./screens/auth/OTPScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
 import AddBookingScreen from "./screens/booking/AddBookingScreen";
 import BookingConfirmScreen from "./screens/booking/BookingConfirmScreen";
@@ -39,6 +43,8 @@ setupIonicReact({
 const App = () => {
   const location = useLocation();
 
+  SplashScreen.hide();
+
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
@@ -54,6 +60,10 @@ const App = () => {
               <Route index path="/" element={<MainLayout />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/otp" element={<OTPScreen />} />
+              <Route path="/new-password" element={<NewPasswordScreen />} />
+
               {/* booking screens */}
               <Route path="/add-booking" element={<AddBookingScreen />} />
               <Route

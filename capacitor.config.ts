@@ -6,21 +6,11 @@ const config: CapacitorConfig = {
   webDir: "dist",
   plugins: {
     SplashScreen: {
-      launchShowDuration: 3000,
-      launchAutoHide: true,
-      launchFadeOutDuration: 3000,
-      backgroundColor: "rgba(244, 233, 231, 1)",
-      androidSplashResourceName: "splash",
-      androidScaleType: "FIT_CENTER",
-      showSpinner: true,
-      androidSpinnerStyle: "large",
-      iosSpinnerStyle: "small",
-      spinnerColor: "rgba(157, 48, 32, 1)",
-      splashFullScreen: true,
-      splashImmersive: true,
-      layoutName: "launch_screen",
-      useDialog: true,
-      scale: "fit",
+      launchAutoHide: true, // ensures splash screen disappears immediately
+      splashFullScreen: false,
+      splashImmersive: false,
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
     },
     GoogleAuth: {
       scopes: ["profile", "email"],
