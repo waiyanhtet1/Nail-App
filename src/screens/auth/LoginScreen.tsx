@@ -10,6 +10,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
+import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -28,8 +29,6 @@ import { loginValidationSchema } from "../../validations/loginValidation";
 import appleIcon from "/images/apple.svg";
 import googleIcon from "/images/google.svg";
 
-declare let cordova: any;
-
 type AppleSignInResponse = {
   identityToken: string;
   authorizationCode: string;
@@ -41,6 +40,8 @@ type AppleSignInResponse = {
   };
 };
 
+declare let cordova: any;
+
 type Inputs = {
   userName: string;
   password: string;
@@ -50,7 +51,7 @@ const LoginScreen = () => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [isCordovaReady, setIsCordovaReady] = useState(false);
+  // const [isCordovaReady, setIsCordovaReady] = useState(false);
 
   const { playerId } = useAppSelector((state) => state.token);
 
@@ -162,21 +163,14 @@ const LoginScreen = () => {
 
   // =============== apple login ==========================
 
-  useEffect(() => {
-    document.addEventListener(
-      "deviceready",
-      () => {
-        setIsCordovaReady(true);
-        console.log("[Cordova] Device is ready.");
-      },
-      false
-    );
-  }, []);
-
   const signInWithApple = async () => {
-    if (!isCordovaReady) {
-      console.warn("[Cordova] Not ready yet");
-      alert("[Cordova] Not ready yet");
+    if (!Capacitor.isNativePlatform()) {
+      alert("Apple Sign-In is only available on iOS devices.");
+      return;
+    }
+
+    if (!cordova?.plugins?.SignInWithApple) {
+      alert("[Apple Sign-In] Cordova plugin not available.");
       return;
     }
 
@@ -186,52 +180,58 @@ const LoginScreen = () => {
       const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
         cordova.plugins.SignInWithApple.signin(
           {
-            requestedScopes: [0, 1], // 0: Full Name, 1: Email
+            requestedScopes: [0, 1], // 0 = Full Name, 1 = Email
           },
           resolve,
           reject
         );
       });
 
-      console.log("[Apple] Got Apple Sign-In response:", res);
+      console.log("[Apple] Raw response:", res);
 
       if (!res.identityToken) {
         throw new Error("No identityToken received from Apple.");
       }
 
+      // Decode identityToken to extract sub (Apple user ID) and email
+      const decoded: any = jwtDecode(res.identityToken);
+      const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
+      const email = decoded.email ?? res.email ?? null;
+
+      const displayName =
+        res.fullName?.givenName || res.fullName?.familyName
+          ? `${res.fullName?.givenName || ""} ${
+              res.fullName?.familyName || ""
+            }`.trim()
+          : "AppleUser";
+
+      console.log("[Apple] Decoded ID Token:", decoded);
+      console.log("[Apple] User ID:", appleUserId);
+      console.log("[Apple] Email:", email);
+      console.log("[Apple] Display Name:", displayName);
+
+      // Authenticate with Firebase
       const provider = new OAuthProvider("apple.com");
       const credential = provider.credential({
         idToken: res.identityToken,
-        // You can include rawNonce if you're using that for security
-        // rawNonce: nonce,
       });
 
-      console.log("[Firebase] OAuth Credential:", credential);
-
       const firebaseResult = await signInWithCredential(auth, credential);
-      console.log("[Firebase] Sign-In success:", firebaseResult.user);
+      const firebaseUser = firebaseResult.user;
 
-      const user = firebaseResult.user;
+      console.log("firebaseUser", firebaseUser);
 
-      if (user) {
-        const nameFromApple =
-          user.displayName ||
-          (res.fullName?.givenName
-            ? `${res.fullName?.givenName} ${res.fullName?.familyName}`
-            : "AppleUser");
+      const response = await axios.post(`${BASE_URL}/login`, {
+        username: displayName || email,
+        password: appleUserId, // ✅ Use sub as password
+        playerId: playerId,
+      });
 
-        const response = await axios.post(`${BASE_URL}/login`, {
-          username: nameFromApple,
-          password: user.uid,
-          playerId: playerId,
-        });
-
-        localStorage.setItem("userInfo", encryptData(response.data));
-        showToast("Login success");
-        navigate("/");
-      }
+      localStorage.setItem("userInfo", encryptData(response.data));
+      showToast("Login success");
+      navigate("/");
     } catch (error: any) {
-      console.error("[Apple/Firebase Sign-In error]:", error);
+      console.error("[Apple Sign-In Error]:", error);
       alert(
         "[Sign-In Error]:\n" +
           (error?.code || "no-code") +

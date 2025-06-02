@@ -52,8 +52,8 @@ const ProfileScreen = () => {
 
   return (
     <>
-      <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
-        <div className="flex items-center">
+      <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg px-5">
+        <div className="flex items-center pt-13">
           {/* back and title */}
           <IonIcon
             icon={arrowBackOutline}

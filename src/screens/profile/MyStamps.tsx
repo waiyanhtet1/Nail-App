@@ -41,8 +41,8 @@ const MyStamps = () => {
   return (
     <div className="overflow-y-scroll no-scrollbar">
       {/* header */}
-      <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
-        <div className="flex items-center">
+      <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg px-5">
+        <div className="flex items-center pt-13">
           {/* back and title */}
           <IonIcon
             icon={arrowBackOutline}
@@ -54,7 +54,7 @@ const MyStamps = () => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 mt-7 text-secondary ">
+        <div className="flex flex-col gap-3 mt-7 text-secondary">
           <p className="text-lg font-semibold">Loyalty Card</p>
           <p className="text-sm">Name : {userInfo.username}</p>
           <p className="text-sm">

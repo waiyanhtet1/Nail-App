@@ -7,7 +7,7 @@ const MyBookingScreen = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="mt-10">
+    <div className="pt-15">
       {/* back and title */}
       <div className="flex items-center mb-5 mx-5">
         <IonIcon
