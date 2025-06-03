@@ -1,6 +1,8 @@
 import UIKit
 import Capacitor
 import FirebaseCore
+import GoogleSignIn
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,7 +11,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        GIDSignIn.sharedInstance.clientID = "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15"
+        // GIDSignIn.sharedInstance.clientID = "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15"
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: "com.googleusercontent.apps.103072032496-eshh54us7j8mriv22ebu0iberhqb4j15")
+
         return true
     }
 
