@@ -110,7 +110,7 @@ const RegisterScreen = () => {
     try {
       const googleUser = await GoogleAuth.signIn();
 
-      const { idToken } = googleUser.authentication;
+      const idToken = googleUser.authentication?.idToken;
       if (!idToken) throw new Error("No ID token found");
 
       const credential = GoogleAuthProvider.credential(idToken);

@@ -20,7 +20,7 @@ const config: CapacitorConfig = {
       splashImmersive: true,
       layoutName: "launch_screen",
       useDialog: true,
-      scale: "fit",
+      // scale: "fit",
     },
     GoogleAuth: {
       scopes: ["profile", "email"],
