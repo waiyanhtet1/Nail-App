@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import {
   GoogleAuthProvider,
-  OAuthProvider,
   signInWithCredential,
   signInWithPopup,
 } from "firebase/auth";
@@ -213,15 +212,15 @@ const RegisterScreen = () => {
       console.log("[Apple] Display Name:", displayName);
 
       // Authenticate with Firebase
-      const provider = new OAuthProvider("apple.com");
-      const credential = provider.credential({
-        idToken: res.identityToken,
-      });
+      // const provider = new OAuthProvider("apple.com");
+      // const credential = provider.credential({
+      //   idToken: res.identityToken,
+      // });
 
-      const firebaseResult = await signInWithCredential(auth, credential);
-      const firebaseUser = firebaseResult.user;
+      // const firebaseResult = await signInWithCredential(auth, credential);
+      // const firebaseUser = firebaseResult.user;
 
-      console.log("firebaseUser", firebaseUser);
+      // console.log("firebaseUser", firebaseUser);
 
       // const response = await axios.post(`${BASE_URL}/login`, {
       //   username: email,
