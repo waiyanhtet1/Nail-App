@@ -219,7 +219,7 @@ const LoginScreen = () => {
       // const firebaseUser = firebaseResult.user;
 
       const response = await axios.post(`${BASE_URL}/login`, {
-        username: displayName || email,
+        username: email,
         password: appleUserId, // ✅ Use sub as password
         playerId: playerId,
       });

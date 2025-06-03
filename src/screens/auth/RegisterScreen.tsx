@@ -233,7 +233,7 @@ const RegisterScreen = () => {
       // navigate("/");
 
       const response = await axios.post(`${BASE_URL}/register`, {
-        username: displayName || email,
+        username: email,
         // phone: data.phone,
         email: email,
         password: appleUserId,
