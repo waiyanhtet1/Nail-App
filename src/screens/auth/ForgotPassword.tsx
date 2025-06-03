@@ -1,21 +1,37 @@
 import { IonIcon } from "@ionic/react";
+import axios from "axios";
 import { arrowBack } from "ionicons/icons";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import Loading from "../../components/Loading";
+import { BASE_URL } from "../../constants/baseUrl";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleRequestOTP = () => {
+  const handleRequestOTP = async () => {
     if (email === "") setIsError(true);
     else {
       setIsError(false);
-      navigate("/otp");
+      setIsLoading(true);
+
+      try {
+        await axios.post(`${BASE_URL}/request-otp`, {
+          email,
+        });
+        toast.success("Email sent.");
+        navigate("/otp");
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
     }
   };
 
@@ -44,14 +60,18 @@ const ForgotPassword = () => {
           errorMessage={isError ? "Email is required" : ""}
         />
 
-        <Button
-          type="submit"
-          variant="primary"
-          className="mt-10"
-          onClick={handleRequestOTP}
-        >
-          Request OTP
-        </Button>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Button
+            type="submit"
+            variant="primary"
+            className="mt-10"
+            onClick={handleRequestOTP}
+          >
+            Request OTP
+          </Button>
+        )}
       </div>
     </div>
   );
