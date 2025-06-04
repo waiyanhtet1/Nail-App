@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import {
+  FacebookAuthProvider,
   GoogleAuthProvider,
   signInWithCredential,
   signInWithPopup,
+  UserCredential,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import { useState } from "react";
@@ -23,7 +26,10 @@ import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { useAppSelector } from "../../redux/hook";
 import { singUpValidation } from "../../validations/signUpValidation";
+import facebookIcon from "/images/facebook.svg";
 import googleIcon from "/images/google.svg";
+
+declare let facebookConnectPlugin: any;
 
 type Inputs = {
   userName: string;
@@ -152,6 +158,66 @@ const RegisterScreen = () => {
     }
   };
 
+  const signInWithFacebookNative = async (): Promise<UserCredential> => {
+    return new Promise((resolve, reject) => {
+      facebookConnectPlugin.login(
+        ["public_profile", "email"],
+        async (response: any) => {
+          if (response.authResponse) {
+            const { accessToken } = response.authResponse;
+
+            const credential = FacebookAuthProvider.credential(accessToken);
+            try {
+              const userCredential = await signInWithCredential(
+                auth,
+                credential
+              );
+              resolve(userCredential); // now properly typed
+            } catch (firebaseError) {
+              reject(firebaseError);
+            }
+          } else {
+            reject("No auth response");
+          }
+        },
+        (error: any) => reject(error)
+      );
+    });
+  };
+
+  const signInWithFacebookWeb = async () => {
+    const provider = new FacebookAuthProvider();
+    const userCredential = await signInWithPopup(auth, provider);
+    return userCredential;
+  };
+
+  const handleFacebookRegister = async () => {
+    try {
+      const userCredential = Capacitor.isNativePlatform()
+        ? await signInWithFacebookNative()
+        : await signInWithFacebookWeb();
+
+      const user = userCredential.user;
+
+      const response = await axios.post(`${BASE_URL}/register`, {
+        username: user.displayName,
+        email: user.email,
+        password: user.uid,
+        DOB: null,
+        playerId,
+      });
+
+      localStorage.setItem("userInfo", encryptData(response.data.user));
+      navigate("/");
+      showToast("Register success");
+      toast.success("Register success");
+    } catch (err) {
+      console.error("Facebook login error", err);
+      showToast("Facebook Register Fail!");
+      toast.error("Facebook Register Fail");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-3 pt-10 px-5 md:px-52">
       <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
@@ -218,7 +284,10 @@ const RegisterScreen = () => {
 
       {/* social icon */}
       <div className="flex items-center justify-center gap-5">
-        {/* <SocialIconButton icon={facebookIcon} /> */}
+        <SocialIconButton
+          icon={facebookIcon}
+          onClick={handleFacebookRegister}
+        />
         <SocialIconButton icon={googleIcon} onClick={handleGoogleRegister} />
       </div>
 
