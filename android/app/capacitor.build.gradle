@@ -17,6 +17,7 @@ dependencies {
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-toast')
     implementation project(':codetrix-studio-capacitor-google-auth')
+    implementation "com.facebook.android:facebook-android-sdk:11.3.0"
     implementation "com.onesignal:OneSignal:5.1.29"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
 }
