@@ -37,7 +37,7 @@ const ChattingScreen = () => {
   useEffect(() => {
     if (!userInfo?._id) return;
 
-    const socket = io(`https://chat.tefop.co`, {
+    const socket = io(`https://chat.tefop.co/chat`, {
       transports: ["websocket"],
       query: { userId: userInfo._id },
     });
