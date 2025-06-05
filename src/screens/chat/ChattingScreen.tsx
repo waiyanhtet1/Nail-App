@@ -78,10 +78,7 @@ const ChattingScreen = () => {
     const payload = JSON.stringify({
       type: "clientMessage",
       senderId: userInfo._id,
-      content: CryptoJS.AES.encrypt(
-        inputValue.trim(),
-        decryptionKey
-      ).toString(),
+      content: inputValue.trim(),
     });
 
     socketRef.current.send(payload);
