@@ -1,9 +1,11 @@
 import { IonIcon } from "@ionic/react";
+import CryptoJS from "crypto-js";
 import { arrowBackOutline, linkOutline, sendOutline } from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import ChatMessage from "../../components/chat/ChatMessage";
+import { decryptionKey } from "../../libs/encryption";
 import { getLoginUser } from "../../libs/userUtils";
 
 interface ServerToClientEvents {
@@ -45,7 +47,15 @@ const ChattingScreen = () => {
 
     socket.on("adminReply", (data) => {
       console.log("adminReply", data);
-      setMessages((prev) => [...prev, { sender: "Admin", text: data.content }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "Admin",
+          text: CryptoJS.AES.decrypt(data.content, decryptionKey).toString(
+            CryptoJS.enc.Utf8
+          ),
+        },
+      ]);
     });
 
     socket.on("connect_error", (err) => {
