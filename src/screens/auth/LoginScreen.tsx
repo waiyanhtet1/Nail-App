@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import {
-  FacebookAuthProvider,
   GoogleAuthProvider,
   signInWithCredential,
   signInWithPopup,
-  UserCredential,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
@@ -26,10 +23,9 @@ import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import { useAppSelector } from "../../redux/hook";
 import { loginValidationSchema } from "../../validations/loginValidation";
-import facebookIcon from "/images/facebook.svg";
 import googleIcon from "/images/google.svg";
 
-declare let facebookConnectPlugin: any;
+// declare let facebookConnectPlugin: any;
 
 type Inputs = {
   userName: string;
@@ -149,63 +145,63 @@ const LoginScreen = () => {
     }
   };
 
-  const signInWithFacebookNative = async (): Promise<UserCredential> => {
-    return new Promise((resolve, reject) => {
-      facebookConnectPlugin.login(
-        ["public_profile", "email"],
-        async (response: any) => {
-          if (response.authResponse) {
-            const { accessToken } = response.authResponse;
+  // const signInWithFacebookNative = async (): Promise<UserCredential> => {
+  //   return new Promise((resolve, reject) => {
+  //     facebookConnectPlugin.login(
+  //       ["public_profile", "email"],
+  //       async (response: any) => {
+  //         if (response.authResponse) {
+  //           const { accessToken } = response.authResponse;
 
-            const credential = FacebookAuthProvider.credential(accessToken);
-            try {
-              const userCredential = await signInWithCredential(
-                auth,
-                credential
-              );
-              resolve(userCredential); // now properly typed
-            } catch (firebaseError) {
-              reject(firebaseError);
-            }
-          } else {
-            reject("No auth response");
-          }
-        },
-        (error: any) => reject(error)
-      );
-    });
-  };
+  //           const credential = FacebookAuthProvider.credential(accessToken);
+  //           try {
+  //             const userCredential = await signInWithCredential(
+  //               auth,
+  //               credential
+  //             );
+  //             resolve(userCredential); // now properly typed
+  //           } catch (firebaseError) {
+  //             reject(firebaseError);
+  //           }
+  //         } else {
+  //           reject("No auth response");
+  //         }
+  //       },
+  //       (error: any) => reject(error)
+  //     );
+  //   });
+  // };
 
-  const signInWithFacebookWeb = async () => {
-    const provider = new FacebookAuthProvider();
-    const userCredential = await signInWithPopup(auth, provider);
-    return userCredential;
-  };
+  // const signInWithFacebookWeb = async () => {
+  //   const provider = new FacebookAuthProvider();
+  //   const userCredential = await signInWithPopup(auth, provider);
+  //   return userCredential;
+  // };
 
-  const handleFacebookRegister = async () => {
-    try {
-      const userCredential = Capacitor.isNativePlatform()
-        ? await signInWithFacebookNative()
-        : await signInWithFacebookWeb();
+  // const handleFacebookRegister = async () => {
+  //   try {
+  //     const userCredential = Capacitor.isNativePlatform()
+  //       ? await signInWithFacebookNative()
+  //       : await signInWithFacebookWeb();
 
-      const user = userCredential.user;
+  //     const user = userCredential.user;
 
-      const response = await axios.post(`${BASE_URL}/login`, {
-        username: user.email,
-        password: user.uid,
-        playerId: playerId,
-      });
+  //     const response = await axios.post(`${BASE_URL}/login`, {
+  //       username: user.email,
+  //       password: user.uid,
+  //       playerId: playerId,
+  //     });
 
-      localStorage.setItem("userInfo", encryptData(response.data.user));
-      navigate("/");
-      showToast("Login success");
-      toast.success("Login success");
-    } catch (err) {
-      console.error("Facebook login error", err);
-      showToast("Facebook Login Fail!");
-      toast.error("Facebook Login Fail");
-    }
-  };
+  //     localStorage.setItem("userInfo", encryptData(response.data.user));
+  //     navigate("/");
+  //     showToast("Login success");
+  //     toast.success("Login success");
+  //   } catch (err) {
+  //     console.error("Facebook login error", err);
+  //     showToast("Facebook Login Fail!");
+  //     toast.error("Facebook Login Fail");
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">
@@ -269,10 +265,10 @@ const LoginScreen = () => {
 
       {/* social icon */}
       <div className="flex items-center justify-center gap-5">
-        <SocialIconButton
+        {/* <SocialIconButton
           icon={facebookIcon}
           onClick={handleFacebookRegister}
-        />
+        /> */}
         <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} />
       </div>
 
