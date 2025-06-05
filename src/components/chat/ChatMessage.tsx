@@ -13,8 +13,8 @@ const ChatMessage = ({
   message,
   senderName,
   photo,
-  timestamp,
-}: Props) => {
+}: // timestamp,
+Props) => {
   return (
     <div
       className={`flex flex-col ${
@@ -46,7 +46,7 @@ const ChatMessage = ({
         <p className="font-semibold">
           {variant === "send" ? senderName : "Barbie's Studio"}
         </p>
-        <p className="text-gray">{timestamp || "10:00 AM"}</p>
+        {/* <p className="text-gray">{timestamp || "10:00 AM"}</p> */}
       </div>
     </div>
   );
