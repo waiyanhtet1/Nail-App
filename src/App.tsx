@@ -5,7 +5,7 @@ import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import OneSignal from "onesignal-cordova-plugin";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import {
   Route,
@@ -15,7 +15,9 @@ import {
 } from "react-router-dom"; // Import BrowserRouter
 import { CSSTransition, TransitionGroup } from "react-transition-group"; // Import transition components
 import AppBackButtonHandler from "./AppBackButtonHandler";
+import UserNameBottomSheet from "./components/bottomSheets/UserNameBottomSheet";
 import MainLayout from "./layouts/MainLayout";
+import { getLoginUser } from "./libs/userUtils";
 import { useAppDispatch } from "./redux/hook";
 import { setToken } from "./redux/slices/tokenSlice";
 import ForgotPassword from "./screens/auth/ForgotPassword";
@@ -43,6 +45,16 @@ setupIonicReact({
 
 const App = () => {
   const location = useLocation();
+  const userInfo = getLoginUser();
+
+  const [isUserNameUpdateModalOpen, setIsUserNameUpdateModalOpen] =
+    useState(false);
+
+  useEffect(() => {
+    if (userInfo && userInfo.username === "AppleUser") {
+      setIsUserNameUpdateModalOpen(true);
+    }
+  }, [userInfo, userInfo?.username]);
 
   return (
     <>
@@ -91,6 +103,13 @@ const App = () => {
           </div>
         </CSSTransition>
       </TransitionGroup>
+
+      {isUserNameUpdateModalOpen && (
+        <UserNameBottomSheet
+          isOpen={isUserNameUpdateModalOpen}
+          setOpen={setIsUserNameUpdateModalOpen}
+        />
+      )}
     </>
   );
 };

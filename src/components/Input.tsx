@@ -10,6 +10,7 @@ interface Props {
   errorMessage?: string;
   value?: string;
   setValue?: (value: string) => void;
+  isBorder?: boolean;
 }
 
 const Input = ({
@@ -22,6 +23,7 @@ const Input = ({
   errorMessage,
   value,
   setValue,
+  isBorder,
 }: Props) => {
   return (
     <div>
@@ -32,7 +34,7 @@ const Input = ({
       <div
         className={`p-3 bg-white rounded-lg flex items-center gap-2 ${
           isBorderRed && "border border-red-500"
-        } shadow`}
+        } ${isBorder && "border border-secondary"} shadow`}
       >
         <input
           type={type}

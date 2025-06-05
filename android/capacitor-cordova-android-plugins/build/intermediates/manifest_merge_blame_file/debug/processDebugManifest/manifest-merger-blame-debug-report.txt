@@ -1,0 +1,61 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:amazon="http://schemas.amazon.com/apk/res/android"
+3    xmlns:android="http://schemas.android.com/apk/res/android"
+4    package="capacitor.cordova.android.plugins" >
+5
+6    <uses-sdk android:minSdkVersion="23" />
+7
+8    <queries>
+8-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:12:1-14:11
+9        <package android:name="com.facebook.katana" />
+9-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:13:3-48
+9-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:13:12-46
+10    </queries>
+11
+12    <application>
+12-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:4:1-11:15
+13        <meta-data
+13-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:5:1-93
+14            android:name="com.facebook.sdk.ApplicationId"
+14-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:5:12-57
+15            android:value="@string/fb_app_id" />
+15-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:5:58-91
+16        <meta-data
+16-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:6:1-97
+17            android:name="com.facebook.sdk.ApplicationName"
+17-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:6:12-59
+18            android:value="@string/fb_app_name" />
+18-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:6:60-95
+19        <meta-data
+19-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:7:1-122
+20            android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+20-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:7:12-67
+21            android:value="@bool/fb_auto_log_app_events_enabled" />
+21-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:7:68-120
+22        <meta-data
+22-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:8:1-133
+23            android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled"
+23-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:8:12-73
+24            android:value="@bool/fb_advertiser_id_collection_enabled" />
+24-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:8:74-131
+25
+26        <activity
+26-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:9:1-177
+27            android:name="com.facebook.FacebookActivity"
+27-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:9:11-55
+28            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+28-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:9:56-139
+29            android:label="@string/fb_app_name" />
+29-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:9:140-175
+30
+31        <provider
+31-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:10:1-160
+32            android:name="com.facebook.FacebookContentProvider"
+32-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:10:83-134
+33            android:authorities="com.facebook.app.FacebookContentProviderundefined"
+33-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:10:11-82
+34            android:exported="true" />
+34-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml:10:135-158
+35    </application>
+36
+37</manifest>

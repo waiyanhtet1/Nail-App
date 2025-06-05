@@ -46,7 +46,7 @@ const SettingScreen = () => {
   return (
     <>
       <div className="h-[200px] rounded-b-[2.5rem] bg-primary shadow-lg p-5">
-        <div className="flex items-center">
+        <div className="flex items-center pt-10">
           {/* back and title */}
           <IonIcon
             icon={arrowBackOutline}
