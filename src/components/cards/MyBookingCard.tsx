@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants/baseUrl";
 import { formatDateTimeString } from "../../libs/dateUtils";
+import { getLoginUser } from "../../libs/userUtils";
 import { useAppDispatch } from "../../redux/hook";
 import {
   setSelectedCategory,
@@ -19,14 +21,19 @@ import image from "/images/category.png";
 interface Props {
   variant: "active" | "completed" | "cancel";
   booking: BookingType;
+  onUpdateData?: () => void;
 }
 
-const MyBookingCard = ({ variant, booking }: Props) => {
+const MyBookingCard = ({ variant, booking, onUpdateData }: Props) => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [detail, setDetail] = useState<BookingDetailType | null>(null);
   const [isReBookConfirmOpen, setIsReBookConfirmOpen] = useState(false);
+  const [isCancelBookingConfirmOpen, setIsCancelBookingConfirmOpen] =
+    useState(false);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const userInfo = getLoginUser();
 
   const getBookingDetail = useCallback(async () => {
     const { data } = await axios.get(
@@ -53,8 +60,31 @@ const MyBookingCard = ({ variant, booking }: Props) => {
     navigate("/add-booking");
   }
 
-  console.log("booking", booking);
-  console.log(detail);
+  const handleCancelBooking = async () => {
+    setIsCancelBookingConfirmOpen(false);
+
+    const response = axios.delete(
+      `${BASE_URL}/booking/${booking.bookingId}/${userInfo._id}`
+    );
+
+    toast.promise(response, {
+      loading: "Removing...",
+      success: "Booking Removed!",
+      error: "Failed to remove booking!",
+    });
+
+    response
+      .then(() => {
+        if (onUpdateData) onUpdateData();
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response?.data?.message);
+        }
+      });
+
+    console.log(booking);
+  };
 
   return (
     <div className="bg-white rounded-xl p-3">
@@ -86,7 +116,8 @@ const MyBookingCard = ({ variant, booking }: Props) => {
 
         {/* price */}
         <p className="whitespace-nowrap text-sm font-bold self-start">
-          {detail && detail?.totalCost.toLocaleString()} KS
+          {detail && detail?.totalCost.toLocaleString()}
+          KS
         </p>
       </div>
 
@@ -109,9 +140,9 @@ const MyBookingCard = ({ variant, booking }: Props) => {
               type="button"
               size="sm"
               className="rounded-xl w-full"
-              onClick={() => console.log("first")}
+              onClick={() => setIsCancelBookingConfirmOpen(true)}
             >
-              Active
+              Cancel Booking
             </ActionButton>
           )}
           {variant === "completed" && (
@@ -166,6 +197,18 @@ const MyBookingCard = ({ variant, booking }: Props) => {
           actionButtonText="Re-Book"
           actionButtonHandler={handleReBooking}
           variant="primary"
+        />
+      )}
+
+      {isCancelBookingConfirmOpen && (
+        <ConfirmBottomSlider
+          isOpen={isCancelBookingConfirmOpen}
+          setOpen={(value) => setIsCancelBookingConfirmOpen(value)}
+          title="Cancel Booking?"
+          description={`Cancel this booked "${booking.service?.serviceName}" Service?`}
+          actionButtonText="Remove Booking"
+          actionButtonHandler={handleCancelBooking}
+          variant="error"
         />
       )}
     </div>

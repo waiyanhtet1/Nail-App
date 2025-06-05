@@ -75,7 +75,10 @@ const SegmentButton = () => {
           </IonSegment>
           <IonSegmentView>
             <IonSegmentContent id="first">
-              <ActiveBookingCardList bookings={activeBookings} />
+              <ActiveBookingCardList
+                bookings={activeBookings}
+                onUpdateData={getBookingList}
+              />
             </IonSegmentContent>
             <IonSegmentContent id="second">
               <CompletedBookingCardList bookings={completedBookings} />

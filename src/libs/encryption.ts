@@ -3,6 +3,9 @@ import CryptoJS from "crypto-js";
 
 const SECRET_KEY = "ss7IC2FbQhDUXpWUX1Ex2ZV02PaDcpOz4UVZ3JQ5QKQ=";
 
+export const decryptionKey =
+  "alskjfalsjdkflasdjkfoiweroi34rjk34r90349i3409309fi";
+
 // Function to encrypt data
 export const encryptData = (data: any) => {
   return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY).toString();
