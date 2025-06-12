@@ -1,7 +1,7 @@
 {
   "name": "nail-app",
   "private": true,
-  "version": "1.10.0",
+  "version": "1.13.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -25,7 +25,6 @@
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/vite": "^4.0.16",
     "axios": "^1.8.4",
-    "cordova-plugin-facebook-connect": "^3.2.0",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
     "firebase": "^11.6.1",

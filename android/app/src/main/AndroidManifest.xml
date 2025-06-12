@@ -32,11 +32,6 @@
         android:name="android.support.FILE_PROVIDER_PATHS"
         android:resource="@xml/file_paths"
       />
-      
-      <meta-data
-        android:name="com.facebook.sdk.ApplicationId"
-        android:value="@string/fb_app_id"
-      />
 
         </provider>
     </application>

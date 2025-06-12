@@ -2,7 +2,6 @@ import { Browser } from "@capacitor/browser";
 import { IonIcon } from "@ionic/react";
 import axios from "axios";
 import {
-  calendarOutline,
   callOutline,
   chatbubbleOutline,
   chevronForwardOutline,
@@ -28,7 +27,6 @@ const ChatHomeScreen = () => {
   const getBusinessData = async () => {
     try {
       const { data } = await axios.get(`${BASE_URL}/admin/business-config`);
-      console.log(data);
       setBusinessData(data);
     } catch (error) {
       console.log(error);
@@ -59,14 +57,14 @@ const ChatHomeScreen = () => {
         </div>
 
         {/* closing days */}
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <div className="w-[30px] h-[30px] rounded-full bg-primary-second flex items-center justify-center p-1">
             <IonIcon icon={calendarOutline} className="size-5 text-gray" />
           </div>
           <p className="text-sm font-semibold">
             Closed in : {businessData?.closingDays.join(", ")}
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* social cards */}
