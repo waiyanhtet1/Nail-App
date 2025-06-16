@@ -1,3 +1,4 @@
+import stampWhiteImg from "/images/logo-white.png";
 import stampImg from "/images/logo.png";
 
 interface Props {
@@ -15,7 +16,11 @@ const StampCard = ({ isStamped, isRedColor, stampNumber }: Props) => {
     }`}
     >
       {isStamped ? (
-        <img src={stampImg} className="w-full h-full object-contain" />
+        isRedColor ? (
+          <img src={stampWhiteImg} className="w-full h-full object-contain" />
+        ) : (
+          <img src={stampImg} className="w-full h-full object-contain" />
+        )
       ) : (
         <p className={`font-bold text-secondary ${isRedColor && "text-white"}`}>
           {stampNumber}
