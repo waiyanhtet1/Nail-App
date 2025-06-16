@@ -211,27 +211,6 @@ const RegisterScreen = () => {
       console.log("[Apple] Email:", email);
       console.log("[Apple] Display Name:", displayName);
 
-      // Authenticate with Firebase
-      // const provider = new OAuthProvider("apple.com");
-      // const credential = provider.credential({
-      //   idToken: res.identityToken,
-      // });
-
-      // const firebaseResult = await signInWithCredential(auth, credential);
-      // const firebaseUser = firebaseResult.user;
-
-      // console.log("firebaseUser", firebaseUser);
-
-      // const response = await axios.post(`${BASE_URL}/login`, {
-      //   username: email,
-      //   password: appleUserId, // ✅ Use sub as password
-      //   playerId: playerId,
-      // });
-
-      // localStorage.setItem("userInfo", encryptData(response.data));
-      // showToast("Login success");
-      // navigate("/");
-
       const response = await axios.post(`${BASE_URL}/register`, {
         username: displayName || email,
         // phone: data.phone,
@@ -247,12 +226,15 @@ const RegisterScreen = () => {
       toast.success("Register success");
     } catch (error: any) {
       console.error("[Apple Sign-In Error]:", error);
-      alert(
-        "[Sign-In Error]:\n" +
-          (error?.code || "no-code") +
-          " - " +
-          (error?.message || JSON.stringify(error))
-      );
+      // alert(
+      //   "[Sign-In Error]:\n" +
+      //     (error?.code || "no-code") +
+      //     " - " +
+      //     (error?.message || JSON.stringify(error))
+      // );
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.msg);
+      }
     }
   };
 

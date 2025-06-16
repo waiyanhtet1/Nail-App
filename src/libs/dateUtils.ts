@@ -49,3 +49,21 @@ export const daysToNumbers = (days: string[]) => {
 
   return days.map((day) => dayMap[day]);
 };
+
+export function formatWithLeadingZero(value: string) {
+  const num = Number(value);
+
+  if (num >= 0 && num <= 9) {
+    return `0${num}`;
+  } else {
+    return value;
+  }
+}
+
+export function removeLeadingZero(value: string) {
+  if (value.startsWith("0")) {
+    return value.slice(1);
+  } else {
+    return value;
+  }
+}

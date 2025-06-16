@@ -6,6 +6,7 @@ import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import Button from "../Button";
+import DOBSelect from "../DOBSelect";
 import Input from "../Input";
 import Loading from "../Loading";
 
@@ -19,31 +20,64 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
   const userInfo = getLoginUser();
 
   const [usernameInput, setUsernameInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState({
+    username: false,
+    email: false,
+    dob: false,
+  });
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
 
   const handleUpdateUsername = async () => {
     if (usernameInput === "") {
-      setIsError(true);
+      setIsError((prev) => ({
+        ...prev,
+        username: true,
+      }));
       return;
-    } else {
-      setIsError(false);
-      setIsLoading(true);
-      try {
-        const { data } = await axios.put(`${BASE_URL}/update-profile`, {
-          userId: userInfo._id,
-          username: usernameInput,
-        });
-
-        console.log("updated", data);
-        localStorage.setItem("userInfo", encryptData(data.user));
-        showToast(data.message);
-        setOpen(false);
-      } catch (error) {
-        console.log(error);
-      }
-      setIsLoading(false);
     }
+
+    if (emailInput === "") {
+      setIsError((prev) => ({
+        ...prev,
+        email: true,
+      }));
+      return;
+    }
+
+    if (day === "" || month === "" || year === "") {
+      setIsError((prev) => ({
+        ...prev,
+        dob: true,
+      }));
+      return;
+    }
+
+    setIsError({
+      username: false,
+      email: false,
+      dob: false,
+    });
+    setIsLoading(true);
+    try {
+      const { data } = await axios.put(`${BASE_URL}/update-profile`, {
+        userId: userInfo._id,
+        username: usernameInput,
+        email: emailInput,
+        DOB: `${day}/${month}/${year}`,
+      });
+
+      console.log("updated", data);
+      localStorage.setItem("userInfo", encryptData(data.user));
+      showToast(data.message);
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -51,7 +85,7 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
       <Sheet
         isOpen={isOpen}
         onClose={() => setOpen(false)}
-        snapPoints={[600, 450]}
+        snapPoints={[600, 600]}
         initialSnap={1}
         disableDrag
       >
@@ -68,6 +102,7 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
               </p>
 
               <div className="mt-7 flex flex-col gap-3">
+                {/* username input */}
                 <div className="">
                   <Input
                     isBorder
@@ -76,13 +111,47 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
                     value={usernameInput}
                     setValue={setUsernameInput}
                   />
-                  {isError && (
+                  {isError.username && (
                     <p className="text-sm text-red-primary">
                       Username is required
                     </p>
                   )}
                 </div>
 
+                {/* email input */}
+                <div className="">
+                  <Input
+                    isBorder
+                    label="Email"
+                    type="text"
+                    value={emailInput}
+                    setValue={setEmailInput}
+                  />
+                  {isError.email && (
+                    <p className="text-sm text-red-primary">
+                      Email is required
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-gray">Date of Birth</p>
+                  </div>
+                  <DOBSelect
+                    day={day}
+                    setDay={setDay}
+                    month={month}
+                    setMonth={setMonth}
+                    year={year}
+                    setYear={setYear}
+                  />
+                  {isError.dob && (
+                    <p className="text-sm text-red-primary">
+                      Date of Birth is required
+                    </p>
+                  )}
+                </div>
                 {isLoading ? (
                   <Loading />
                 ) : (

@@ -209,15 +209,6 @@ const LoginScreen = () => {
       console.log("[Apple] Email:", email);
       console.log("[Apple] Display Name:", displayName);
 
-      // Authenticate with Firebase
-      // const provider = new OAuthProvider("apple.com");
-      // const credential = provider.credential({
-      //   idToken: res.identityToken,
-      // });
-
-      // const firebaseResult = await signInWithCredential(auth, credential);
-      // const firebaseUser = firebaseResult.user;
-
       const response = await axios.post(`${BASE_URL}/login`, {
         username: email,
         password: appleUserId, // ✅ Use sub as password
@@ -229,12 +220,15 @@ const LoginScreen = () => {
       navigate("/");
     } catch (error: any) {
       console.error("[Apple Sign-In Error]:", error);
-      alert(
-        "[Sign-In Error]:\n" +
-          (error?.code || "no-code") +
-          " - " +
-          (error?.message || JSON.stringify(error))
-      );
+      // alert(
+      //   "[Sign-In Error]:\n" +
+      //     (error?.code || "no-code") +
+      //     " - " +
+      //     (error?.message || JSON.stringify(error))
+      // );
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.msg);
+      }
     }
   };
 

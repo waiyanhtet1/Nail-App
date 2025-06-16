@@ -76,12 +76,12 @@ const ProfileScreen = () => {
             <p className="font-semibold text-lg">{userInfo?.username}</p>
             {/* <p className="font-light">{userInfo.phone}</p> */}
             <p className="font-light">{userInfo?.email}</p>
-            {/* <p
+            <p
               className="px-5 py-1 w-max text-white bg-gray text-sm rounded-lg mt-3"
               onClick={() => navigate("edit")}
             >
               Edit
-            </p> */}
+            </p>
           </div>
         </div>
       </div>
