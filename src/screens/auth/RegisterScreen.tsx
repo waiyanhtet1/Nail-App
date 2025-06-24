@@ -21,6 +21,7 @@ import Loading from "../../components/Loading";
 import SocialIconButton from "../../components/SocialIconButton";
 import { BASE_URL } from "../../constants/baseUrl";
 import { auth } from "../../firebase";
+import { formatWithLeadingZero } from "../../libs/dateUtils";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { useAppSelector } from "../../redux/hook";
@@ -70,7 +71,12 @@ const RegisterScreen = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true);
 
-    const dateProps = day && month && year ? `${day}/${month}/${year}` : null;
+    const dateProps =
+      day && month && year
+        ? `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
+            day
+          )}T00:00:00.000Z`
+        : null;
 
     try {
       const response = await axios.post(`${BASE_URL}/register`, {

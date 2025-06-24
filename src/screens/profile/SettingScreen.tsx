@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IonIcon } from "@ionic/react";
 import axios from "axios";
+import { deleteUser } from "firebase/auth";
 import { arrowBackOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
+import { auth } from "../../firebase";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import { UserType } from "../../types/userType";
@@ -34,11 +37,21 @@ const SettingScreen = () => {
         userId: userInfo?._id,
       });
 
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        await deleteUser(currentUser);
+      }
+
       localStorage.removeItem("userInfo");
       navigate("/");
-      showToast("account deactived");
-    } catch (error) {
+      showToast("account deactivated");
+    } catch (error: any) {
       console.log(error);
+      if (error.code === "auth/requires-recent-login") {
+        showToast("Please log in again before deleting your account.");
+      } else {
+        showToast("Failed to delete account");
+      }
     }
     setIsLoading(false);
   }

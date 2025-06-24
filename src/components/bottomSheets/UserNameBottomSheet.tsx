@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import { BASE_URL } from "../../constants/baseUrl";
+import { formatWithLeadingZero } from "../../libs/dateUtils";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
@@ -66,8 +67,10 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
       const { data } = await axios.put(`${BASE_URL}/update-profile`, {
         userId: userInfo._id,
         username: usernameInput,
-        email: emailInput,
-        DOB: `${day}/${month}/${year}`,
+        secondary_email: emailInput,
+        DOB: `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
+          day
+        )}T00:00:00.000Z`,
       });
 
       console.log("updated", data);
@@ -85,7 +88,7 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
       <Sheet
         isOpen={isOpen}
         onClose={() => setOpen(false)}
-        snapPoints={[600, 600]}
+        snapPoints={[800, 800]}
         initialSnap={1}
         disableDrag
       >

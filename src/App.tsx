@@ -56,6 +56,8 @@ const App = () => {
     }
   }, [userInfo, userInfo?.username]);
 
+  console.log(userInfo);
+
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />

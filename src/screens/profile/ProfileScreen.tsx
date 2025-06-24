@@ -75,7 +75,11 @@ const ProfileScreen = () => {
           <div className="flex flex-col text-secondary">
             <p className="font-semibold text-lg">{userInfo?.username}</p>
             {/* <p className="font-light">{userInfo.phone}</p> */}
-            <p className="font-light">{userInfo?.email}</p>
+            <p className="font-light">
+              {userInfo && userInfo.secondary_email
+                ? userInfo.secondary_email
+                : userInfo?.email}
+            </p>
             <p
               className="px-5 py-1 w-max text-white bg-gray text-sm rounded-lg mt-3"
               onClick={() => navigate("edit")}

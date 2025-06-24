@@ -10,7 +10,7 @@ import DOBSelect from "../../components/DOBSelect";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
-import { removeLeadingZero } from "../../libs/dateUtils";
+import { formatWithLeadingZero, removeLeadingZero } from "../../libs/dateUtils";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
@@ -48,20 +48,42 @@ const EditProfile = () => {
     } else {
       setIsDOBError(false);
       setIsLoading(true);
-      try {
-        const response = await axios.put(`${BASE_URL}/update-profile`, {
-          userId: userInfo._id,
-          username: data.userName,
-          phone: data.phone,
-          email: data.email,
-          DOB: `${day}/${month}/${year}`,
-        });
+      if (userInfo.secondary_email) {
+        try {
+          const response = await axios.put(`${BASE_URL}/update-profile`, {
+            userId: userInfo._id,
+            username: data.userName,
+            phone: data.phone,
+            secondary_email: data.email,
+            DOB: `${year}-${formatWithLeadingZero(
+              month
+            )}-${formatWithLeadingZero(day)}T00:00:00.000Z`,
+          });
 
-        localStorage.setItem("userInfo", encryptData(response.data.user));
-        navigate("/");
-        showToast("Update success");
-      } catch (error) {
-        console.log(error);
+          localStorage.setItem("userInfo", encryptData(response.data.user));
+          navigate("/");
+          showToast("Update success");
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          const response = await axios.put(`${BASE_URL}/update-profile`, {
+            userId: userInfo._id,
+            username: data.userName,
+            phone: data.phone,
+            email: data.email,
+            DOB: `${year}-${formatWithLeadingZero(
+              month
+            )}-${formatWithLeadingZero(day)}T00:00:00.000Z`,
+          });
+
+          localStorage.setItem("userInfo", encryptData(response.data.user));
+          navigate("/");
+          showToast("Update success");
+        } catch (error) {
+          console.log(error);
+        }
       }
       setIsLoading(false);
     }
@@ -70,7 +92,11 @@ const EditProfile = () => {
   useEffect(() => {
     if (userInfo) {
       setValue("userName", userInfo.username);
-      setValue("email", userInfo.email);
+      if (userInfo.secondary_email) {
+        setValue("email", userInfo.secondary_email);
+      } else {
+        setValue("email", userInfo.email);
+      }
       setValue("phone", userInfo.phone);
 
       const dob = userInfo.DOB.split("T")[0];
