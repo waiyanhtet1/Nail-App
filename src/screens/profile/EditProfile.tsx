@@ -12,7 +12,7 @@ import ImageInput from "../../components/ImageInput";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
-import { removeLeadingZero } from "../../libs/dateUtils";
+import { formatWithLeadingZero, removeLeadingZero } from "../../libs/dateUtils";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
@@ -59,12 +59,19 @@ const EditProfile = () => {
       setIsDOBError(false);
       setIsLoading(true);
 
+      const dateProps =
+        day && month && year
+          ? `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
+              day
+            )}T00:00:00.000Z`
+          : null;
+
       const formData = new FormData();
       formData.append("userId", userInfo._id);
       formData.append("username", data.userName);
       formData.append("phone", data.phone);
       formData.append("email", data.email);
-      formData.append("DOB", `${day}/${month}/${year}`);
+      formData.append("DOB", dateProps as string);
 
       if (data.profileImg && data.profileImg.length > 0) {
         formData.append("profileImage", data.profileImg[0]);

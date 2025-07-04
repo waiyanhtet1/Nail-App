@@ -21,6 +21,7 @@ import Loading from "../../components/Loading";
 import SocialIconButton from "../../components/SocialIconButton";
 import { BASE_URL } from "../../constants/baseUrl";
 import { auth } from "../../firebase";
+import { formatWithLeadingZero } from "../../libs/dateUtils";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { useAppSelector } from "../../redux/hook";
@@ -67,12 +68,19 @@ const RegisterScreen = () => {
       setIsDOBError(false);
       setIsLoading(true);
 
+      const dateProps =
+        day && month && year
+          ? `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
+              day
+            )}T00:00:00.000Z`
+          : null;
+
       const formData = new FormData();
       formData.append("username", data.userName);
       formData.append("phone", data.phone);
       formData.append("email", data.email);
       formData.append("password", data.password);
-      formData.append("DOB", `${day}/${month}/${year}`);
+      formData.append("DOB", dateProps as string);
       formData.append("playerId", playerId);
 
       if (data.profileImg && data.profileImg.length > 0) {
@@ -84,7 +92,7 @@ const RegisterScreen = () => {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
-        localStorage.setItem("userInfo", encryptData(response.data.user));
+        localStorage.setItem("userInfo", encryptData(response.data));
         navigate("/");
         showToast("Register success");
       } catch (error) {
