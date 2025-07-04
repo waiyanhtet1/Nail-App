@@ -126,7 +126,7 @@ const LoginScreen = () => {
         console.log("Signed in user:", user);
 
         const response = await axios.post(`${BASE_URL}/login`, {
-          username: user.displayName,
+          username: user.email,
           password: user.uid,
           playerId: playerId,
         });
