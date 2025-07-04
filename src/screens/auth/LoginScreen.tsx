@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +8,6 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
-import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -25,21 +23,9 @@ import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import { useAppSelector } from "../../redux/hook";
 import { loginValidationSchema } from "../../validations/loginValidation";
-import appleIcon from "/images/apple.svg";
 import googleIcon from "/images/google.svg";
 
-type AppleSignInResponse = {
-  identityToken: string;
-  authorizationCode: string;
-  user?: string;
-  email?: string;
-  fullName?: {
-    givenName?: string;
-    familyName?: string;
-  };
-};
-
-declare let cordova: any;
+// declare let facebookConnectPlugin: any;
 
 type Inputs = {
   userName: string;
@@ -50,7 +36,6 @@ const LoginScreen = () => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  // const [isCordovaReady, setIsCordovaReady] = useState(false);
 
   const { playerId } = useAppSelector((state) => state.token);
 
@@ -112,7 +97,7 @@ const LoginScreen = () => {
     try {
       const googleUser = await GoogleAuth.signIn();
 
-      const idToken = googleUser.authentication?.idToken;
+      const { idToken } = googleUser.authentication;
       if (!idToken) throw new Error("No ID token found");
 
       const credential = GoogleAuthProvider.credential(idToken);
@@ -168,87 +153,63 @@ const LoginScreen = () => {
     }
   };
 
-  // =============== apple login ==========================
+  // const signInWithFacebookNative = async (): Promise<UserCredential> => {
+  //   return new Promise((resolve, reject) => {
+  //     facebookConnectPlugin.login(
+  //       ["public_profile", "email"],
+  //       async (response: any) => {
+  //         if (response.authResponse) {
+  //           const { accessToken } = response.authResponse;
 
-  const signInWithApple = async () => {
-    if (!Capacitor.isNativePlatform()) {
-      alert("Apple Sign-In is only available on iOS devices.");
-      return;
-    }
+  //           const credential = FacebookAuthProvider.credential(accessToken);
+  //           try {
+  //             const userCredential = await signInWithCredential(
+  //               auth,
+  //               credential
+  //             );
+  //             resolve(userCredential); // now properly typed
+  //           } catch (firebaseError) {
+  //             reject(firebaseError);
+  //           }
+  //         } else {
+  //           reject("No auth response");
+  //         }
+  //       },
+  //       (error: any) => reject(error)
+  //     );
+  //   });
+  // };
 
-    if (!cordova?.plugins?.SignInWithApple) {
-      alert("[Apple Sign-In] Cordova plugin not available.");
-      return;
-    }
+  // const signInWithFacebookWeb = async () => {
+  //   const provider = new FacebookAuthProvider();
+  //   const userCredential = await signInWithPopup(auth, provider);
+  //   return userCredential;
+  // };
 
-    try {
-      console.log("[Apple] Waiting for Apple Sign-In response...");
+  // const handleFacebookRegister = async () => {
+  //   try {
+  //     const userCredential = Capacitor.isNativePlatform()
+  //       ? await signInWithFacebookNative()
+  //       : await signInWithFacebookWeb();
 
-      const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
-        cordova.plugins.SignInWithApple.signin(
-          {
-            requestedScopes: [0, 1], // 0 = Full Name, 1 = Email
-          },
-          resolve,
-          reject
-        );
-      });
+  //     const user = userCredential.user;
 
-      console.log("[Apple] Raw response:", res);
+  //     const response = await axios.post(`${BASE_URL}/login`, {
+  //       username: user.email,
+  //       password: user.uid,
+  //       playerId: playerId,
+  //     });
 
-      if (!res.identityToken) {
-        throw new Error("No identityToken received from Apple.");
-      }
-
-      // Decode identityToken to extract sub (Apple user ID) and email
-      const decoded: any = jwtDecode(res.identityToken);
-      const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
-      const email = decoded.email ?? res.email ?? null;
-
-      const displayName =
-        res.fullName?.givenName || res.fullName?.familyName
-          ? `${res.fullName?.givenName || ""} ${
-              res.fullName?.familyName || ""
-            }`.trim()
-          : "AppleUser";
-
-      console.log("[Apple] Decoded ID Token:", decoded);
-      console.log("[Apple] User ID:", appleUserId);
-      console.log("[Apple] Email:", email);
-      console.log("[Apple] Display Name:", displayName);
-
-      const response = await axios.post(`${BASE_URL}/login`, {
-        username: email,
-        password: appleUserId, // ✅ Use sub as password
-        playerId: playerId,
-      });
-
-      localStorage.setItem("userInfo", encryptData(response.data));
-      showToast("Login success");
-      navigate("/");
-    } catch (error: any) {
-      console.error("[Apple Sign-In Error]:", error);
-      // alert(
-      //   "[Sign-In Error]:\n" +
-      //     (error?.code || "no-code") +
-      //     " - " +
-      //     (error?.message || JSON.stringify(error))
-      // );
-      if (axios.isAxiosError(error)) {
-        // toast.error(error.response?.data.msg);
-        if (error.response?.data.msg.includes("Invalid credentials")) {
-          toast(
-            "သင့် AppleId  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
-            {
-              duration: 5000,
-            }
-          );
-        }
-      }
-    }
-  };
-
-  // =============== apple login ==========================
+  //     localStorage.setItem("userInfo", encryptData(response.data.user));
+  //     navigate("/");
+  //     showToast("Login success");
+  //     toast.success("Login success");
+  //   } catch (err) {
+  //     console.error("Facebook login error", err);
+  //     showToast("Facebook Login Fail!");
+  //     toast.error("Facebook Login Fail");
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">
@@ -259,6 +220,9 @@ const LoginScreen = () => {
         <p className="uppercase text-xl">NAIL BAR</p>
       </div>
 
+      {/* <div className="flex justify-center">
+        <img src={logo} alt="" className="h-[200px]" />
+      </div> */}
       <form
         className="w-full mt-10 px-5 md:px-52"
         onSubmit={handleSubmit(onSubmit)}
@@ -266,7 +230,7 @@ const LoginScreen = () => {
         {/* username input */}
         <Input
           type="text"
-          label="User Name (or) Email"
+          label="User Name"
           inputProps={{ ...register("userName") }}
           isBorderRed={errors.userName !== undefined}
           errorMessage={errors.userName?.message}
@@ -295,11 +259,9 @@ const LoginScreen = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="w-full flex items-center justify-center mt-3">
-            <Button type="submit" variant="primary">
-              Sign In
-            </Button>
-          </div>
+          <Button type="submit" variant="primary" className="mt-3">
+            Sign In
+          </Button>
         )}
       </form>
 
@@ -311,8 +273,11 @@ const LoginScreen = () => {
 
       {/* social icon */}
       <div className="flex items-center justify-center gap-5">
+        {/* <SocialIconButton
+          icon={facebookIcon}
+          onClick={handleFacebookRegister}
+        /> */}
         <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} />
-        <SocialIconButton icon={appleIcon} onClick={signInWithApple} />
       </div>
 
       {/* register route */}
