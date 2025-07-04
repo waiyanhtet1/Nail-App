@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IonIcon } from "@ionic/react";
 import axios from "axios";
@@ -7,6 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import DOBSelect from "../../components/DOBSelect";
+import ImageInput from "../../components/ImageInput";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
@@ -21,6 +23,7 @@ type Inputs = {
   phone: string;
   // password: string;
   email: string;
+  profileImg: any;
 };
 
 const EditProfile = () => {
@@ -42,6 +45,9 @@ const EditProfile = () => {
     setValue,
   } = useForm<Inputs>({
     resolver: yupResolver(updateProfileValidation),
+    // defaultValues: {
+    //   profileImg: undefined,
+    // },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -52,14 +58,26 @@ const EditProfile = () => {
     } else {
       setIsDOBError(false);
       setIsLoading(true);
+
+      const formData = new FormData();
+      formData.append("userId", userInfo._id);
+      formData.append("username", data.userName);
+      formData.append("phone", data.phone);
+      formData.append("email", data.email);
+      formData.append("DOB", `${day}/${month}/${year}`);
+
+      if (data.profileImg && data.profileImg.length > 0) {
+        formData.append("profileImage", data.profileImg[0]);
+      }
+
       try {
-        const response = await axios.put(`${BASE_URL}/update-profile`, {
-          userId: userInfo._id,
-          username: data.userName,
-          phone: data.phone,
-          email: data.email,
-          DOB: `${day}/${month}/${year}`,
-        });
+        const response = await axios.put(
+          `${BASE_URL}/update-profile`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
         localStorage.setItem("userInfo", encryptData(response.data.user));
         navigate("/");
@@ -77,14 +95,22 @@ const EditProfile = () => {
       setValue("email", userInfo.email);
       setValue("phone", userInfo.phone);
 
-      const dob = userInfo.DOB.split("T")[0];
-      const [currentYear, monthRaw, dayRaw] = dob.split("-");
-      const currentDay = removeLeadingZero(dayRaw);
-      const currentMonth = removeLeadingZero(monthRaw);
+      const dobString = userInfo.DOB;
 
-      setDay(currentDay);
-      setMonth(currentMonth);
-      setYear(currentYear);
+      if (dobString) {
+        const dob = dobString.split("T")[0]; // e.g., "1995-08-12"
+        const parts = dob.split("-");
+
+        if (parts.length === 3) {
+          const [currentYear, monthRaw, dayRaw] = parts;
+          const currentDay = removeLeadingZero(dayRaw);
+          const currentMonth = removeLeadingZero(monthRaw);
+
+          setDay(currentDay);
+          setMonth(currentMonth);
+          setYear(currentYear);
+        }
+      }
     }
   }, []);
 
@@ -116,6 +142,8 @@ const EditProfile = () => {
         className="flex flex-col gap-3 mt-3"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <ImageInput onChange={(file) => setValue("profileImg", file)} />
+
         <Input
           label="User Name"
           type="text"
@@ -166,9 +194,6 @@ const EditProfile = () => {
           <Loading />
         ) : (
           <div className="flex items-center gap-3 mt-5">
-            <Button type="submit" variant="primary" className="mt-3">
-              Edit
-            </Button>
             <Button
               type="button"
               variant="primary"
@@ -176,6 +201,9 @@ const EditProfile = () => {
               onClick={() => navigate(-1)}
             >
               Cancel
+            </Button>
+            <Button type="submit" variant="primary" className="mt-3">
+              Save
             </Button>
           </div>
         )}

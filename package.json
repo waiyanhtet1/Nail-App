@@ -1,7 +1,7 @@
 {
   "name": "nail-app",
   "private": true,
-  "version": "1.15.0",
+  "version": "1.16.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -41,6 +41,8 @@
     "react-transition-group": "^4.4.5",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
+    "stream-chat": "^9.10.0",
+    "stream-chat-react": "^13.2.1",
     "tailwindcss": "^4.0.16",
     "yup": "^1.6.1"
   },
