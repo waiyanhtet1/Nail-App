@@ -31,7 +31,7 @@ import MyBookingScreen from "./screens/booking/myBooking/MyBookingScreen";
 import ServiceListScreen from "./screens/booking/ServiceListScreen";
 import SuccessBookingDetail from "./screens/booking/SuccessBookingDetail";
 import ChatHomeScreen from "./screens/chat/ChatHomeScreen";
-import ChattingScreen from "./screens/chat/ChattingScreen";
+import ChatScreen from "./screens/chat/ChatScreen";
 import EditProfile from "./screens/profile/EditProfile";
 import MyStamps from "./screens/profile/MyStamps";
 import ProfileScreen from "./screens/profile/ProfileScreen";
@@ -100,7 +100,7 @@ const App = () => {
 
               {/* chat screens */}
               <Route path="/chat-home" element={<ChatHomeScreen />} />
-              <Route path="/chat" element={<ChattingScreen />} />
+              <Route path="/chat" element={<ChatScreen />} />
             </Routes>
           </div>
         </CSSTransition>

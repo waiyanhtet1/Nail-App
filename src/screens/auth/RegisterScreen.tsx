@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import DOBSelect from "../../components/DOBSelect";
+import ImageInput from "../../components/ImageInput";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import SocialIconButton from "../../components/SocialIconButton";
@@ -47,6 +48,7 @@ type Inputs = {
   phone: string;
   password: string;
   email: string;
+  profileImg: any;
 };
 
 const RegisterScreen = () => {
@@ -64,6 +66,7 @@ const RegisterScreen = () => {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
   } = useForm<Inputs>({
     resolver: yupResolver(singUpValidation),
   });
@@ -78,17 +81,24 @@ const RegisterScreen = () => {
           )}T00:00:00.000Z`
         : null;
 
+    const formData = new FormData();
+    formData.append("username", data.userName);
+    formData.append("phone", data.phone);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("DOB", dateProps as string);
+    formData.append("playerId", playerId);
+
+    if (data.profileImg && data.profileImg.length > 0) {
+      formData.append("profileImage", data.profileImg[0]);
+    }
+
     try {
-      const response = await axios.post(`${BASE_URL}/register`, {
-        username: data.userName,
-        phone: data.phone,
-        email: data.email,
-        password: data.password,
-        DOB: dateProps,
-        playerId: playerId,
+      const response = await axios.post(`${BASE_URL}/register`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
-      localStorage.setItem("userInfo", encryptData(response.data.user));
+      localStorage.setItem("userInfo", encryptData(response.data));
       navigate("/");
       showToast("Register success");
     } catch (error) {
@@ -153,7 +163,7 @@ const RegisterScreen = () => {
           playerId: playerId,
         });
 
-        localStorage.setItem("userInfo", encryptData(response.data.user));
+        localStorage.setItem("userInfo", encryptData(response.data));
         navigate("/");
         showToast("Register success");
         toast.success("Register success");
@@ -163,7 +173,20 @@ const RegisterScreen = () => {
       showToast("Register Fail!");
       toast.error("Register Fail");
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.msg);
+        // toast.error(error.response?.data.msg);
+
+        if (
+          error.response?.data.msg.includes(
+            "This email or secondary email has been already registered"
+          )
+        ) {
+          toast(
+            "ဤ Gmail ဖြင့် account ဖွင့်ထားပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
+            {
+              duration: 5000,
+            }
+          );
+        }
       }
     }
   };
@@ -239,7 +262,19 @@ const RegisterScreen = () => {
       //     (error?.message || JSON.stringify(error))
       // );
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.msg);
+        // toast.error(error.response?.data.msg);
+        if (
+          error.response?.data.msg.includes(
+            "This email or secondary email has been already registered"
+          )
+        ) {
+          toast(
+            "ဤ AppleId ဖြင့် account ဖွင့်ထားပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
+            {
+              duration: 5000,
+            }
+          );
+        }
       }
     }
   };
@@ -249,6 +284,7 @@ const RegisterScreen = () => {
   return (
     <div className="flex flex-col gap-3 pt-10 px-5 md:px-52">
       <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+        <ImageInput onChange={(file) => setValue("profileImg", file)} />
         <Input
           label="User Name"
           type="text"

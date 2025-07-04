@@ -12,5 +12,17 @@ export const updateProfileValidation = yup
       .string()
       .required("Email is required")
       .email("Invalid Email Format"),
+    profileImg: yup.mixed().required("Profile image is required"),
+  })
+  .required();
+
+export const updateUserSliderValidation = yup
+  .object({
+    userName: yup.string().required("UserName is required"),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Invalid Email Format"),
+    profileImg: yup.mixed().required("Profile image is required"),
   })
   .required();

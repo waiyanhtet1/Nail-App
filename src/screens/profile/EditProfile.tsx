@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IonIcon } from "@ionic/react";
 import axios from "axios";
@@ -7,10 +8,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import DOBSelect from "../../components/DOBSelect";
+import ImageInput from "../../components/ImageInput";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
-import { formatWithLeadingZero, removeLeadingZero } from "../../libs/dateUtils";
+import { removeLeadingZero } from "../../libs/dateUtils";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
@@ -19,10 +21,13 @@ import { updateProfileValidation } from "../../validations/updateProfileValidati
 type Inputs = {
   userName: string;
   phone: string;
+  // password: string;
   email: string;
+  profileImg: any;
 };
 
 const EditProfile = () => {
+  // const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -30,6 +35,7 @@ const EditProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+
   const userInfo = getLoginUser();
 
   const {
@@ -39,51 +45,45 @@ const EditProfile = () => {
     setValue,
   } = useForm<Inputs>({
     resolver: yupResolver(updateProfileValidation),
+    // defaultValues: {
+    //   profileImg: undefined,
+    // },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(day, month, year);
     if (day === "" || month === "" || year === "") {
       setIsDOBError(true);
       return;
     } else {
       setIsDOBError(false);
       setIsLoading(true);
-      if (userInfo.secondary_email) {
-        try {
-          const response = await axios.put(`${BASE_URL}/update-profile`, {
-            userId: userInfo._id,
-            username: data.userName,
-            phone: data.phone,
-            secondary_email: data.email,
-            DOB: `${year}-${formatWithLeadingZero(
-              month
-            )}-${formatWithLeadingZero(day)}T00:00:00.000Z`,
-          });
 
-          localStorage.setItem("userInfo", encryptData(response.data.user));
-          navigate("/");
-          showToast("Update success");
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        try {
-          const response = await axios.put(`${BASE_URL}/update-profile`, {
-            userId: userInfo._id,
-            username: data.userName,
-            phone: data.phone,
-            email: data.email,
-            DOB: `${year}-${formatWithLeadingZero(
-              month
-            )}-${formatWithLeadingZero(day)}T00:00:00.000Z`,
-          });
+      const formData = new FormData();
+      formData.append("userId", userInfo._id);
+      formData.append("username", data.userName);
+      formData.append("phone", data.phone);
+      formData.append("email", data.email);
+      formData.append("DOB", `${day}/${month}/${year}`);
 
-          localStorage.setItem("userInfo", encryptData(response.data.user));
-          navigate("/");
-          showToast("Update success");
-        } catch (error) {
-          console.log(error);
-        }
+      if (data.profileImg && data.profileImg.length > 0) {
+        formData.append("profileImage", data.profileImg[0]);
+      }
+
+      try {
+        const response = await axios.put(
+          `${BASE_URL}/update-profile`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        localStorage.setItem("userInfo", encryptData(response.data.user));
+        navigate("/");
+        showToast("Update success");
+      } catch (error) {
+        console.log(error);
       }
       setIsLoading(false);
     }
@@ -92,28 +92,32 @@ const EditProfile = () => {
   useEffect(() => {
     if (userInfo) {
       setValue("userName", userInfo.username);
-      if (userInfo.secondary_email) {
-        setValue("email", userInfo.secondary_email);
-      } else {
-        setValue("email", userInfo.email);
-      }
+      setValue("email", userInfo.email);
       setValue("phone", userInfo.phone);
 
-      const dob = userInfo.DOB.split("T")[0];
-      const [currentYear, monthRaw, dayRaw] = dob.split("-");
-      const currentDay = removeLeadingZero(dayRaw);
-      const currentMonth = removeLeadingZero(monthRaw);
+      const dobString = userInfo.DOB;
 
-      setDay(currentDay);
-      setMonth(currentMonth);
-      setYear(currentYear);
+      if (dobString) {
+        const dob = dobString.split("T")[0]; // e.g., "1995-08-12"
+        const parts = dob.split("-");
+
+        if (parts.length === 3) {
+          const [currentYear, monthRaw, dayRaw] = parts;
+          const currentDay = removeLeadingZero(dayRaw);
+          const currentMonth = removeLeadingZero(monthRaw);
+
+          setDay(currentDay);
+          setMonth(currentMonth);
+          setYear(currentYear);
+        }
+      }
     }
   }, []);
 
   return (
-    <div className="mt-15 mx-5">
+    <div className="mt-10 mx-5">
       {/* back and title */}
-      <div className="flex items-center">
+      <div className="flex items-center mb-10">
         <IonIcon
           icon={arrowBackOutline}
           className="size-6"
@@ -135,9 +139,11 @@ const EditProfile = () => {
 
       {/* form list */}
       <form
-        className="flex flex-col gap-3 mt-5"
+        className="flex flex-col gap-3 mt-3"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <ImageInput onChange={(file) => setValue("profileImg", file)} />
+
         <Input
           label="User Name"
           type="text"
@@ -159,6 +165,15 @@ const EditProfile = () => {
           isBorderRed={errors.email !== undefined}
           errorMessage={errors.email?.message}
         />
+        {/* <Input
+          type={isPasswordShow ? "text" : "password"}
+          label="Password"
+          Icon={isPasswordShow ? eyeOutline : eyeOffOutline}
+          IconOnClick={() => setIsPasswordShow((prev) => !prev)}
+          inputProps={{ ...register("password") }}
+          isBorderRed={errors.password !== undefined}
+          errorMessage={errors.password?.message}
+        /> */}
 
         <div className="flex items-center justify-between">
           <p className="text-gray">Date of Birth</p>
@@ -179,9 +194,6 @@ const EditProfile = () => {
           <Loading />
         ) : (
           <div className="flex items-center gap-3 mt-5">
-            <Button type="submit" variant="primary" className="mt-3">
-              Edit
-            </Button>
             <Button
               type="button"
               variant="primary"
@@ -189,6 +201,9 @@ const EditProfile = () => {
               onClick={() => navigate(-1)}
             >
               Cancel
+            </Button>
+            <Button type="submit" variant="primary" className="mt-3">
+              Save
             </Button>
           </div>
         )}

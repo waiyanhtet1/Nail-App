@@ -66,3 +66,36 @@ export type ServiceDetailType = {
     }
   ];
 };
+
+// types.ts
+
+/**
+ * Represents a single chat message.
+ */
+export interface Message {
+  id: string; // Unique message ID from the server or temporary client ID
+  channelId: string;
+  userId: string;
+  text: string;
+  created_at: string;
+  isOptimistic?: boolean; // True if message is client-side optimistic update
+  user?: {
+    id: string;
+  };
+}
+
+/**
+ * Interface for the response when creating a new channel.
+ */
+export interface CreateChannelResponse {
+  channelId: string;
+}
+
+/**
+ * Interface for the body of the send-message request.
+ */
+export interface SendMessagePayload {
+  channelId: string;
+  userId: string;
+  text: string;
+}

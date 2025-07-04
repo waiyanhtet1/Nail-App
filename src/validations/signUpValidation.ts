@@ -13,5 +13,6 @@ export const singUpValidation = yup
       .required("Email is required")
       .email("Invalid Email Format"),
     password: yup.string().required("Password is required"),
+    profileImg: yup.mixed().required("Profile image is required"),
   })
   .required();

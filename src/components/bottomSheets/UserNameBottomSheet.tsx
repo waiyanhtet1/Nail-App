@@ -1,13 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useRef, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
 import { Sheet, SheetRef } from "react-modal-sheet";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants/baseUrl";
 import { formatWithLeadingZero } from "../../libs/dateUtils";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
+import { updateUserSliderValidation } from "../../validations/updateProfileValidation";
 import Button from "../Button";
 import DOBSelect from "../DOBSelect";
+import ImageInput from "../ImageInput";
 import Input from "../Input";
 import Loading from "../Loading";
 
@@ -16,72 +23,140 @@ interface Props {
   setOpen: (value: boolean) => void;
 }
 
-const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
-  const ref = useRef<SheetRef>(null);
-  const userInfo = getLoginUser();
+type Inputs = {
+  userName: string;
+  email: string;
+  profileImg: any;
+};
 
-  const [usernameInput, setUsernameInput] = useState("");
-  const [emailInput, setEmailInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState({
-    username: false,
-    email: false,
-    dob: false,
-  });
+const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
+  const [isDOBError, setIsDOBError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleUpdateUsername = async () => {
-    if (usernameInput === "") {
-      setIsError((prev) => ({
-        ...prev,
-        username: true,
-      }));
-      return;
-    }
+  const ref = useRef<SheetRef>(null);
+  const userInfo = getLoginUser();
+  const navigate = useNavigate();
 
-    if (emailInput === "") {
-      setIsError((prev) => ({
-        ...prev,
-        email: true,
-      }));
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<Inputs>({
+    resolver: yupResolver(updateUserSliderValidation),
+    // defaultValues: {
+    //   profileImg: undefined,
+    // },
+  });
 
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(day, month, year);
     if (day === "" || month === "" || year === "") {
-      setIsError((prev) => ({
-        ...prev,
-        dob: true,
-      }));
+      setIsDOBError(true);
       return;
-    }
+    } else {
+      setIsDOBError(false);
+      setIsLoading(true);
 
-    setIsError({
-      username: false,
-      email: false,
-      dob: false,
-    });
-    setIsLoading(true);
-    try {
-      const { data } = await axios.put(`${BASE_URL}/update-profile`, {
-        userId: userInfo._id,
-        username: usernameInput,
-        secondary_email: emailInput,
-        DOB: `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
+      const formData = new FormData();
+      formData.append("userId", userInfo._id);
+      formData.append("username", data.userName);
+      formData.append("email", data.email);
+      formData.append(
+        "DOB",
+        `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
           day
-        )}T00:00:00.000Z`,
-      });
+        )}T00:00:00.000Z`
+      );
 
-      console.log("updated", data);
-      localStorage.setItem("userInfo", encryptData(data.user));
-      showToast(data.message);
-      setOpen(false);
-    } catch (error) {
-      console.log(error);
+      if (data.profileImg && data.profileImg.length > 0) {
+        formData.append("profileImage", data.profileImg[0]);
+      }
+
+      try {
+        const response = await axios.put(
+          `${BASE_URL}/update-profile`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        localStorage.setItem("userInfo", encryptData(response.data.user));
+        navigate("/");
+        showToast("Update success");
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
+
+  // const [usernameInput, setUsernameInput] = useState("");
+  // const [emailInput, setEmailInput] = useState("");
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [isError, setIsError] = useState({
+  //   username: false,
+  //   email: false,
+  //   dob: false,
+  // });
+  // const [day, setDay] = useState("");
+  // const [month, setMonth] = useState("");
+  // const [year, setYear] = useState("");
+
+  // const handleUpdateUsername = async () => {
+  //   if (usernameInput === "") {
+  //     setIsError((prev) => ({
+  //       ...prev,
+  //       username: true,
+  //     }));
+  //     return;
+  //   }
+
+  //   if (emailInput === "") {
+  //     setIsError((prev) => ({
+  //       ...prev,
+  //       email: true,
+  //     }));
+  //     return;
+  //   }
+
+  //   if (day === "" || month === "" || year === "") {
+  //     setIsError((prev) => ({
+  //       ...prev,
+  //       dob: true,
+  //     }));
+  //     return;
+  //   }
+
+  //   setIsError({
+  //     username: false,
+  //     email: false,
+  //     dob: false,
+  //   });
+  //   setIsLoading(true);
+  //   try {
+  //     const { data } = await axios.put(`${BASE_URL}/update-profile`, {
+  //       userId: userInfo._id,
+  //       username: usernameInput,
+  //       secondary_email: emailInput,
+  //       DOB: `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
+  //         day
+  //       )}T00:00:00.000Z`,
+  //     });
+
+  //     console.log("updated", data);
+  //     localStorage.setItem("userInfo", encryptData(data.user));
+  //     showToast(data.message);
+  //     setOpen(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   setIsLoading(false);
+  // };
 
   return (
     <>
@@ -104,71 +179,56 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
                 You need to provide your own username to be use in application.
               </p>
 
-              <div className="mt-7 flex flex-col gap-3">
-                {/* username input */}
-                <div className="">
-                  <Input
-                    isBorder
-                    label="Username"
-                    type="text"
-                    value={usernameInput}
-                    setValue={setUsernameInput}
-                  />
-                  {isError.username && (
-                    <p className="text-sm text-red-primary">
-                      Username is required
-                    </p>
-                  )}
-                </div>
+              <form
+                className="flex flex-col gap-3 mt-3"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <ImageInput onChange={(file) => setValue("profileImg", file)} />
 
-                {/* email input */}
-                <div className="">
-                  <Input
-                    isBorder
-                    label="Email"
-                    type="text"
-                    value={emailInput}
-                    setValue={setEmailInput}
-                  />
-                  {isError.email && (
-                    <p className="text-sm text-red-primary">
-                      Email is required
-                    </p>
-                  )}
-                </div>
+                <Input
+                  isBorder
+                  label="User Name"
+                  type="text"
+                  inputProps={{ ...register("userName") }}
+                  isBorderRed={errors.userName !== undefined}
+                  errorMessage={errors.userName?.message}
+                />
 
-                <div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-gray">Date of Birth</p>
-                  </div>
-                  <DOBSelect
-                    day={day}
-                    setDay={setDay}
-                    month={month}
-                    setMonth={setMonth}
-                    year={year}
-                    setYear={setYear}
-                  />
-                  {isError.dob && (
-                    <p className="text-sm text-red-primary">
+                <Input
+                  isBorder
+                  label="Email"
+                  type="email"
+                  inputProps={{ ...register("email") }}
+                  isBorderRed={errors.email !== undefined}
+                  errorMessage={errors.email?.message}
+                />
+
+                <div className="flex items-center justify-between">
+                  <p className="text-gray">Date of Birth</p>
+                  {isDOBError && (
+                    <p className="text-xs text-red-500">
                       Date of Birth is required
                     </p>
                   )}
                 </div>
+                <DOBSelect
+                  day={day}
+                  setDay={setDay}
+                  month={month}
+                  setMonth={setMonth}
+                  year={year}
+                  setYear={setYear}
+                />
                 {isLoading ? (
                   <Loading />
                 ) : (
-                  <div className="w-full flex items-center justify-center mt-3">
-                    <Button
-                      type="button"
-                      variant="primary"
-                      onClick={handleUpdateUsername}
-                    >
-                      Update
+                  <div className="flex items-center gap-3 mt-5">
+                    <Button type="submit" variant="primary" className="mt-3">
+                      Save
                     </Button>
                   </div>
                 )}
-              </div>
+              </form>
             </Sheet.Scroller>
           </Sheet.Content>
         </Sheet.Container>

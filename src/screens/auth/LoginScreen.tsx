@@ -155,7 +155,15 @@ const LoginScreen = () => {
       showToast("Login Fail!");
       toast.error("Login Fail");
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.msg);
+        // toast.error(error.response?.data.msg);
+        if (error.response?.data.msg.includes("Invalid credentials")) {
+          toast(
+            "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
+            {
+              duration: 5000,
+            }
+          );
+        }
       }
     }
   };
@@ -227,7 +235,15 @@ const LoginScreen = () => {
       //     (error?.message || JSON.stringify(error))
       // );
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.msg);
+        // toast.error(error.response?.data.msg);
+        if (error.response?.data.msg.includes("Invalid credentials")) {
+          toast(
+            "သင့် AppleId  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
+            {
+              duration: 5000,
+            }
+          );
+        }
       }
     }
   };
