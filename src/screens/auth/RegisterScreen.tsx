@@ -126,19 +126,21 @@ const RegisterScreen = () => {
     try {
       const googleUser = await GoogleAuth.signIn();
 
-      const idToken = googleUser.authentication?.idToken;
-      if (!idToken) throw new Error("No ID token found");
+      const { authentication } = googleUser;
+      const idToken = authentication?.idToken;
+      const accessToken = authentication?.accessToken;
 
-      const credential = GoogleAuthProvider.credential(idToken);
+      if (!idToken || !accessToken) {
+        throw new Error("Missing idToken or accessToken from Google response");
+      }
+
+      const credential = GoogleAuthProvider.credential(idToken, accessToken);
       const userCredential = await signInWithCredential(auth, credential);
 
       console.log("Firebase User:", userCredential.user);
-      // alert("Firebase User:" + JSON.stringify(userCredential.user));
-
       return userCredential.user;
     } catch (err) {
       console.error("Google mobile sign-in error:", err);
-      // alert("Google mobile sign-in error:" + JSON.stringify(err));
       throw err;
     }
   };
