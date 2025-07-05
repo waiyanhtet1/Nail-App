@@ -86,6 +86,7 @@ const ChatScreen: React.FC = () => {
       } catch (error) {
         console.error("Polling error:", error);
         setError("Error fetching messages.");
+        navigate("/");
       }
     };
 
