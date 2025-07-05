@@ -109,7 +109,7 @@ const LoginScreen = () => {
       return userCredential.user;
     } catch (err) {
       console.error("Google mobile sign-in error:", err);
-      alert("Google mobile sign-in error:" + JSON.stringify(err));
+      // alert("Google mobile sign-in error:" + JSON.stringify(err));
       throw err;
     }
   };
@@ -137,8 +137,8 @@ const LoginScreen = () => {
       }
     } catch (error) {
       // alert("Login failed: " + JSON.stringify(error));
-      showToast("Login Fail!");
-      toast.error("Login Fail");
+      // showToast("Login Fail!");
+      // toast.error("Login Fail");
       if (axios.isAxiosError(error)) {
         // toast.error(error.response?.data.msg);
         if (error.response?.data.msg.includes("Invalid credentials")) {

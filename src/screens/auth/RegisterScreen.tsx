@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,7 +34,7 @@ type Inputs = {
   phone: string;
   password: string;
   email: string;
-  profileImg: any;
+  profileImg?: FileList | null;
 };
 
 const RegisterScreen = () => {
@@ -58,6 +57,9 @@ const RegisterScreen = () => {
     setValue,
   } = useForm<Inputs>({
     resolver: yupResolver(singUpValidation),
+    defaultValues: {
+      profileImg: null,
+    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -133,7 +135,7 @@ const RegisterScreen = () => {
       return userCredential.user;
     } catch (err) {
       console.error("Google mobile sign-in error:", err);
-      alert("Google mobile sign-in error:" + JSON.stringify(err));
+      // alert("Google mobile sign-in error:" + JSON.stringify(err));
       throw err;
     }
   };
@@ -165,8 +167,8 @@ const RegisterScreen = () => {
       }
     } catch (error) {
       // alert("Login failed: " + JSON.stringify(error));
-      showToast("Register Fail!");
-      toast.error("Register Fail");
+      // showToast("Register Fail!");
+      // toast.error("Register Fail");
       if (axios.isAxiosError(error)) {
         // toast.error(error.response?.data.msg);
         if (

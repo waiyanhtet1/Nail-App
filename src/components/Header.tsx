@@ -1,7 +1,7 @@
-import { IonIcon } from "@ionic/react";
-import { personOutline } from "ionicons/icons";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../constants/baseUrl";
 import { getLoginUser } from "../libs/userUtils";
+import profileImg from "/images/default-profile.jpg";
 import logo from "/images/logo.png";
 
 const Header = () => {
@@ -25,10 +25,19 @@ const Header = () => {
           <div className="flex items-center gap-3">
             {/* <IonIcon icon={notificationsOutline} className="text-gray size-6" /> */}
             <div
-              className="w-[40px] h-[40px] rounded-xl bg-gray-third flex items-center justify-center"
+              className="w-[40px] h-[40px] rounded-full bg-gray-third flex items-center justify-center"
               onClick={() => navigate("/profile")}
             >
-              <IonIcon icon={personOutline} className="text-white size-5" />
+              {/* <IonIcon icon={personOutline} className="text-white size-5" /> */}
+              <img
+                src={
+                  userInfo && userInfo.profileImage !== null
+                    ? `${BASE_URL}${userInfo.profileImage}`
+                    : profileImg
+                }
+                className="w-full h-full object-cover rounded-full"
+                alt=""
+              />
             </div>
           </div>
         ) : (

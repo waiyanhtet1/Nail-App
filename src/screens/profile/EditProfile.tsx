@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IonIcon } from "@ionic/react";
 import axios from "axios";
@@ -22,9 +21,8 @@ import { updateProfileValidation } from "../../validations/updateProfileValidati
 type Inputs = {
   userName: string;
   phone: string;
-  // password: string;
   email: string;
-  profileImg: any;
+  profileImg?: FileList | null;
 };
 
 const EditProfile = () => {
@@ -47,9 +45,9 @@ const EditProfile = () => {
     setValue,
   } = useForm<Inputs>({
     resolver: yupResolver(updateProfileValidation),
-    // defaultValues: {
-    //   profileImg: undefined,
-    // },
+    defaultValues: {
+      profileImg: null,
+    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -129,7 +127,11 @@ const EditProfile = () => {
           const reader = new FileReader();
           reader.onload = () => setImage(reader.result as string);
           reader.readAsDataURL(file);
-          setValue("profileImg", file);
+
+          // Create a DataTransfer object to simulate a FileList
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(file);
+          setValue("profileImg", dataTransfer.files);
         }
       });
     }
