@@ -46,6 +46,7 @@ const ProfileScreen = () => {
 
   function handleLogout() {
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("chatChannelId");
     navigate("/");
     showToast("logout success");
     toast.success("logout success");

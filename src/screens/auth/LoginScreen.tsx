@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,6 +9,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
+import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -23,13 +25,26 @@ import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import { useAppSelector } from "../../redux/hook";
 import { loginValidationSchema } from "../../validations/loginValidation";
+import appleIcon from "/images/apple.svg";
 import googleIcon from "/images/google.svg";
 
 // declare let facebookConnectPlugin: any;
+declare let cordova: any;
 
 type Inputs = {
   userName: string;
   password: string;
+};
+
+type AppleSignInResponse = {
+  identityToken: string;
+  authorizationCode: string;
+  user?: string;
+  email?: string;
+  fullName?: {
+    givenName?: string;
+    familyName?: string;
+  };
 };
 
 const LoginScreen = () => {
@@ -109,7 +124,7 @@ const LoginScreen = () => {
       return userCredential.user;
     } catch (err) {
       console.error("Google mobile sign-in error:", err);
-      alert("Google mobile sign-in error:" + JSON.stringify(err));
+      // alert("Google mobile sign-in error:" + JSON.stringify(err));
       throw err;
     }
   };
@@ -137,13 +152,105 @@ const LoginScreen = () => {
       }
     } catch (error) {
       // alert("Login failed: " + JSON.stringify(error));
-      showToast("Login Fail!");
-      toast.error("Login Fail");
+      // showToast("Login Fail!");
+      // toast.error("Login Fail");
       if (axios.isAxiosError(error)) {
         // toast.error(error.response?.data.msg);
         if (error.response?.data.msg.includes("Invalid credentials")) {
           toast(
             "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
+            {
+              duration: 5000,
+            }
+          );
+        }
+      }
+    }
+  };
+
+  const signInWithApple = async () => {
+    if (!Capacitor.isNativePlatform()) {
+      // alert("Apple Sign-In is only available on iOS devices.");
+      return;
+    }
+
+    if (!cordova?.plugins?.SignInWithApple) {
+      // alert("[Apple Sign-In] Cordova plugin not available.");
+      return;
+    }
+
+    try {
+      console.log("[Apple] Waiting for Apple Sign-In response...");
+
+      const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
+        cordova.plugins.SignInWithApple.signin(
+          {
+            requestedScopes: [0, 1], // 0 = Full Name, 1 = Email
+          },
+          resolve,
+          reject
+        );
+      });
+
+      console.log("[Apple] Raw response:", res);
+
+      if (!res.identityToken) {
+        throw new Error("No identityToken received from Apple.");
+      }
+
+      // Decode identityToken to extract sub (Apple user ID) and email
+      const decoded: any = jwtDecode(res.identityToken);
+      const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
+      const email = decoded.email ?? res.email ?? null;
+
+      const displayName =
+        res.fullName?.givenName || res.fullName?.familyName
+          ? `${res.fullName?.givenName || ""} ${
+              res.fullName?.familyName || ""
+            }`.trim()
+          : "AppleUser";
+
+      console.log("[Apple] Decoded ID Token:", decoded);
+      console.log("[Apple] User ID:", appleUserId);
+      console.log("[Apple] Email:", email);
+      console.log("[Apple] Display Name:", displayName);
+
+      // const response = await axios.post(`${BASE_URL}/register`, {
+      //   username: displayName || email,
+      //   // phone: data.phone,
+      //   email: email,
+      //   password: appleUserId,
+      //   DOB: null,
+      //   playerId: playerId,
+      // });
+
+      const response = await axios.post(`${BASE_URL}/login`, {
+        username: displayName || email,
+        password: appleUserId,
+        playerId: playerId,
+      });
+
+      localStorage.setItem("userInfo", encryptData(response.data));
+      navigate("/");
+      showToast("Login success");
+      toast.success("Login success");
+    } catch (error: any) {
+      console.error("[Apple Sign-In Error]:", error);
+      // alert(
+      //   "[Sign-In Error]:\n" +
+      //     (error?.code || "no-code") +
+      //     " - " +
+      //     (error?.message || JSON.stringify(error))
+      // );
+      if (axios.isAxiosError(error)) {
+        // toast.error(error.response?.data.msg);
+        if (
+          error.response?.data.msg.includes(
+            "This email or secondary email has been already registered"
+          )
+        ) {
+          toast(
+            "သင့် AppleId  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
             {
               duration: 5000,
             }
@@ -259,9 +366,11 @@ const LoginScreen = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <Button type="submit" variant="primary" className="mt-3">
-            Sign In
-          </Button>
+          <div className="w-full flex items-center justify-center mt-3">
+            <Button type="submit" variant="primary" className="mt-3">
+              Sign In
+            </Button>
+          </div>
         )}
       </form>
 
@@ -277,6 +386,7 @@ const LoginScreen = () => {
           icon={facebookIcon}
           onClick={handleFacebookRegister}
         /> */}
+        <SocialIconButton icon={appleIcon} onClick={signInWithApple} />
         <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} />
       </div>
 

@@ -38,16 +38,32 @@ const ChatScreen: React.FC = () => {
         setIsLoading(true);
         setError(null);
 
+        let channelIdentifier = null;
+
         const storedChannelId = localStorage.getItem("chatChannelId");
         if (storedChannelId) {
-          setChannelId(storedChannelId);
-        } else {
-          console.log("Creating new channel...");
-          const response = await createChannel(USER_ID);
-          const newChannelId = response.channelId;
-          setChannelId(newChannelId);
-          localStorage.setItem("chatChannelId", newChannelId); // Store the new channel ID
+          channelIdentifier = storedChannelId;
+          console.log("Channel ID from localStorage:", channelIdentifier);
         }
+
+        if (!channelIdentifier && userInfo && userInfo.channelId) {
+          channelIdentifier = userInfo.channelId;
+          console.log("Channel ID from userInfo:", channelIdentifier);
+
+          localStorage.setItem("chatChannelId", channelIdentifier);
+        }
+
+        if (!channelIdentifier) {
+          console.log("No existing channel ID found. Creating new channel...");
+
+          const response = await createChannel(USER_ID);
+          channelIdentifier = response.channelId;
+          console.log("New channel created:", channelIdentifier);
+          localStorage.setItem("chatChannelId", channelIdentifier);
+        }
+
+        // Set the determined channel ID to state
+        setChannelId(channelIdentifier);
       } catch (err) {
         console.error("Error initializing channel:", err);
         setError("Failed to initialize chat channel. Please try again.");
@@ -57,7 +73,7 @@ const ChatScreen: React.FC = () => {
     };
 
     initializeChannel();
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
     if (!channelId) return;
@@ -70,6 +86,7 @@ const ChatScreen: React.FC = () => {
       } catch (error) {
         console.error("Polling error:", error);
         setError("Error fetching messages.");
+        navigate("/");
       }
     };
 

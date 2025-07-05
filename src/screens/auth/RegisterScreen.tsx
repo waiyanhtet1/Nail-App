@@ -48,7 +48,7 @@ type Inputs = {
   phone: string;
   password: string;
   email: string;
-  profileImg: any;
+  profileImg?: FileList | null;
 };
 
 const RegisterScreen = () => {
@@ -138,7 +138,7 @@ const RegisterScreen = () => {
       return userCredential.user;
     } catch (err) {
       console.error("Google mobile sign-in error:", err);
-      alert("Google mobile sign-in error:" + JSON.stringify(err));
+      // alert("Google mobile sign-in error:" + JSON.stringify(err));
       throw err;
     }
   };
@@ -170,8 +170,8 @@ const RegisterScreen = () => {
       }
     } catch (error) {
       // alert("Login failed: " + JSON.stringify(error));
-      showToast("Register Fail!");
-      toast.error("Register Fail");
+      // showToast("Register Fail!");
+      // toast.error("Register Fail");
       if (axios.isAxiosError(error)) {
         // toast.error(error.response?.data.msg);
 
@@ -195,12 +195,12 @@ const RegisterScreen = () => {
 
   const signInWithApple = async () => {
     if (!Capacitor.isNativePlatform()) {
-      alert("Apple Sign-In is only available on iOS devices.");
+      // alert("Apple Sign-In is only available on iOS devices.");
       return;
     }
 
     if (!cordova?.plugins?.SignInWithApple) {
-      alert("[Apple Sign-In] Cordova plugin not available.");
+      // alert("[Apple Sign-In] Cordova plugin not available.");
       return;
     }
 

@@ -12,7 +12,7 @@ export const updateProfileValidation = yup
       .string()
       .required("Email is required")
       .email("Invalid Email Format"),
-    profileImg: yup.mixed().required("Profile image is required"),
+    // profileImg: yup.mixed().required("Profile image is required"),
   })
   .required();
 
