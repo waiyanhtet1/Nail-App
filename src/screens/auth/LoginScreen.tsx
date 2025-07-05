@@ -170,65 +170,56 @@ const LoginScreen = () => {
 
   const signInWithApple = async () => {
     if (!Capacitor.isNativePlatform()) {
-      // alert("Apple Sign-In is only available on iOS devices.");
+      toast.error("Apple Sign-In is only available on iOS devices.");
       return;
     }
 
     if (!cordova?.plugins?.SignInWithApple) {
-      // alert("[Apple Sign-In] Cordova plugin not available.");
+      toast.error("Apple Sign-In plugin not available.");
       return;
     }
 
     try {
-      console.log("[Apple] Waiting for Apple Sign-In response...");
-
       const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
         cordova.plugins.SignInWithApple.signin(
           {
-            requestedScopes: [0, 1], // 0 = Full Name, 1 = Email
+            requestedScopes: [0, 1], // Full Name and Email
           },
           resolve,
           reject
         );
       });
 
-      console.log("[Apple] Raw response:", res);
-
       if (!res.identityToken) {
         throw new Error("No identityToken received from Apple.");
       }
 
-      // Decode identityToken to extract sub (Apple user ID) and email
       const decoded: any = jwtDecode(res.identityToken);
-      const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
-      const email = decoded.email ?? res.email ?? null;
+      const appleUserId = decoded.sub;
+      const email = decoded.email || res.email;
 
-      const displayName =
-        res.fullName?.givenName || res.fullName?.familyName
-          ? `${res.fullName?.givenName || ""} ${
-              res.fullName?.familyName || ""
-            }`.trim()
-          : "AppleUser";
+      if (!email) {
+        toast.error("Email is required for login. Please try another method.");
+        return;
+      }
 
-      console.log("[Apple] Decoded ID Token:", decoded);
-      console.log("[Apple] User ID:", appleUserId);
-      console.log("[Apple] Email:", email);
-      console.log("[Apple] Display Name:", displayName);
+      // Use full name if available, fallback to email
+      // const displayName =
+      //   res.fullName?.givenName || res.fullName?.familyName
+      //     ? `${res.fullName?.givenName || ""} ${
+      //         res.fullName?.familyName || ""
+      //       }`.trim()
+      //     : email;
 
-      // const response = await axios.post(`${BASE_URL}/register`, {
-      //   username: displayName || email,
-      //   // phone: data.phone,
-      //   email: email,
-      //   password: appleUserId,
-      //   DOB: null,
-      //   playerId: playerId,
-      // });
-
-      const response = await axios.post(`${BASE_URL}/login`, {
-        username: displayName || email,
+      const payload = {
+        username: email,
         password: appleUserId,
-        playerId: playerId,
-      });
+        playerId: playerId || null,
+      };
+
+      console.log("[Apple Login] Payload:", payload);
+
+      const response = await axios.post(`${BASE_URL}/login`, payload);
 
       localStorage.setItem("userInfo", encryptData(response.data));
       navigate("/");
@@ -236,26 +227,22 @@ const LoginScreen = () => {
       toast.success("Login success");
     } catch (error: any) {
       console.error("[Apple Sign-In Error]:", error);
-      // alert(
-      //   "[Sign-In Error]:\n" +
-      //     (error?.code || "no-code") +
-      //     " - " +
-      //     (error?.message || JSON.stringify(error))
-      // );
-      if (axios.isAxiosError(error)) {
-        // toast.error(error.response?.data.msg);
-        if (
-          error.response?.data.msg.includes(
-            "This email or secondary email has been already registered"
-          )
-        ) {
+
+      if (axios.isAxiosError(error) && error.response?.data?.msg) {
+        const msg = error.response.data.msg;
+
+        if (msg.includes("already registered")) {
           toast(
-            "သင့် AppleId  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
+            "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
             {
               duration: 5000,
             }
           );
+        } else {
+          toast.error(msg);
         }
+      } else {
+        toast.error("Login failed. Please try again.");
       }
     }
   };
