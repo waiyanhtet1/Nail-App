@@ -3,4 +3,5 @@ export type UserType = {
   email: string;
   playerId: string;
   _id: string;
+  profileImage: string;
 };

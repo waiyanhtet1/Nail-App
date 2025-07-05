@@ -11,16 +11,19 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ConfirmBottomSlider from "../../components/bottomSheets/ConfirmBottomSlider";
+import { BASE_URL } from "../../constants/baseUrl";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import { UserType } from "../../types/userType";
-import profileImg from "/images/stylist.jpeg";
+import profileImg from "/images/default-profile.jpg";
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<UserType | null>(null);
   const [isConfirmSliderOpen, setIsConfirmSliderOpen] = useState(false);
   const [platform, setPlatform] = useState<string | null>(null);
+
+  console.log(userInfo);
 
   // check device platform
   useEffect(() => {
@@ -68,7 +71,11 @@ const ProfileScreen = () => {
         {/* info */}
         <div className="flex items-center gap-5 m-5">
           <img
-            src={profileImg}
+            src={
+              userInfo && userInfo.profileImage !== null
+                ? `${BASE_URL}${userInfo.profileImage}`
+                : profileImg
+            }
             alt=""
             className="w-[80px] h-[80px] object-cover rounded-full"
           />
