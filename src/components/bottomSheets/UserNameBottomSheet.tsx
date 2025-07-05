@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useRef, useState } from "react";
@@ -26,7 +25,7 @@ interface Props {
 type Inputs = {
   userName: string;
   email: string;
-  profileImg: any;
+  profileImg?: FileList | null;
 };
 
 const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
@@ -86,6 +85,7 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
         );
 
         localStorage.setItem("userInfo", encryptData(response.data.user));
+        setOpen(false);
         navigate("/");
         showToast("Update success");
       } catch (error) {

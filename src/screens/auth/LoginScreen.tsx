@@ -239,7 +239,13 @@ const LoginScreen = () => {
             }
           );
         } else {
-          toast.error(msg);
+          // toast.error(msg);
+          toast(
+            "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
+            {
+              duration: 5000,
+            }
+          );
         }
       } else {
         toast.error("Login failed. Please try again.");

@@ -249,7 +249,7 @@ const RegisterScreen = () => {
         playerId: playerId,
       });
 
-      localStorage.setItem("userInfo", encryptData(response.data.user));
+      localStorage.setItem("userInfo", encryptData(response.data));
       navigate("/");
       showToast("Register success");
       toast.success("Register success");
@@ -268,6 +268,13 @@ const RegisterScreen = () => {
             "This email or secondary email has been already registered"
           )
         ) {
+          toast(
+            "ဤ AppleId ဖြင့် account ဖွင့်ထားပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
+            {
+              duration: 5000,
+            }
+          );
+        } else {
           toast(
             "ဤ AppleId ဖြင့် account ဖွင့်ထားပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
             {
