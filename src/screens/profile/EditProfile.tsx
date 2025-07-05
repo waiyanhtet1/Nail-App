@@ -67,32 +67,62 @@ const EditProfile = () => {
             )}T00:00:00.000Z`
           : null;
 
-      const formData = new FormData();
-      formData.append("userId", userInfo._id);
-      formData.append("username", data.userName);
-      formData.append("phone", data.phone);
-      formData.append("email", data.email);
-      formData.append("DOB", dateProps as string);
+      if (userInfo.secondary_email) {
+        const formData = new FormData();
+        formData.append("userId", userInfo._id);
+        formData.append("username", data.userName);
+        formData.append("phone", data.phone);
+        formData.append("secondary_email", data.email);
+        formData.append("DOB", dateProps as string);
 
-      if (data.profileImg && data.profileImg.length > 0) {
-        formData.append("profileImage", data.profileImg[0]);
+        if (data.profileImg && data.profileImg.length > 0) {
+          formData.append("profileImage", data.profileImg[0]);
+        }
+
+        try {
+          const response = await axios.put(
+            `${BASE_URL}/update-profile`,
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
+
+          localStorage.setItem("userInfo", encryptData(response.data.user));
+          navigate("/");
+          showToast("Update success");
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        const formData = new FormData();
+        formData.append("userId", userInfo._id);
+        formData.append("username", data.userName);
+        formData.append("phone", data.phone);
+        formData.append("email", data.email);
+        formData.append("DOB", dateProps as string);
+
+        if (data.profileImg && data.profileImg.length > 0) {
+          formData.append("profileImage", data.profileImg[0]);
+        }
+
+        try {
+          const response = await axios.put(
+            `${BASE_URL}/update-profile`,
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
+
+          localStorage.setItem("userInfo", encryptData(response.data.user));
+          navigate("/");
+          showToast("Update success");
+        } catch (error) {
+          console.log(error);
+        }
       }
 
-      try {
-        const response = await axios.put(
-          `${BASE_URL}/update-profile`,
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
-
-        localStorage.setItem("userInfo", encryptData(response.data.user));
-        navigate("/");
-        showToast("Update success");
-      } catch (error) {
-        console.log(error);
-      }
       setIsLoading(false);
     }
   };

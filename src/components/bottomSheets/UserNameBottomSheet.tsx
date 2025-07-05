@@ -63,7 +63,7 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
       const formData = new FormData();
       formData.append("userId", userInfo._id);
       formData.append("username", data.userName);
-      formData.append("email", data.email);
+      formData.append("secondary_email", data.email);
       formData.append(
         "DOB",
         `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
