@@ -136,9 +136,9 @@ const LoginScreen = () => {
         navigate("/");
       }
     } catch (error) {
-      // alert("Login failed: " + JSON.stringify(error));
+      alert("Login failed: " + JSON.stringify(error));
       // showToast("Login Fail!");
-      // toast.error("Login Fail");
+      toast.error("Login Fail");
       if (axios.isAxiosError(error)) {
         // toast.error(error.response?.data.msg);
         if (error.response?.data.msg.includes("Invalid credentials")) {
