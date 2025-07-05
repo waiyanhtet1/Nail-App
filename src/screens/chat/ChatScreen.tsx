@@ -192,7 +192,7 @@ const ChatScreen: React.FC = () => {
           <IonIcon
             icon={arrowBack}
             className="w-5 h-5"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
           />
           <div className="flex justify-center w-full font-bold text-lg">
             <p className="text-gray-800">Chat with Barbie’s Studio</p>

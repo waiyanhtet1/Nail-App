@@ -62,7 +62,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
 
   return (
     <form
-      className="flex flex-col mb-5 bg-white rounded-xl p-3"
+      className="flex flex-col mb-5 bg-white rounded-xl"
       onSubmit={handleSubmit}
     >
       {/* Hidden file input */}
@@ -84,7 +84,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
           <button
             type="button"
             onClick={clearImageSelection}
-            className="absolute top-1 right-1 bg-white rounded-full p-0.5 shadow-md"
+            className="absolute top-1 right-1 bg-white rounded-full p-0.5 shadow-md flex items-center justify-center"
             aria-label="Clear image selection"
           >
             <IonIcon
@@ -96,32 +96,37 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
       )}
 
       <div className="flex w-full">
-        <input
-          type="text"
-          value={message}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setMessage(e.target.value)
-          }
-          placeholder={
-            selectedImage ? "Add a caption..." : "Type your message..."
-          }
-          className="flex-grow px-5 py-2 text-sm rounded-full focus:outline-none mr-3 border border-gray-300"
-        />
+        {!selectedImage && (
+          <>
+            <input
+              type="text"
+              value={message}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setMessage(e.target.value)
+              }
+              placeholder="Type your message..."
+              className="flex-grow px-5 py-2 text-sm rounded-full focus:outline-none mr-3"
+            />
 
-        <button
-          type="button"
-          onClick={handleImageButtonClick}
-          className="px-4 py-2 rounded-full font-semibold"
-        >
-          <IonIcon icon={imageOutline} className="size-5" />
-        </button>
-        <button
-          type="submit"
-          className="ml-2 px-4 py-2 rounded-full font-semibold bg-blue-500 text-white" // Added some basic styling for visibility
-          disabled={!message.trim() && !selectedImage}
-        >
-          <IonIcon icon={sendOutline} className="size-5" />
-        </button>
+            <button
+              type="button"
+              onClick={handleImageButtonClick}
+              className="pr-7 py-2 rounded-full font-semibold"
+            >
+              <IonIcon icon={imageOutline} className="size-5" />
+            </button>
+          </>
+        )}
+
+        <div className={`${selectedImage && "flex justify-end w-full"}`}>
+          <button
+            type="submit"
+            className="pr-3 py-2 rounded-full font-semibold"
+            disabled={!message.trim() && !selectedImage}
+          >
+            <IonIcon icon={sendOutline} className="size-5" />
+          </button>
+        </div>
       </div>
     </form>
   );
