@@ -12,7 +12,7 @@ import { auth } from "../../firebase";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
 import { UserType } from "../../types/userType";
-import profileImg from "/images/stylist.jpeg";
+import profileImg from "/images/default-profile.jpg";
 
 const SettingScreen = () => {
   const navigate = useNavigate();

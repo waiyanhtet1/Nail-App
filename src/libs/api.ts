@@ -2,7 +2,7 @@
 // api.ts
 import axios from "axios";
 import { BASE_URL } from "../constants/baseUrl";
-import { CreateChannelResponse, SendMessagePayload } from "../types/types";
+import { CreateChannelResponse } from "../types/types";
 
 // Assuming you're using environment variables for the base URL in a production setup
 const baseURL = BASE_URL; // Fallback for development
@@ -20,11 +20,11 @@ export const getStreamMessages = (channelId: string): Promise<any> => {
   return api.get(`/stream/messages/${channelId}`);
 };
 
-export const sendMessage = async (
-  payload: SendMessagePayload
-): Promise<void> => {
-  // Axios will return AxiosResponse<void>, awaiting it makes the function return Promise<void> implicitly.
-  await api.post<void>("/stream/send-message", payload);
+export const sendMessage = async (payload: FormData): Promise<void> => {
+  // Axios will automatically handle the Content-Type header for FormData
+  await api.post<void>("/stream/send-message", payload, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
 
 export const createChannel = async (
@@ -35,4 +35,13 @@ export const createChannel = async (
     customerId,
   });
   return response.data;
+};
+
+// New function for editing messages
+export const editMessage = async (
+  userId: string,
+  messageId: string,
+  text: string
+): Promise<void> => {
+  await api.put<void>("/stream/edit-message", { userId, messageId, text });
 };

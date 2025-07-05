@@ -4,4 +4,5 @@ export type UserType = {
   secondary_email: string;
   playerId: string;
   _id: string;
+  profileImage: string;
 };

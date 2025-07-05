@@ -9,6 +9,7 @@ import {
   setSelectedService,
 } from "../../redux/slices/bookingSlice";
 import { ServiceType } from "../../types/types";
+import discountImg from "/images/discount.png";
 
 interface Props {
   promotions: ServiceType[];
@@ -53,7 +54,17 @@ const PromotionScreen = ({ promotions }: Props) => {
       <p className="text-secondary text-lg mb-5 font-bold">Promotion</p>
 
       <div className="overflow-y-scroll h-[calc(100vh-180px)] no-scrollbar flex flex-col gap-3">
-        {promotions &&
+        {promotions.length === 0 ? (
+          <div className="flex flex-col">
+            <img
+              src={discountImg}
+              className="w-full h-[250px] object-contain"
+            />
+            <p className="text-lg text-center text-secondary font-bold">
+              No Promotion For Now.
+            </p>
+          </div>
+        ) : (
           promotions.map((item) => (
             <PromotionCard
               key={item._id}
@@ -64,7 +75,8 @@ const PromotionScreen = ({ promotions }: Props) => {
               onClick={() => handlePromotionClick(item)}
               buttonLoading={isLoading}
             />
-          ))}
+          ))
+        )}
       </div>
     </div>
   );

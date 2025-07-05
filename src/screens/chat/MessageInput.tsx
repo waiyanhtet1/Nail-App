@@ -1,41 +1,133 @@
 // MessageInput.tsx
 import { IonIcon } from "@ionic/react";
-import { sendOutline } from "ionicons/icons";
-import React, { useState } from "react";
+import { closeCircleOutline, imageOutline, sendOutline } from "ionicons/icons"; // Import closeCircleOutline for clearing preview
+import React, { useEffect, useRef, useState } from "react"; // Import useEffect
 
 interface MessageInputProps {
-  onSendMessage: (text: string) => void;
+  onSendMessage: (text: string, imageFile?: File | null) => void;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
   const [message, setMessage] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null); // New state for image preview URL
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Effect to create and revoke object URL for image preview
+  useEffect(() => {
+    if (selectedImage) {
+      const objectUrl = URL.createObjectURL(selectedImage);
+      setImagePreviewUrl(objectUrl);
+
+      // Clean up the object URL when the component unmounts or selectedImage changes
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+      };
+    } else {
+      setImagePreviewUrl(null); // Clear preview if no image is selected
+    }
+  }, [selectedImage]); // Re-run when selectedImage changes
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (message.trim()) {
-      onSendMessage(message);
+    if (message.trim() || selectedImage) {
+      onSendMessage(message, selectedImage);
       setMessage("");
+      setSelectedImage(null); // Clear selected image
+      // imagePreviewUrl will be cleared by the useEffect due to setSelectedImage(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Clear the file input visually
+      }
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    } else {
+      setSelectedImage(null);
+    }
+  };
+
+  const handleImageButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const clearImageSelection = () => {
+    setSelectedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Clear the file input visually
     }
   };
 
   return (
-    <form className="flex mb-5 bg-white rounded-xl" onSubmit={handleSubmit}>
+    <form
+      className="flex flex-col mb-5 bg-white rounded-xl"
+      onSubmit={handleSubmit}
+    >
+      {/* Hidden file input */}
       <input
-        type="text"
-        value={message}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setMessage(e.target.value)
-        }
-        placeholder="Type your message..."
-        className="flex-grow px-5 py-2 text-sm rounded-full focus:outline-none mr-3"
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={handleImageChange}
       />
-      <button
-        type="submit"
-        className="px-6 py-2 rounded-full font-semibold"
-        disabled={!message.trim()}
-      >
-        <IonIcon icon={sendOutline} className="size-5" />
-      </button>
+
+      {imagePreviewUrl && (
+        <div className="relative mb-3 self-center">
+          <img
+            src={imagePreviewUrl}
+            alt="Image preview"
+            className="max-h-32 rounded-lg object-contain border border-gray-300"
+          />
+          <button
+            type="button"
+            onClick={clearImageSelection}
+            className="absolute top-1 right-1 bg-white rounded-full p-0.5 shadow-md flex items-center justify-center"
+            aria-label="Clear image selection"
+          >
+            <IonIcon
+              icon={closeCircleOutline}
+              className="text-red-500 w-5 h-5"
+            />
+          </button>
+        </div>
+      )}
+
+      <div className="flex w-full">
+        {!selectedImage && (
+          <>
+            <input
+              type="text"
+              value={message}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setMessage(e.target.value)
+              }
+              placeholder="Type your message..."
+              className="flex-grow px-5 py-2 text-sm rounded-full focus:outline-none mr-3"
+            />
+
+            <button
+              type="button"
+              onClick={handleImageButtonClick}
+              className="pr-7 py-2 rounded-full font-semibold"
+            >
+              <IonIcon icon={imageOutline} className="size-5" />
+            </button>
+          </>
+        )}
+
+        <div className={`${selectedImage && "flex justify-end w-full"}`}>
+          <button
+            type="submit"
+            className="pr-3 py-2 rounded-full font-semibold"
+            disabled={!message.trim() && !selectedImage}
+          >
+            <IonIcon icon={sendOutline} className="size-5" />
+          </button>
+        </div>
+      </div>
     </form>
   );
 };

@@ -8,14 +8,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import DOBSelect from "../../components/DOBSelect";
-import ImageInput from "../../components/ImageInput";
+import EditImageInput from "../../components/EditImageInput";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import { BASE_URL } from "../../constants/baseUrl";
-import { removeLeadingZero } from "../../libs/dateUtils";
+import { formatWithLeadingZero, removeLeadingZero } from "../../libs/dateUtils";
 import { encryptData } from "../../libs/encryption";
 import showToast from "../../libs/toastUtil";
 import { getLoginUser } from "../../libs/userUtils";
+import { urlToFile } from "../../libs/utils";
 import { updateProfileValidation } from "../../validations/updateProfileValidation";
 
 type Inputs = {
@@ -33,6 +34,7 @@ const EditProfile = () => {
   const [year, setYear] = useState("");
   const [isDOBError, setIsDOBError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -59,12 +61,19 @@ const EditProfile = () => {
       setIsDOBError(false);
       setIsLoading(true);
 
+      const dateProps =
+        day && month && year
+          ? `${year}-${formatWithLeadingZero(month)}-${formatWithLeadingZero(
+              day
+            )}T00:00:00.000Z`
+          : null;
+
       const formData = new FormData();
       formData.append("userId", userInfo._id);
       formData.append("username", data.userName);
       formData.append("phone", data.phone);
       formData.append("email", data.email);
-      formData.append("DOB", `${day}/${month}/${year}`);
+      formData.append("DOB", dateProps as string);
 
       if (data.profileImg && data.profileImg.length > 0) {
         formData.append("profileImage", data.profileImg[0]);
@@ -111,6 +120,18 @@ const EditProfile = () => {
           setYear(currentYear);
         }
       }
+
+      urlToFile(
+        `${BASE_URL}${userInfo.profileImage}`,
+        `${userInfo.profileImage}`
+      ).then((file) => {
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => setImage(reader.result as string);
+          reader.readAsDataURL(file);
+          setValue("profileImg", file);
+        }
+      });
     }
   }, []);
 
@@ -142,7 +163,11 @@ const EditProfile = () => {
         className="flex flex-col gap-3 mt-3"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <ImageInput onChange={(file) => setValue("profileImg", file)} />
+        <EditImageInput
+          image={image as string}
+          setImage={setImage}
+          onChange={(file) => setValue("profileImg", file)}
+        />
 
         <Input
           label="User Name"

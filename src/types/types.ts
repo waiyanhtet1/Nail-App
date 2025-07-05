@@ -82,6 +82,12 @@ export interface Message {
   user?: {
     id: string;
   };
+  attachments?: [
+    {
+      type: string;
+      image_url: string;
+    }
+  ];
 }
 
 /**
