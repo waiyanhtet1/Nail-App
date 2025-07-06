@@ -130,7 +130,7 @@ const EditProfile = () => {
   useEffect(() => {
     if (userInfo) {
       setValue("userName", userInfo.username);
-      setValue("email", userInfo.email);
+      setValue("email", userInfo.secondary_email);
       setValue("phone", userInfo.phone);
 
       const dobString = userInfo.DOB;

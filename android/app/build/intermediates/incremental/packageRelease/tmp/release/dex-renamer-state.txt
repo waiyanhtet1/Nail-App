@@ -1,0 +1,10 @@
+#Sun Jul 06 02:55:38 MMT 2025
+base.0=/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/build/intermediates/dex/release/mergeDexRelease/classes.dex
+base.1=/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/build/intermediates/global_synthetics_dex/release/mergeReleaseGlobalSynthetics/classes.dex
+base.2=/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/build/intermediates/dex/release/mergeDexRelease/classes2.dex
+path.0=classes.dex
+path.1=classes.dex
+path.2=classes2.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex
+renamed.2=classes3.dex

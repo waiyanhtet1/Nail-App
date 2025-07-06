@@ -109,25 +109,36 @@ const LoginScreen = () => {
   };
 
   const loginWithGoogleMobile = async () => {
-    try {
-      const googleUser = await GoogleAuth.signIn();
+    if (Capacitor.getPlatform() === "android") {
+      await GoogleAuth.initialize({
+        clientId:
+          "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
+        grantOfflineAccess: true,
+      });
 
-      const { authentication } = googleUser;
-      const idToken = authentication?.idToken;
-      const accessToken = authentication?.accessToken;
+      try {
+        const googleUser = await GoogleAuth.signIn();
 
-      if (!idToken || !accessToken) {
-        throw new Error("Missing idToken or accessToken from Google response");
+        const { authentication } = googleUser;
+        const idToken = authentication?.idToken;
+        const accessToken = authentication?.accessToken;
+
+        if (!idToken || !accessToken) {
+          throw new Error(
+            "Missing idToken or accessToken from Google response"
+          );
+        }
+
+        const credential = GoogleAuthProvider.credential(idToken, accessToken);
+        const userCredential = await signInWithCredential(auth, credential);
+
+        console.log("Firebase User:", userCredential.user);
+        return userCredential.user;
+      } catch (err) {
+        console.error("Google mobile sign-in error:", err);
+        throw err;
       }
-
-      const credential = GoogleAuthProvider.credential(idToken, accessToken);
-      const userCredential = await signInWithCredential(auth, credential);
-
-      console.log("Firebase User:", userCredential.user);
-      return userCredential.user;
-    } catch (err) {
-      console.error("Google mobile sign-in error:", err);
-      throw err;
     }
   };
 
