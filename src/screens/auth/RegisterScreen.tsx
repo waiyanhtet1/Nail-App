@@ -5,11 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import {
   GoogleAuthProvider,
+  OAuthProvider,
   signInWithCredential,
   signInWithPopup,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
-import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -225,28 +225,45 @@ const RegisterScreen = () => {
         throw new Error("No identityToken received from Apple.");
       }
 
+      const provider = new OAuthProvider("apple.com");
+
+      const credential = provider.credential({
+        idToken: res.identityToken,
+        rawNonce: undefined, // You can use a nonce if you wish to protect against replay attacks
+      });
+
+      const firebaseUser = await signInWithCredential(auth, credential);
+      console.log("✅ Apple user registered to Firebase:", firebaseUser);
+
+      const user = firebaseUser.user;
+
       // Decode identityToken to extract sub (Apple user ID) and email
-      const decoded: any = jwtDecode(res.identityToken);
-      const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
-      const email = decoded.email ?? res.email ?? null;
+      // const decoded: any = jwtDecode(res.identityToken);
+      // const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
+      // const email = decoded.email ?? res.email ?? null;
 
-      const displayName =
-        res.fullName?.givenName || res.fullName?.familyName
-          ? `${res.fullName?.givenName || ""} ${
-              res.fullName?.familyName || ""
-            }`.trim()
-          : "AppleUser";
+      // const displayName =
+      //   res.fullName?.givenName || res.fullName?.familyName
+      //     ? `${res.fullName?.givenName || ""} ${
+      //         res.fullName?.familyName || ""
+      //       }`.trim()
+      //     : "AppleUser";
 
-      console.log("[Apple] Decoded ID Token:", decoded);
-      console.log("[Apple] User ID:", appleUserId);
-      console.log("[Apple] Email:", email);
-      console.log("[Apple] Display Name:", displayName);
+      // console.log("[Apple] Decoded ID Token:", decoded);
+      // console.log("[Apple] User ID:", appleUserId);
+      // console.log("[Apple] Email:", email);
+      // console.log("[Apple] Display Name:", displayName);
 
       const response = await axios.post(`${BASE_URL}/register`, {
-        username: displayName || email,
-        // phone: data.phone,
-        email: email,
-        password: appleUserId,
+        // username: displayName || email,
+        // // phone: data.phone,
+        // email: email,
+        // password: appleUserId,
+        // DOB: null,
+        // playerId: playerId,
+        username: user.displayName || "AppleUser",
+        email: user.email,
+        password: user.uid, // or some secure token
         DOB: null,
         playerId: playerId,
       });

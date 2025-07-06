@@ -5,11 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import {
   GoogleAuthProvider,
+  OAuthProvider,
   signInWithCredential,
   signInWithPopup,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
-import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -207,14 +207,26 @@ const LoginScreen = () => {
         throw new Error("No identityToken received from Apple.");
       }
 
-      const decoded: any = jwtDecode(res.identityToken);
-      const appleUserId = decoded.sub;
-      const email = decoded.email || res.email;
+      const provider = new OAuthProvider("apple.com");
 
-      if (!email) {
-        toast.error("Email is required for login. Please try another method.");
-        return;
-      }
+      const credential = provider.credential({
+        idToken: res.identityToken,
+        rawNonce: undefined, // You can use a nonce if you wish to protect against replay attacks
+      });
+
+      const firebaseUser = await signInWithCredential(auth, credential);
+      console.log("✅ Apple user registered to Firebase:", firebaseUser);
+
+      const user = firebaseUser.user;
+
+      // const decoded: any = jwtDecode(res.identityToken);
+      // const appleUserId = decoded.sub;
+      // const email = decoded.email || res.email;
+
+      // if (!email) {
+      //   toast.error("Email is required for login. Please try another method.");
+      //   return;
+      // }
 
       // Use full name if available, fallback to email
       // const displayName =
@@ -225,8 +237,8 @@ const LoginScreen = () => {
       //     : email;
 
       const payload = {
-        username: email,
-        password: appleUserId,
+        username: user.email,
+        password: user.uid,
         playerId: playerId || null,
       };
 
