@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "103072032496-ur6lbn4j6gs0svf5aoh3qc2cagvvfuhd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.barbiestudio.app",
+            "certificate_hash": "59eb073c448a05084675f66528ec7683be3e87b4"
+          }
+        },
+        {
           "client_id": "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com",
           "client_type": 3
         }

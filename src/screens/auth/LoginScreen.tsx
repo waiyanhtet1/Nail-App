@@ -94,23 +94,36 @@ const LoginScreen = () => {
   };
 
   const loginWithGoogleMobile = async () => {
-    try {
-      const googleUser = await GoogleAuth.signIn();
+    if (Capacitor.getPlatform() === "android") {
+      await GoogleAuth.initialize({
+        clientId:
+          "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
+        grantOfflineAccess: true,
+      });
 
-      const { idToken } = googleUser.authentication;
-      if (!idToken) throw new Error("No ID token found");
+      try {
+        const googleUser = await GoogleAuth.signIn();
 
-      const credential = GoogleAuthProvider.credential(idToken);
-      const userCredential = await signInWithCredential(auth, credential);
+        const { authentication } = googleUser;
+        const idToken = authentication?.idToken;
+        const accessToken = authentication?.accessToken;
 
-      console.log("Firebase User:", userCredential.user);
-      // alert("Firebase User:" + JSON.stringify(userCredential.user));
+        if (!idToken || !accessToken) {
+          throw new Error(
+            "Missing idToken or accessToken from Google response"
+          );
+        }
 
-      return userCredential.user;
-    } catch (err) {
-      console.error("Google mobile sign-in error:", err);
-      // alert("Google mobile sign-in error:" + JSON.stringify(err));
-      throw err;
+        const credential = GoogleAuthProvider.credential(idToken, accessToken);
+        const userCredential = await signInWithCredential(auth, credential);
+
+        console.log("Firebase User:", userCredential.user);
+        return userCredential.user;
+      } catch (err) {
+        console.error("Google mobile sign-in error:", err);
+        throw err;
+      }
     }
   };
 
@@ -136,7 +149,7 @@ const LoginScreen = () => {
         navigate("/");
       }
     } catch (error) {
-      alert("Login failed: " + JSON.stringify(error));
+      // alert("Login failed: " + JSON.stringify(error));
       // showToast("Login Fail!");
       toast.error("Login Fail");
       if (axios.isAxiosError(error)) {
