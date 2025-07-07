@@ -236,7 +236,12 @@ const RegisterScreen = () => {
       const firebaseUser = await signInWithCredential(auth, credential);
       const user = firebaseUser.user;
 
-      console.log("✅ Apple user signed in to Firebase:", user);
+      console.log("result user", user);
+
+      // Decode identityToken to extract sub (Apple user ID) and email
+      // const decoded: any = jwtDecode(res.identityToken);
+      // const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
+      // const email = decoded.email ?? res.email ?? null;
 
       // Optional: Decode ID token to get user ID or email
       const decoded: any = jwtDecode(res.identityToken);
