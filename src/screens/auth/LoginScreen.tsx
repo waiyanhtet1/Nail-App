@@ -109,10 +109,15 @@ const LoginScreen = () => {
   };
 
   const loginWithGoogleMobile = async () => {
-    if (Capacitor.getPlatform() === "android") {
+    const iOS_CLIENT_ID =
+      "103072032496-eshh54us7j8mriv22ebu0iberhqb4j15.apps.googleusercontent.com";
+
+    if (
+      Capacitor.getPlatform() === "ios" ||
+      Capacitor.getPlatform() === "android"
+    ) {
       await GoogleAuth.initialize({
-        clientId:
-          "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com",
+        clientId: iOS_CLIENT_ID,
         scopes: ["profile", "email"],
         grantOfflineAccess: true,
       });
@@ -140,6 +145,7 @@ const LoginScreen = () => {
         throw err;
       }
     }
+    return null;
   };
 
   const handleGoogleLogin = async () => {
@@ -202,6 +208,8 @@ const LoginScreen = () => {
           reject
         );
       });
+
+      console.log("[Apple] Raw response:", res);
 
       if (!res.identityToken) {
         throw new Error("No identityToken received from Apple.");
