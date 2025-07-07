@@ -351,23 +351,6 @@ const RegisterScreen = () => {
       console.log("[Apple] Email:", email);
       console.log("[Apple] Display Name:", displayName);
 
-      const appleUserId = decoded.sub;
-      const email = decoded.email ?? res.email ?? user.email ?? null;
-
-      // Full name is only available on first sign-in
-      const displayName =
-        res.fullName?.givenName || res.fullName?.familyName
-          ? `${res.fullName?.givenName || ""} ${
-              res.fullName?.familyName || ""
-            }`.trim()
-          : user.displayName || "AppleUser";
-
-      console.log("[Apple] Final displayName:", displayName);
-      console.log("[Apple] Email:", email);
-      console.log("[Apple] UID from firebase:", user.uid);
-      console.log("[Apple] UID from decoded:", appleUserId);
-
-      // ✅ Send to your backend
       const response = await axios.post(`${BASE_URL}/register`, {
         username: displayName || email,
         email: email,
@@ -400,14 +383,6 @@ const RegisterScreen = () => {
             duration: 5000,
           });
         }
-      } else {
-        alert(
-          "[Sign-In Error]:\n" +
-            (error?.code || "no-code") +
-            " - " +
-            (error?.message || JSON.stringify(error))
-        );
-        toast.error("Apple Sign-In failed.");
       }
     }
   };
