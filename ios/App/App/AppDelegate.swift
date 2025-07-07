@@ -5,22 +5,29 @@ import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         return true
     }
 
-    // ✅ This handles Google Sign-In redirect
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        // First, let Capacitor handle it
-        if let handled = CAPBridge.shared?.application(app, open: url, options: options), handled {
-            return true
-        }
+        // First let Capacitor handle the URL
+        let capacitorHandled = CAPBridge.handleOpenUrl(app, url, options)
 
-        // Then try Google Sign-In (required for GoogleAuth plugin)
-        return GIDSignIn.sharedInstance.handle(url)
+        // Then try Google Sign-In handler
+        let googleHandled = GIDSignIn.sharedInstance.handle(url)
+
+        return capacitorHandled || googleHandled
+    }
+
+    // Optional: support for universal links (e.g., Apple Sign-In)
+    func application(_ application: UIApplication,
+                     continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        return CAPBridge.handleContinueActivity(application, userActivity, restorationHandler)
     }
 }
