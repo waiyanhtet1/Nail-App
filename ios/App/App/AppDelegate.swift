@@ -8,6 +8,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Initialize Firebase
         FirebaseApp.configure()
         return true
     }
@@ -15,18 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        // Capacitor 7 URL handling
-        let capacitorHandled = BridgePluginManager.shared.handleOpenUrl(app, url, options)
-
-        // Google Sign-In handler
-        let googleHandled = GIDSignIn.sharedInstance.handle(url)
-
-        return capacitorHandled || googleHandled
-    }
-
-    func application(_ application: UIApplication,
-                     continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        return BridgePluginManager.shared.handleContinueActivity(application, userActivity, restorationHandler)
+        // Handle Google Sign-In callback
+        if GIDSignIn.sharedInstance.handle(url) {
+            return true
+        }
+        // Apple Sign-In does NOT require handling here with the plugin you're using
+        return false
     }
 }
