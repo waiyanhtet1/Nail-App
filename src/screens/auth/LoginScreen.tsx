@@ -5,11 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import {
   GoogleAuthProvider,
-  OAuthProvider,
   signInWithCredential,
   signInWithPopup,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
+import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -207,38 +207,19 @@ const LoginScreen = () => {
         throw new Error("No identityToken received from Apple.");
       }
 
-      const provider = new OAuthProvider("apple.com");
+      // Decode Apple ID token
+      const decoded: any = jwtDecode(res.identityToken);
+      const appleUserId = decoded.sub;
+      const email = decoded.email ?? res.email ?? null;
 
-      const credential = provider.credential({
-        idToken: res.identityToken,
-        rawNonce: undefined, // You can use a nonce if you wish to protect against replay attacks
-      });
-
-      const firebaseUser = await signInWithCredential(auth, credential);
-      console.log("✅ Apple user registered to Firebase:", firebaseUser);
-
-      const user = firebaseUser.user;
-
-      // const decoded: any = jwtDecode(res.identityToken);
-      // const appleUserId = decoded.sub;
-      // const email = decoded.email || res.email;
-
-      // if (!email) {
-      //   toast.error("Email is required for login. Please try another method.");
-      //   return;
-      // }
-
-      // Use full name if available, fallback to email
-      // const displayName =
-      //   res.fullName?.givenName || res.fullName?.familyName
-      //     ? `${res.fullName?.givenName || ""} ${
-      //         res.fullName?.familyName || ""
-      //       }`.trim()
-      //     : email;
+      if (!email) {
+        toast.error("Email is required for login. Please try another method.");
+        return;
+      }
 
       const payload = {
-        username: user.email,
-        password: user.uid,
+        username: email,
+        password: appleUserId,
         playerId: playerId || null,
       };
 
@@ -259,17 +240,12 @@ const LoginScreen = () => {
         if (msg.includes("already registered")) {
           toast(
             "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
-            {
-              duration: 5000,
-            }
+            { duration: 5000 }
           );
         } else {
-          // toast.error(msg);
           toast(
             "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
-            {
-              duration: 5000,
-            }
+            { duration: 5000 }
           );
         }
       } else {
@@ -277,6 +253,103 @@ const LoginScreen = () => {
       }
     }
   };
+
+  // const signInWithApple = async () => {
+  //   if (!Capacitor.isNativePlatform()) {
+  //     toast.error("Apple Sign-In is only available on iOS devices.");
+  //     return;
+  //   }
+
+  //   if (!cordova?.plugins?.SignInWithApple) {
+  //     toast.error("Apple Sign-In plugin not available.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
+  //       cordova.plugins.SignInWithApple.signin(
+  //         {
+  //           requestedScopes: [0, 1], // Full Name and Email
+  //         },
+  //         resolve,
+  //         reject
+  //       );
+  //     });
+
+  //     if (!res.identityToken) {
+  //       throw new Error("No identityToken received from Apple.");
+  //     }
+
+  //     const provider = new OAuthProvider("apple.com");
+
+  //     const credential = provider.credential({
+  //       idToken: res.identityToken,
+  //       rawNonce: undefined, // You can use a nonce if you wish to protect against replay attacks
+  //     });
+
+  //     const firebaseUser = await signInWithCredential(auth, credential);
+  //     console.log("✅ Apple user registered to Firebase:", firebaseUser);
+
+  //     const user = firebaseUser.user;
+
+  //     // const decoded: any = jwtDecode(res.identityToken);
+  //     // const appleUserId = decoded.sub;
+  //     // const email = decoded.email || res.email;
+
+  //     // if (!email) {
+  //     //   toast.error("Email is required for login. Please try another method.");
+  //     //   return;
+  //     // }
+
+  //     // Use full name if available, fallback to email
+  //     // const displayName =
+  //     //   res.fullName?.givenName || res.fullName?.familyName
+  //     //     ? `${res.fullName?.givenName || ""} ${
+  //     //         res.fullName?.familyName || ""
+  //     //       }`.trim()
+  //     //     : email;
+
+  //     const payload = {
+  //       username: user.email,
+  //       password: user.uid,
+  //       playerId: playerId || null,
+  //     };
+
+  //     console.log("[Apple Login] Payload:", payload);
+
+  //     const response = await axios.post(`${BASE_URL}/login`, payload);
+
+  //     localStorage.setItem("userInfo", encryptData(response.data));
+  //     navigate("/");
+  //     showToast("Login success");
+  //     toast.success("Login success");
+  //   } catch (error: any) {
+  //     console.error("[Apple Sign-In Error]:", error);
+
+  //     if (axios.isAxiosError(error) && error.response?.data?.msg) {
+  //       const msg = error.response.data.msg;
+
+  //       if (msg.includes("already registered")) {
+  //         toast(
+  //           "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
+  //           {
+  //             duration: 5000,
+  //           }
+  //         );
+  //       } else {
+  //         // toast.error(msg);
+  //         toast(
+  //           "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
+  //           {
+  //             duration: 5000,
+  //           }
+  //         );
+  //       }
+  //     } else {
+  //       toast.error("Login failed. Please try again.");
+  //     }
+  //   }
+  // };
 
   // const signInWithFacebookNative = async (): Promise<UserCredential> => {
   //   return new Promise((resolve, reject) => {
