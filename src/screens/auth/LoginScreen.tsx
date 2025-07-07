@@ -10,6 +10,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
+import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -215,30 +216,43 @@ const LoginScreen = () => {
       });
 
       const firebaseUser = await signInWithCredential(auth, credential);
-      console.log("✅ Apple user registered to Firebase:", firebaseUser);
-
       const user = firebaseUser.user;
 
-      // const decoded: any = jwtDecode(res.identityToken);
-      // const appleUserId = decoded.sub;
-      // const email = decoded.email || res.email;
+      console.log("✅ Apple user registered to Firebase:", user);
 
-      // if (!email) {
-      //   toast.error("Email is required for login. Please try another method.");
-      //   return;
-      // }
+      // 🔍 Decode Apple ID token
+      const decoded: any = jwtDecode(res.identityToken);
 
-      // Use full name if available, fallback to email
-      // const displayName =
-      //   res.fullName?.givenName || res.fullName?.familyName
-      //     ? `${res.fullName?.givenName || ""} ${
-      //         res.fullName?.familyName || ""
-      //       }`.trim()
-      //     : email;
+      console.log("Decoded data", decoded);
+
+      const appleUserId = decoded.sub; // Unique Apple user ID
+      const email = decoded.email ?? res.email ?? user.email ?? null;
+
+      if (!user.email) {
+        toast.error(
+          "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
+          {
+            duration: 5000,
+          }
+        );
+        return;
+      }
+
+      const displayName =
+        res.fullName?.givenName || res.fullName?.familyName
+          ? `${res.fullName?.givenName || ""} ${
+              res.fullName?.familyName || ""
+            }`.trim()
+          : user.displayName || "AppleUser";
+
+      console.log("[Apple] Final displayName:", displayName);
+      console.log("[Apple] Email:", email);
+      console.log("[Apple] UID from firebase:", user.uid);
+      console.log("[Apple] UID from decoded:", appleUserId);
 
       const payload = {
-        username: user.email,
-        password: user.uid,
+        username: email,
+        password: appleUserId,
         playerId: playerId || null,
       };
 

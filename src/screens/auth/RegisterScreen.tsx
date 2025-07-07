@@ -10,6 +10,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
+import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -197,12 +198,12 @@ const RegisterScreen = () => {
 
   const signInWithApple = async () => {
     if (!Capacitor.isNativePlatform()) {
-      // alert("Apple Sign-In is only available on iOS devices.");
+      toast.error("Apple Sign-In is only available on iOS devices.");
       return;
     }
 
     if (!cordova?.plugins?.SignInWithApple) {
-      // alert("[Apple Sign-In] Cordova plugin not available.");
+      toast.error("Apple Sign-In plugin not available.");
       return;
     }
 
@@ -225,45 +226,44 @@ const RegisterScreen = () => {
         throw new Error("No identityToken received from Apple.");
       }
 
+      // ✅ Sign in to Firebase
       const provider = new OAuthProvider("apple.com");
-
       const credential = provider.credential({
         idToken: res.identityToken,
-        rawNonce: undefined, // You can use a nonce if you wish to protect against replay attacks
+        rawNonce: undefined,
       });
 
       const firebaseUser = await signInWithCredential(auth, credential);
-      console.log("✅ Apple user registered to Firebase:", firebaseUser);
-
       const user = firebaseUser.user;
 
-      // Decode identityToken to extract sub (Apple user ID) and email
-      // const decoded: any = jwtDecode(res.identityToken);
-      // const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
-      // const email = decoded.email ?? res.email ?? null;
+      console.log("✅ Apple user signed in to Firebase:", user);
 
-      // const displayName =
-      //   res.fullName?.givenName || res.fullName?.familyName
-      //     ? `${res.fullName?.givenName || ""} ${
-      //         res.fullName?.familyName || ""
-      //       }`.trim()
-      //     : "AppleUser";
+      // Optional: Decode ID token to get user ID or email
+      const decoded: any = jwtDecode(res.identityToken);
 
-      // console.log("[Apple] Decoded ID Token:", decoded);
-      // console.log("[Apple] User ID:", appleUserId);
-      // console.log("[Apple] Email:", email);
-      // console.log("[Apple] Display Name:", displayName);
+      console.log("Decoded data", decoded);
 
+      const appleUserId = decoded.sub;
+      const email = decoded.email ?? res.email ?? user.email ?? null;
+
+      // Full name is only available on first sign-in
+      const displayName =
+        res.fullName?.givenName || res.fullName?.familyName
+          ? `${res.fullName?.givenName || ""} ${
+              res.fullName?.familyName || ""
+            }`.trim()
+          : user.displayName || "AppleUser";
+
+      console.log("[Apple] Final displayName:", displayName);
+      console.log("[Apple] Email:", email);
+      console.log("[Apple] UID from firebase:", user.uid);
+      console.log("[Apple] UID from decoded:", appleUserId);
+
+      // ✅ Send to your backend
       const response = await axios.post(`${BASE_URL}/register`, {
-        // username: displayName || email,
-        // // phone: data.phone,
-        // email: email,
-        // password: appleUserId,
-        // DOB: null,
-        // playerId: playerId,
-        username: user.displayName || "AppleUser",
-        email: user.email,
-        password: user.uid, // or some secure token
+        username: displayName || email,
+        email,
+        password: appleUserId, // OR use `appleUserId` if you prefer
         DOB: null,
         playerId: playerId,
       });
@@ -274,33 +274,32 @@ const RegisterScreen = () => {
       toast.success("Register success");
     } catch (error: any) {
       console.error("[Apple Sign-In Error]:", error);
-      // alert(
-      //   "[Sign-In Error]:\n" +
-      //     (error?.code || "no-code") +
-      //     " - " +
-      //     (error?.message || JSON.stringify(error))
-      // );
+
       if (axios.isAxiosError(error)) {
-        // toast.error(error.response?.data.msg);
+        toast.error(error.response?.data.msg);
+
         if (
           error.response?.data.msg.includes(
             "This email or secondary email has been already registered"
           )
         ) {
           toast(
-            "ဤ AppleId ဖြင့် account ဖွင့်ထားပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
-            {
-              duration: 5000,
-            }
+            "ဤ AppleID ဖြင့် account ဖွင့်ပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
+            { duration: 5000 }
           );
         } else {
-          toast(
-            "ဤ AppleId ဖြင့် account ဖွင့်ထားပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
-            {
-              duration: 5000,
-            }
-          );
+          toast("Apple ဖြင့် login မအောင်မြင်ပါ။ ပြန်ကြိုးစားပါ။", {
+            duration: 5000,
+          });
         }
+      } else {
+        alert(
+          "[Sign-In Error]:\n" +
+            (error?.code || "no-code") +
+            " - " +
+            (error?.message || JSON.stringify(error))
+        );
+        toast.error("Apple Sign-In failed.");
       }
     }
   };
