@@ -1,11 +1,12 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import Capacitor // ✅ Required for ApplicationDelegateProxy
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow? // Needed for some Google Sign-In callbacks
+    var window: UIWindow?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -13,17 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    // For handling Google Sign-In callback
     @available(iOS 9.0, *)
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 
-        // Google Sign-In handler
         if GIDSignIn.sharedInstance.handle(url) {
             return true
         }
 
-        // Also handle other Capacitor deep links (very important!)
+        // ✅ Required for Capacitor plugins like GoogleAuth
         return ApplicationDelegateProxy.shared.application(app, open: url, options: options)
     }
 
