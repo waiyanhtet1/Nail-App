@@ -24,6 +24,12 @@ end
 target 'App' do
   capacitor_pods
   # Add your Pods here
+  
+  # Add GoogleSignIn explicitly. Use a version compatible with 6.2.4 or newer.
+  # '~> 6.0' means any 6.x.x version. '~> 7.0' for latest.
+  pod 'GoogleSignIn', '~> 6.0' 
+  # If you want to be very specific to 6.2.4, you could use '6.2.4', 
+  # but '~> 6.0' is more flexible for minor updates.
 end
 
 post_install do |installer|

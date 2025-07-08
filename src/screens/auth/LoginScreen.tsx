@@ -149,24 +149,45 @@ const LoginScreen = () => {
   // };
 
   const loginWithGoogleMobile = async () => {
-    try {
-      const googleUser = await GoogleAuth.signIn();
+    // This is the correct format for the iOS Client ID when provided directly to the plugin.
+    const iOS_CLIENT_ID =
+      "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com"; // <-- IMPORTANT: This should be the 'Web Client ID' from your Google Cloud Console, not the 'Reversed Client ID' for iOS.
 
-      const idToken = googleUser.authentication?.idToken;
-      if (!idToken) throw new Error("No ID token found");
+    if (
+      Capacitor.getPlatform() === "ios" ||
+      Capacitor.getPlatform() === "android"
+    ) {
+      await GoogleAuth.initialize({
+        clientId: iOS_CLIENT_ID, // This 'clientId' param usually expects the "Web Client ID".
+        scopes: ["profile", "email"],
+        grantOfflineAccess: true,
+      });
 
-      const credential = GoogleAuthProvider.credential(idToken);
-      const userCredential = await signInWithCredential(auth, credential);
+      try {
+        const googleUser = await GoogleAuth.signIn();
 
-      console.log("Firebase User:", userCredential.user);
-      // alert("Firebase User:" + JSON.stringify(userCredential.user));
+        const { authentication } = googleUser;
+        const idToken = authentication?.idToken;
+        const accessToken = authentication?.accessToken;
 
-      return userCredential.user;
-    } catch (err) {
-      console.error("Google mobile sign-in error:", err);
-      alert("Google mobile sign-in error:" + JSON.stringify(err));
-      throw err;
+        if (!idToken || !accessToken) {
+          throw new Error(
+            "Missing idToken or accessToken from Google response"
+          );
+        }
+
+        // Correctly using Firebase's GoogleAuthProvider and signInWithCredential
+        const credential = GoogleAuthProvider.credential(idToken, accessToken);
+        const userCredential = await signInWithCredential(auth, credential);
+
+        console.log("Firebase User:", userCredential.user);
+        return userCredential.user;
+      } catch (err) {
+        console.error("Google mobile sign-in error:", err);
+        throw err;
+      }
     }
+    return null;
   };
 
   const handleGoogleLogin = async () => {
@@ -313,33 +334,15 @@ const LoginScreen = () => {
       // Decode identityToken to extract sub (Apple user ID) and email
       const decoded: any = jwtDecode(res.identityToken);
       const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
-      const email = decoded.email ?? res.email ?? null;
-
-      const displayName =
-        res.fullName?.givenName || res.fullName?.familyName
-          ? `${res.fullName?.givenName || ""} ${
-              res.fullName?.familyName || ""
-            }`.trim()
-          : "AppleUser";
 
       console.log("[Apple] Decoded ID Token:", decoded);
       console.log("[Apple] User ID:", appleUserId);
-      console.log("[Apple] Email:", email);
-      console.log("[Apple] Display Name:", displayName);
-
-      // Authenticate with Firebase
-      // const provider = new OAuthProvider("apple.com");
-      // const credential = provider.credential({
-      //   idToken: res.identityToken,
-      // });
-
-      // const firebaseResult = await signInWithCredential(auth, credential);
-      // const firebaseUser = firebaseResult.user;
 
       const response = await axios.post(`${BASE_URL}/login`, {
-        username: email,
+        username: `${appleUserId}@gmail.com`,
         password: appleUserId, // ✅ Use sub as password
         playerId: playerId,
+        isIosUser: true,
       });
 
       localStorage.setItem("userInfo", encryptData(response.data));
@@ -347,12 +350,18 @@ const LoginScreen = () => {
       navigate("/");
     } catch (error: any) {
       console.error("[Apple Sign-In Error]:", error);
-      alert(
-        "[Sign-In Error]:\n" +
-          (error?.code || "no-code") +
-          " - " +
-          (error?.message || JSON.stringify(error))
-      );
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.msg);
+        // toast.error(error.response?.data.msg);
+        if (error.response?.data.msg.includes("Invalid credentials")) {
+          toast(
+            "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
+            {
+              duration: 5000,
+            }
+          );
+        }
+      }
     }
   };
 
