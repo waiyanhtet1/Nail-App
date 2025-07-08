@@ -342,7 +342,6 @@ const LoginScreen = () => {
         username: `${appleUserId}@gmail.com`,
         password: appleUserId, // ✅ Use sub as password
         playerId: playerId,
-        isIosUser: true,
       });
 
       localStorage.setItem("userInfo", encryptData(response.data));
