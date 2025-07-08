@@ -108,44 +108,65 @@ const LoginScreen = () => {
     }
   };
 
+  // const loginWithGoogleMobile = async () => {
+  //   const iOS_CLIENT_ID =
+  //     "103072032496-eshh54us7j8mriv22ebu0iberhqb4j15.apps.googleusercontent.com";
+
+  //   if (
+  //     Capacitor.getPlatform() === "ios" ||
+  //     Capacitor.getPlatform() === "android"
+  //   ) {
+  //     await GoogleAuth.initialize({
+  //       clientId: iOS_CLIENT_ID,
+  //       scopes: ["profile", "email"],
+  //       grantOfflineAccess: true,
+  //     });
+
+  //     try {
+  //       const googleUser = await GoogleAuth.signIn();
+
+  //       const { authentication } = googleUser;
+  //       const idToken = authentication?.idToken;
+  //       const accessToken = authentication?.accessToken;
+
+  //       if (!idToken || !accessToken) {
+  //         throw new Error(
+  //           "Missing idToken or accessToken from Google response"
+  //         );
+  //       }
+
+  //       const credential = GoogleAuthProvider.credential(idToken, accessToken);
+  //       const userCredential = await signInWithCredential(auth, credential);
+
+  //       console.log("Firebase User:", userCredential.user);
+  //       return userCredential.user;
+  //     } catch (err) {
+  //       console.error("Google mobile sign-in error:", err);
+  //       throw err;
+  //     }
+  //   }
+  //   return null;
+  // };
+
   const loginWithGoogleMobile = async () => {
-    const iOS_CLIENT_ID =
-      "103072032496-eshh54us7j8mriv22ebu0iberhqb4j15.apps.googleusercontent.com";
+    try {
+      const googleUser = await GoogleAuth.signIn();
 
-    if (
-      Capacitor.getPlatform() === "ios" ||
-      Capacitor.getPlatform() === "android"
-    ) {
-      await GoogleAuth.initialize({
-        clientId: iOS_CLIENT_ID,
-        scopes: ["profile", "email"],
-        grantOfflineAccess: true,
-      });
+      const idToken = googleUser.authentication?.idToken;
+      if (!idToken) throw new Error("No ID token found");
 
-      try {
-        const googleUser = await GoogleAuth.signIn();
+      const credential = GoogleAuthProvider.credential(idToken);
+      const userCredential = await signInWithCredential(auth, credential);
 
-        const { authentication } = googleUser;
-        const idToken = authentication?.idToken;
-        const accessToken = authentication?.accessToken;
+      console.log("Firebase User:", userCredential.user);
+      // alert("Firebase User:" + JSON.stringify(userCredential.user));
 
-        if (!idToken || !accessToken) {
-          throw new Error(
-            "Missing idToken or accessToken from Google response"
-          );
-        }
-
-        const credential = GoogleAuthProvider.credential(idToken, accessToken);
-        const userCredential = await signInWithCredential(auth, credential);
-
-        console.log("Firebase User:", userCredential.user);
-        return userCredential.user;
-      } catch (err) {
-        console.error("Google mobile sign-in error:", err);
-        throw err;
-      }
+      return userCredential.user;
+    } catch (err) {
+      console.error("Google mobile sign-in error:", err);
+      alert("Google mobile sign-in error:" + JSON.stringify(err));
+      throw err;
     }
-    return null;
   };
 
   const handleGoogleLogin = async () => {
@@ -187,81 +208,6 @@ const LoginScreen = () => {
     }
   };
 
-  const signInWithApple = async () => {
-    if (!Capacitor.isNativePlatform()) {
-      toast.error("Apple Sign-In is only available on iOS devices.");
-      return;
-    }
-
-    if (!cordova?.plugins?.SignInWithApple) {
-      toast.error("Apple Sign-In plugin not available.");
-      return;
-    }
-
-    try {
-      const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
-        cordova.plugins.SignInWithApple.signin(
-          {
-            requestedScopes: [0, 1], // Full Name and Email
-          },
-          resolve,
-          reject
-        );
-      });
-
-      console.log("[Apple] Raw response:", res);
-
-      if (!res.identityToken) {
-        throw new Error("No identityToken received from Apple.");
-      }
-
-      // Decode Apple ID token
-      const decoded: any = jwtDecode(res.identityToken);
-      const appleUserId = decoded.sub;
-      const email = decoded.email ?? res.email ?? null;
-
-      if (!email) {
-        toast.error("Email is required for login. Please try another method.");
-        return;
-      }
-
-      const payload = {
-        username: email,
-        password: appleUserId,
-        playerId: playerId || null,
-      };
-
-      console.log("[Apple Login] Payload:", payload);
-
-      const response = await axios.post(`${BASE_URL}/login`, payload);
-
-      localStorage.setItem("userInfo", encryptData(response.data));
-      navigate("/");
-      showToast("Login success");
-      toast.success("Login success");
-    } catch (error: any) {
-      console.error("[Apple Sign-In Error]:", error);
-
-      if (axios.isAxiosError(error) && error.response?.data?.msg) {
-        const msg = error.response.data.msg;
-
-        if (msg.includes("already registered")) {
-          toast(
-            "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
-            { duration: 5000 }
-          );
-        } else {
-          toast(
-            "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
-            { duration: 5000 }
-          );
-        }
-      } else {
-        toast.error("Login failed. Please try again.");
-      }
-    }
-  };
-
   // const signInWithApple = async () => {
   //   if (!Capacitor.isNativePlatform()) {
   //     toast.error("Apple Sign-In is only available on iOS devices.");
@@ -284,42 +230,25 @@ const LoginScreen = () => {
   //       );
   //     });
 
+  //     console.log("[Apple] Raw response:", res);
+
   //     if (!res.identityToken) {
   //       throw new Error("No identityToken received from Apple.");
   //     }
 
-  //     const provider = new OAuthProvider("apple.com");
+  //     // Decode Apple ID token
+  //     const decoded: any = jwtDecode(res.identityToken);
+  //     const appleUserId = decoded.sub;
+  //     const email = decoded.email ?? res.email ?? null;
 
-  //     const credential = provider.credential({
-  //       idToken: res.identityToken,
-  //       rawNonce: undefined, // You can use a nonce if you wish to protect against replay attacks
-  //     });
-
-  //     const firebaseUser = await signInWithCredential(auth, credential);
-  //     console.log("✅ Apple user registered to Firebase:", firebaseUser);
-
-  //     const user = firebaseUser.user;
-
-  //     // const decoded: any = jwtDecode(res.identityToken);
-  //     // const appleUserId = decoded.sub;
-  //     // const email = decoded.email || res.email;
-
-  //     // if (!email) {
-  //     //   toast.error("Email is required for login. Please try another method.");
-  //     //   return;
-  //     // }
-
-  //     // Use full name if available, fallback to email
-  //     // const displayName =
-  //     //   res.fullName?.givenName || res.fullName?.familyName
-  //     //     ? `${res.fullName?.givenName || ""} ${
-  //     //         res.fullName?.familyName || ""
-  //     //       }`.trim()
-  //     //     : email;
+  //     if (!email) {
+  //       toast.error("Email is required for login. Please try another method.");
+  //       return;
+  //     }
 
   //     const payload = {
-  //       username: user.email,
-  //       password: user.uid,
+  //       username: email,
+  //       password: appleUserId,
   //       playerId: playerId || null,
   //     };
 
@@ -340,18 +269,10 @@ const LoginScreen = () => {
   //       if (msg.includes("already registered")) {
   //         toast(
   //           "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
-  //           {
-  //             duration: 5000,
-  //           }
+  //           { duration: 5000 }
   //         );
   //       } else {
-  //         // toast.error(msg);
-  //         toast(
-  //           "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
-  //           {
-  //             duration: 5000,
-  //           }
-  //         );
+  //         toast(msg);
   //       }
   //     } else {
   //       toast.error("Login failed. Please try again.");
@@ -359,63 +280,81 @@ const LoginScreen = () => {
   //   }
   // };
 
-  // const signInWithFacebookNative = async (): Promise<UserCredential> => {
-  //   return new Promise((resolve, reject) => {
-  //     facebookConnectPlugin.login(
-  //       ["public_profile", "email"],
-  //       async (response: any) => {
-  //         if (response.authResponse) {
-  //           const { accessToken } = response.authResponse;
+  const signInWithApple = async () => {
+    if (!Capacitor.isNativePlatform()) {
+      alert("Apple Sign-In is only available on iOS devices.");
+      return;
+    }
 
-  //           const credential = FacebookAuthProvider.credential(accessToken);
-  //           try {
-  //             const userCredential = await signInWithCredential(
-  //               auth,
-  //               credential
-  //             );
-  //             resolve(userCredential); // now properly typed
-  //           } catch (firebaseError) {
-  //             reject(firebaseError);
-  //           }
-  //         } else {
-  //           reject("No auth response");
-  //         }
-  //       },
-  //       (error: any) => reject(error)
-  //     );
-  //   });
-  // };
+    if (!cordova?.plugins?.SignInWithApple) {
+      alert("[Apple Sign-In] Cordova plugin not available.");
+      return;
+    }
 
-  // const signInWithFacebookWeb = async () => {
-  //   const provider = new FacebookAuthProvider();
-  //   const userCredential = await signInWithPopup(auth, provider);
-  //   return userCredential;
-  // };
+    try {
+      console.log("[Apple] Waiting for Apple Sign-In response...");
 
-  // const handleFacebookRegister = async () => {
-  //   try {
-  //     const userCredential = Capacitor.isNativePlatform()
-  //       ? await signInWithFacebookNative()
-  //       : await signInWithFacebookWeb();
+      const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
+        cordova.plugins.SignInWithApple.signin(
+          {
+            requestedScopes: [0, 1], // 0 = Full Name, 1 = Email
+          },
+          resolve,
+          reject
+        );
+      });
 
-  //     const user = userCredential.user;
+      console.log("[Apple] Raw response:", res);
 
-  //     const response = await axios.post(`${BASE_URL}/login`, {
-  //       username: user.email,
-  //       password: user.uid,
-  //       playerId: playerId,
-  //     });
+      if (!res.identityToken) {
+        throw new Error("No identityToken received from Apple.");
+      }
 
-  //     localStorage.setItem("userInfo", encryptData(response.data.user));
-  //     navigate("/");
-  //     showToast("Login success");
-  //     toast.success("Login success");
-  //   } catch (err) {
-  //     console.error("Facebook login error", err);
-  //     showToast("Facebook Login Fail!");
-  //     toast.error("Facebook Login Fail");
-  //   }
-  // };
+      // Decode identityToken to extract sub (Apple user ID) and email
+      const decoded: any = jwtDecode(res.identityToken);
+      const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
+      const email = decoded.email ?? res.email ?? null;
+
+      const displayName =
+        res.fullName?.givenName || res.fullName?.familyName
+          ? `${res.fullName?.givenName || ""} ${
+              res.fullName?.familyName || ""
+            }`.trim()
+          : "AppleUser";
+
+      console.log("[Apple] Decoded ID Token:", decoded);
+      console.log("[Apple] User ID:", appleUserId);
+      console.log("[Apple] Email:", email);
+      console.log("[Apple] Display Name:", displayName);
+
+      // Authenticate with Firebase
+      // const provider = new OAuthProvider("apple.com");
+      // const credential = provider.credential({
+      //   idToken: res.identityToken,
+      // });
+
+      // const firebaseResult = await signInWithCredential(auth, credential);
+      // const firebaseUser = firebaseResult.user;
+
+      const response = await axios.post(`${BASE_URL}/login`, {
+        username: email,
+        password: appleUserId, // ✅ Use sub as password
+        playerId: playerId,
+      });
+
+      localStorage.setItem("userInfo", encryptData(response.data));
+      showToast("Login success");
+      navigate("/");
+    } catch (error: any) {
+      console.error("[Apple Sign-In Error]:", error);
+      alert(
+        "[Sign-In Error]:\n" +
+          (error?.code || "no-code") +
+          " - " +
+          (error?.message || JSON.stringify(error))
+      );
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">

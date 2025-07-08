@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import OneSignal from "onesignal-cordova-plugin";
@@ -145,6 +146,8 @@ export default function Wrapper() {
     };
     initOneSignal();
   }, [dispatch]);
+
+  GoogleAuth.initialize();
 
   return (
     <Router>
