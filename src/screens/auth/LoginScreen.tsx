@@ -110,6 +110,11 @@ const LoginScreen = () => {
   }, []);
 
   const handleGoogleLogin = async () => {
+    if (!Capacitor.isNativePlatform()) {
+      toast.error("Google Login only works on mobile apps (iOS/Android).");
+      return;
+    }
+
     try {
       const res = await SocialLogin.login({
         provider: "google",
@@ -158,6 +163,7 @@ const LoginScreen = () => {
       }
     } catch (error) {
       console.log("Google Login Error:", error);
+      toast.error(JSON.stringify(error));
     }
   };
   // ================ google register ====================
