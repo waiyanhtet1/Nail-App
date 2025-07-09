@@ -91,6 +91,24 @@ const LoginScreen = () => {
   }, [navigate]);
 
   // ================ google register ====================
+
+  useEffect(() => {
+    async function initializeSocialLogin() {
+      await SocialLogin.initialize({
+        google: {
+          webClientId:
+            "785555693645-nkum8i6hg77k0ms3gbvam2ura0618e2d.apps.googleusercontent.com", // Your Web Client ID from Google Cloud Console
+          iOSClientId:
+            "785555693645-n4aj6urtbk07jfctdjoenac20k6l2l46.apps.googleusercontent.com", // Your iOS Client ID from Google Cloud Console
+          mode: "offline", // Use 'offline' if you need refresh tokens for backend integration
+        },
+        // You can also add Apple, Facebook, etc. here if needed
+      });
+    }
+
+    initializeSocialLogin();
+  }, []);
+
   const handleGoogleLogin = async () => {
     try {
       const res = await SocialLogin.login({

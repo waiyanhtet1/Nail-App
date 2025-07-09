@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -103,6 +103,23 @@ const RegisterScreen = () => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    async function initializeSocialLogin() {
+      await SocialLogin.initialize({
+        google: {
+          webClientId:
+            "785555693645-nkum8i6hg77k0ms3gbvam2ura0618e2d.apps.googleusercontent.com", // Your Web Client ID from Google Cloud Console
+          iOSClientId:
+            "785555693645-n4aj6urtbk07jfctdjoenac20k6l2l46.apps.googleusercontent.com", // Your iOS Client ID from Google Cloud Console
+          mode: "offline", // Use 'offline' if you need refresh tokens for backend integration
+        },
+        // You can also add Apple, Facebook, etc. here if needed
+      });
+    }
+
+    initializeSocialLogin();
+  }, []);
 
   // ================ google register ====================
   const handleGoogleRegister = async () => {
