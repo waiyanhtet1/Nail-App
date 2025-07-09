@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+import { SocialLogin } from "@capgo/capacitor-social-login";
 import { setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import OneSignal from "onesignal-cordova-plugin";
@@ -147,7 +147,20 @@ export default function Wrapper() {
     initOneSignal();
   }, [dispatch]);
 
-  GoogleAuth.initialize();
+  async function initializeSocialLogin() {
+    await SocialLogin.initialize({
+      google: {
+        webClientId:
+          "785555693645-nkum8i6hg77k0ms3gbvam2ura0618e2d.apps.googleusercontent.com", // Your Web Client ID from Google Cloud Console
+        iOSClientId:
+          "785555693645-n4aj6urtbk07jfctdjoenac20k6l2l46.apps.googleusercontent.com", // Your iOS Client ID from Google Cloud Console
+        mode: "offline", // Use 'offline' if you need refresh tokens for backend integration
+      },
+      // You can also add Apple, Facebook, etc. here if needed
+    });
+  }
+
+  initializeSocialLogin();
 
   return (
     <Router>

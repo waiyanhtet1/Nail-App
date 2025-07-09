@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Capacitor } from "@capacitor/core";
+import { SocialLogin } from "@capgo/capacitor-social-login";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
@@ -19,6 +20,7 @@ import { getLoginUser } from "../../libs/userUtils";
 import { useAppSelector } from "../../redux/hook";
 import { loginValidationSchema } from "../../validations/loginValidation";
 import appleIcon from "/images/apple.svg";
+import googleIcon from "/images/google.svg";
 
 // declare let facebookConnectPlugin: any;
 declare let cordova: any;
@@ -88,210 +90,61 @@ const LoginScreen = () => {
     if (userInfo) navigate("/");
   }, [navigate]);
 
-  // const loginWithGoogleWeb = async () => {
-  //   try {
-  //     const provider = new GoogleAuthProvider();
-  //     const result = await signInWithPopup(auth, provider);
-  //     console.log("Firebase Web User:", result.user);
-  //     return result.user;
-  //   } catch (err) {
-  //     console.error("Google web sign-in error:", err);
-  //     throw err;
-  //   }
-  // };
+  // ================ google register ====================
+  const handleGoogleLogin = async () => {
+    try {
+      const res = await SocialLogin.login({
+        provider: "google",
+        options: {
+          scopes: ["email", "profile"], // Request necessary scopes
+          forceRefreshToken: true, // Request a refresh token if you use 'offline' mode
+        },
+      });
+      console.log("Google Login Result:", res);
 
-  // const loginWithGoogleMobile = async () => {
-  //   const iOS_CLIENT_ID =
-  //     "103072032496-eshh54us7j8mriv22ebu0iberhqb4j15.apps.googleusercontent.com";
+      const { id, email, displayName, name }: any = res.result;
 
-  //   if (
-  //     Capacitor.getPlatform() === "ios" ||
-  //     Capacitor.getPlatform() === "android"
-  //   ) {
-  //     await GoogleAuth.initialize({
-  //       clientId: iOS_CLIENT_ID,
-  //       scopes: ["profile", "email"],
-  //       grantOfflineAccess: true,
-  //     });
+      console.log("displayName", displayName);
+      console.log("name", name);
+      console.log("id", id);
+      console.log("email", email);
 
-  //     try {
-  //       const googleUser = await GoogleAuth.signIn();
+      try {
+        const response = await axios.post(`${BASE_URL}/login`, {
+          username: email,
+          password: id,
+          playerId: playerId,
+        });
 
-  //       const { authentication } = googleUser;
-  //       const idToken = authentication?.idToken;
-  //       const accessToken = authentication?.accessToken;
+        localStorage.setItem("userInfo", encryptData(response.data));
+        navigate("/");
+        showToast("Login success");
+      } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response?.data.msg);
+          // toast.error(error.response?.data.msg);
+          if (
+            error.response?.data.msg.includes(
+              "This email or secondary email has been already registered"
+            )
+          ) {
+            toast(
+              "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
+              {
+                duration: 5000,
+              }
+            );
+          }
+        }
+      }
+    } catch (error) {
+      console.log("Google Login Error:", error);
+    }
+  };
+  // ================ google register ====================
 
-  //       if (!idToken || !accessToken) {
-  //         throw new Error(
-  //           "Missing idToken or accessToken from Google response"
-  //         );
-  //       }
-
-  //       const credential = GoogleAuthProvider.credential(idToken, accessToken);
-  //       const userCredential = await signInWithCredential(auth, credential);
-
-  //       console.log("Firebase User:", userCredential.user);
-  //       return userCredential.user;
-  //     } catch (err) {
-  //       console.error("Google mobile sign-in error:", err);
-  //       throw err;
-  //     }
-  //   }
-  //   return null;
-  // };
-
-  // const loginWithGoogleMobile = async () => {
-  //   // This is the correct format for the iOS Client ID when provided directly to the plugin.
-  //   const iOS_CLIENT_ID =
-  //     "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com"; // <-- IMPORTANT: This should be the 'Web Client ID' from your Google Cloud Console, not the 'Reversed Client ID' for iOS.
-
-  //   if (
-  //     Capacitor.getPlatform() === "ios" ||
-  //     Capacitor.getPlatform() === "android"
-  //   ) {
-  //     await GoogleAuth.initialize({
-  //       clientId: iOS_CLIENT_ID, // This 'clientId' param usually expects the "Web Client ID".
-  //       scopes: ["profile", "email"],
-  //       grantOfflineAccess: true,
-  //     });
-
-  //     try {
-  //       const googleUser = await GoogleAuth.signIn();
-
-  //       const { authentication } = googleUser;
-  //       const idToken = authentication?.idToken;
-  //       const accessToken = authentication?.accessToken;
-
-  //       if (!idToken || !accessToken) {
-  //         throw new Error(
-  //           "Missing idToken or accessToken from Google response"
-  //         );
-  //       }
-
-  //       // Correctly using Firebase's GoogleAuthProvider and signInWithCredential
-  //       const credential = GoogleAuthProvider.credential(idToken, accessToken);
-  //       const userCredential = await signInWithCredential(auth, credential);
-
-  //       console.log("Firebase User:", userCredential.user);
-  //       return userCredential.user;
-  //     } catch (err) {
-  //       console.error("Google mobile sign-in error:", err);
-  //       throw err;
-  //     }
-  //   }
-  //   return null;
-  // };
-
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     const user = Capacitor.isNativePlatform()
-  //       ? await loginWithGoogleMobile()
-  //       : await loginWithGoogleWeb();
-
-  //     // Optionally, send user info to your backend here
-
-  //     if (user) {
-  //       console.log("Signed in user:", user);
-
-  //       const response = await axios.post(`${BASE_URL}/login`, {
-  //         username: user.email,
-  //         password: user.uid,
-  //         playerId: playerId,
-  //       });
-
-  //       localStorage.setItem("userInfo", encryptData(response.data));
-  //       showToast("Login success");
-  //       navigate("/");
-  //     }
-  //   } catch (error) {
-  //     // alert("Login failed: " + JSON.stringify(error));
-  //     // showToast("Login Fail!");
-  //     // toast.error("Login Fail");
-  //     if (axios.isAxiosError(error)) {
-  //       // toast.error(error.response?.data.msg);
-  //       if (error.response?.data.msg.includes("Invalid credentials")) {
-  //         toast(
-  //           "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
-  //           {
-  //             duration: 5000,
-  //           }
-  //         );
-  //       }
-  //     }
-  //   }
-  // };
-
-  // const signInWithApple = async () => {
-  //   if (!Capacitor.isNativePlatform()) {
-  //     toast.error("Apple Sign-In is only available on iOS devices.");
-  //     return;
-  //   }
-
-  //   if (!cordova?.plugins?.SignInWithApple) {
-  //     toast.error("Apple Sign-In plugin not available.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const res = await new Promise<AppleSignInResponse>((resolve, reject) => {
-  //       cordova.plugins.SignInWithApple.signin(
-  //         {
-  //           requestedScopes: [0, 1], // Full Name and Email
-  //         },
-  //         resolve,
-  //         reject
-  //       );
-  //     });
-
-  //     console.log("[Apple] Raw response:", res);
-
-  //     if (!res.identityToken) {
-  //       throw new Error("No identityToken received from Apple.");
-  //     }
-
-  //     // Decode Apple ID token
-  //     const decoded: any = jwtDecode(res.identityToken);
-  //     const appleUserId = decoded.sub;
-  //     const email = decoded.email ?? res.email ?? null;
-
-  //     if (!email) {
-  //       toast.error("Email is required for login. Please try another method.");
-  //       return;
-  //     }
-
-  //     const payload = {
-  //       username: email,
-  //       password: appleUserId,
-  //       playerId: playerId || null,
-  //     };
-
-  //     console.log("[Apple Login] Payload:", payload);
-
-  //     const response = await axios.post(`${BASE_URL}/login`, payload);
-
-  //     localStorage.setItem("userInfo", encryptData(response.data));
-  //     navigate("/");
-  //     showToast("Login success");
-  //     toast.success("Login success");
-  //   } catch (error: any) {
-  //     console.error("[Apple Sign-In Error]:", error);
-
-  //     if (axios.isAxiosError(error) && error.response?.data?.msg) {
-  //       const msg = error.response.data.msg;
-
-  //       if (msg.includes("already registered")) {
-  //         toast(
-  //           "သင့် AppleID ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
-  //           { duration: 5000 }
-  //         );
-  //       } else {
-  //         toast(msg);
-  //       }
-  //     } else {
-  //       toast.error("Login failed. Please try again.");
-  //     }
-  //   }
-  // };
+  // =============== apple login ==========================
 
   const signInWithApple = async () => {
     if (!Capacitor.isNativePlatform()) {
@@ -355,6 +208,8 @@ const LoginScreen = () => {
       }
     }
   };
+
+  // =============== apple login ==========================
 
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">
@@ -424,8 +279,8 @@ const LoginScreen = () => {
           icon={facebookIcon}
           onClick={handleFacebookRegister}
         /> */}
+        <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} />
         <SocialIconButton icon={appleIcon} onClick={signInWithApple} />
-        {/* <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} /> */}
       </div>
 
       {/* register route */}
