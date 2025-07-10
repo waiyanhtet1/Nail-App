@@ -46,7 +46,7 @@ const App = () => {
   const userInfo = getLoginUser();
 
   const [isUserNameUpdateModalOpen, setIsUserNameUpdateModalOpen] =
-    useState(false);
+    useState(true);
 
   useEffect(() => {
     if (userInfo && userInfo.username === "AppleUser") {

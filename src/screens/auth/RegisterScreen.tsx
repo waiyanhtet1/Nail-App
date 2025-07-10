@@ -140,23 +140,12 @@ const RegisterScreen = () => {
       });
       console.log("Google Login Result:", res);
 
-      const { id, email, displayName, name }: any = res.result;
+      const { serverAuthCode }: any = res.result;
 
-      console.log("displayName", displayName);
-      console.log("name", name);
-      console.log("id", id);
-      console.log("email", email);
-
-      const formData = new FormData();
-      formData.append("username", displayName || name);
-      formData.append("phone", "");
-      formData.append("email", email);
-      formData.append("password", id);
-      formData.append("DOB", "");
-      formData.append("playerId", playerId);
       try {
-        const response = await axios.post(`${BASE_URL}/register`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        const response = await axios.post(`${BASE_URL}/register/google-sso`, {
+          serverAuthCode: serverAuthCode,
+          playerId: playerId,
         });
 
         localStorage.setItem("userInfo", encryptData(response.data));
@@ -224,6 +213,7 @@ const RegisterScreen = () => {
       // Decode identityToken to extract sub (Apple user ID) and email
       const decoded: any = jwtDecode(res.identityToken);
       const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
+      const email = decoded.email ?? res.email ?? null;
 
       console.log("[Apple] Decoded ID Token:", decoded);
       console.log("[Apple] User ID:", appleUserId);
@@ -231,15 +221,20 @@ const RegisterScreen = () => {
       const formData = new FormData();
       formData.append("username", "AppleUser");
       formData.append("phone", "");
-      formData.append("email", `${appleUserId}@gmail.com`);
+      formData.append("email", email || `${appleUserId}@gmail.com`);
       formData.append("password", appleUserId);
       formData.append("DOB", "");
       formData.append("playerId", playerId);
+      formData.append("isIosUser", "true");
 
       try {
-        const response = await axios.post(`${BASE_URL}/register`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const response = await axios.post(
+          `${BASE_URL}/register/ios`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
         localStorage.setItem("userInfo", encryptData(response.data));
         navigate("/");

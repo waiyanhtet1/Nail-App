@@ -76,7 +76,7 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
       }
 
       try {
-        const response = await axios.put(
+        const response = await axios.patch(
           `${BASE_URL}/update-profile`,
           formData,
           {
@@ -172,11 +172,12 @@ const UserNameBottomSheet = ({ isOpen, setOpen }: Props) => {
           <Sheet.Content style={{ paddingBottom: ref.current?.y }}>
             <Sheet.Scroller draggableAt="both" className="mx-7">
               {/* Some content here that makes the sheet content scrollable */}
-              <h1 className="text-secondary text-xl font-bold">
-                Update Your Username
+              <h1 className="text-secondary text-lg font-bold">
+                Complete your registration
               </h1>
-              <p className="text-sm text-gray-second mt-3">
-                You need to provide your own username to be use in application.
+              <p className="text-xs text-gray-second mt-3">
+                You need to provide your own information to be use in
+                application.
               </p>
 
               <form

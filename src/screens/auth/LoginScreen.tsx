@@ -127,17 +127,11 @@ const LoginScreen = () => {
       });
       console.log("Google Login Result:", res);
 
-      const { id, email, displayName, name }: any = res.result;
-
-      console.log("displayName", displayName);
-      console.log("name", name);
-      console.log("id", id);
-      console.log("email", email);
+      const { serverAuthCode }: any = res.result;
 
       try {
-        const response = await axios.post(`${BASE_URL}/login`, {
-          username: email,
-          password: id,
+        const response = await axios.post(`${BASE_URL}/login/google-sso`, {
+          serverAuthCode: serverAuthCode,
           playerId: playerId,
         });
 
@@ -205,14 +199,16 @@ const LoginScreen = () => {
       // Decode identityToken to extract sub (Apple user ID) and email
       const decoded: any = jwtDecode(res.identityToken);
       const appleUserId = decoded.sub; // <<< THIS IS YOUR NEW PASSWORD
+      const email = decoded.email ?? res.email ?? null;
 
       console.log("[Apple] Decoded ID Token:", decoded);
       console.log("[Apple] User ID:", appleUserId);
 
       const response = await axios.post(`${BASE_URL}/login`, {
-        username: `${appleUserId}@gmail.com`,
+        username: email || `${appleUserId}@gmail.com`,
         password: appleUserId, // ✅ Use sub as password
         playerId: playerId,
+        isIosUser: true,
       });
 
       localStorage.setItem("userInfo", encryptData(response.data));

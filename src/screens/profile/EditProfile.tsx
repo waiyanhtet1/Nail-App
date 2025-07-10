@@ -80,7 +80,7 @@ const EditProfile = () => {
         }
 
         try {
-          const response = await axios.put(
+          const response = await axios.patch(
             `${BASE_URL}/update-profile`,
             formData,
             {
