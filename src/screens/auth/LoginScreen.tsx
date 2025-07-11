@@ -45,6 +45,7 @@ const LoginScreen = () => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const { playerId } = useAppSelector((state) => state.token);
 
@@ -129,6 +130,7 @@ const LoginScreen = () => {
 
       const { serverAuthCode }: any = res.result;
 
+      setIsGoogleLoading(true);
       try {
         const response = await axios.post(`${BASE_URL}/login/google-sso`, {
           serverAuthCode: serverAuthCode,
@@ -156,6 +158,8 @@ const LoginScreen = () => {
             );
           }
         }
+      } finally {
+        setIsGoogleLoading(false);
       }
     } catch (error) {
       console.log("Google Login Error:", error);
@@ -204,30 +208,37 @@ const LoginScreen = () => {
       console.log("[Apple] Decoded ID Token:", decoded);
       console.log("[Apple] User ID:", appleUserId);
 
-      const response = await axios.post(`${BASE_URL}/login`, {
-        username: email || `${appleUserId}@gmail.com`,
-        password: appleUserId, // ✅ Use sub as password
-        playerId: playerId,
-        isIosUser: true,
-      });
+      setIsGoogleLoading(true);
+      try {
+        const response = await axios.post(`${BASE_URL}/login`, {
+          username: email || `${appleUserId}@gmail.com`,
+          password: appleUserId, // ✅ Use sub as password
+          playerId: playerId,
+          isIosUser: true,
+        });
 
-      localStorage.setItem("userInfo", encryptData(response.data));
-      showToast("Login success");
-      navigate("/");
+        localStorage.setItem("userInfo", encryptData(response.data));
+        showToast("Login success");
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response?.data.msg);
+          // toast.error(error.response?.data.msg);
+          if (error.response?.data.msg.includes("Invalid credentials")) {
+            toast(
+              "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
+              {
+                duration: 5000,
+              }
+            );
+          }
+        }
+      } finally {
+        setIsGoogleLoading(false);
+      }
     } catch (error: any) {
       console.error("[Apple Sign-In Error]:", error);
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.msg);
-        // toast.error(error.response?.data.msg);
-        if (error.response?.data.msg.includes("Invalid credentials")) {
-          toast(
-            "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
-            {
-              duration: 5000,
-            }
-          );
-        }
-      }
     }
   };
 
@@ -235,83 +246,93 @@ const LoginScreen = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">
-      <div className="flex flex-col items-center">
-        <p className="font-beauty text-5xl" onClick={() => navigate("/")}>
-          Barbie’s Studio
-        </p>
-        <p className="uppercase text-xl">NAIL BAR</p>
-      </div>
+      {isGoogleLoading && (
+        <div className="absolute inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg w-[40%]">
+            <Loading /> {/* Your existing Loading spinner component */}
+          </div>
+        </div>
+      )}
 
-      {/* <div className="flex justify-center">
-        <img src={logo} alt="" className="h-[200px]" />
-      </div> */}
-      <form
-        className="w-full mt-10 px-5 md:px-52"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {/* username input */}
-        <Input
-          type="text"
-          label="User Name"
-          inputProps={{ ...register("userName") }}
-          isBorderRed={errors.userName !== undefined}
-          errorMessage={errors.userName?.message}
-        />
-
-        {/* password input */}
-        <Input
-          type={isPasswordShow ? "text" : "password"}
-          label="Password"
-          Icon={isPasswordShow ? eyeOutline : eyeOffOutline}
-          IconOnClick={() => setIsPasswordShow((prev) => !prev)}
-          inputProps={{ ...register("password") }}
-          isBorderRed={errors.password !== undefined}
-          errorMessage={errors.password?.message}
-        />
-
-        <div className="flex justify-end">
-          <p
-            className="my-3 text-gray-second text-sm  w-max"
-            onClick={() => navigate("/forgot-password")}
-          >
-            Forget Password?
+      <>
+        <div className="flex flex-col items-center">
+          <p className="font-beauty text-5xl" onClick={() => navigate("/")}>
+            Barbie’s Studio
           </p>
+          <p className="uppercase text-xl">NAIL BAR</p>
         </div>
 
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <div className="w-full flex items-center justify-center mt-3">
-            <Button type="submit" variant="primary" className="mt-3">
-              Sign In
-            </Button>
+        {/* <div className="flex justify-center">
+        <img src={logo} alt="" className="h-[200px]" />
+      </div> */}
+        <form
+          className="w-full mt-10 px-5 md:px-52"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          {/* username input */}
+          <Input
+            type="text"
+            label="User Name"
+            inputProps={{ ...register("userName") }}
+            isBorderRed={errors.userName !== undefined}
+            errorMessage={errors.userName?.message}
+          />
+
+          {/* password input */}
+          <Input
+            type={isPasswordShow ? "text" : "password"}
+            label="Password"
+            Icon={isPasswordShow ? eyeOutline : eyeOffOutline}
+            IconOnClick={() => setIsPasswordShow((prev) => !prev)}
+            inputProps={{ ...register("password") }}
+            isBorderRed={errors.password !== undefined}
+            errorMessage={errors.password?.message}
+          />
+
+          <div className="flex justify-end">
+            <p
+              className="my-3 text-gray-second text-sm  w-max"
+              onClick={() => navigate("/forgot-password")}
+            >
+              Forget Password?
+            </p>
           </div>
-        )}
-      </form>
 
-      <div className="w-full px-5 md:px-52 my-5 flex items-center justify-center gap-5">
-        <p className="w-full border border-gray-second" />
-        <p className="whitespace-nowrap text-sm text-gray">Or signin with</p>
-        <p className="w-full border border-gray-second" />
-      </div>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <div className="w-full flex items-center justify-center mt-3">
+              <Button type="submit" variant="primary" className="mt-3">
+                Sign In
+              </Button>
+            </div>
+          )}
+        </form>
 
-      {/* social icon */}
-      <div className="flex items-center justify-center gap-5">
-        {/* <SocialIconButton
+        <div className="w-full px-5 md:px-52 my-5 flex items-center justify-center gap-5">
+          <p className="w-full border border-gray-second" />
+          <p className="whitespace-nowrap text-sm text-gray">Or signin with</p>
+          <p className="w-full border border-gray-second" />
+        </div>
+
+        {/* social icon */}
+        <div className="flex items-center justify-center gap-5">
+          {/* <SocialIconButton
           icon={facebookIcon}
           onClick={handleFacebookRegister}
         /> */}
-        <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} />
-        <SocialIconButton icon={appleIcon} onClick={signInWithApple} />
-      </div>
+          <SocialIconButton icon={googleIcon} onClick={handleGoogleLogin} />
+          <SocialIconButton icon={appleIcon} onClick={signInWithApple} />
+        </div>
 
-      {/* register route */}
-      <p className="my-5 text-center text-gray-second text-sm">
-        Don’t have an account?
-        <Link to="/register" className="active:text-red-primary ml-2">
-          Register
-        </Link>
-      </p>
+        {/* register route */}
+        <p className="my-5 text-center text-gray-second text-sm">
+          Don’t have an account?
+          <Link to="/register" className="active:text-red-primary ml-2">
+            Register
+          </Link>
+        </p>
+      </>
     </div>
   );
 };

@@ -51,6 +51,7 @@ const RegisterScreen = () => {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const navigate = useNavigate();
   const { playerId } = useAppSelector((state) => state.token);
@@ -142,6 +143,8 @@ const RegisterScreen = () => {
 
       const { serverAuthCode }: any = res.result;
 
+      setIsGoogleLoading(true);
+
       try {
         const response = await axios.post(`${BASE_URL}/register/google-sso`, {
           serverAuthCode: serverAuthCode,
@@ -169,6 +172,8 @@ const RegisterScreen = () => {
             );
           }
         }
+      } finally {
+        setIsGoogleLoading(false);
       }
     } catch (error) {
       console.log("Google Login Error:", error);
@@ -227,6 +232,7 @@ const RegisterScreen = () => {
       formData.append("playerId", playerId);
       formData.append("isIosUser", "true");
 
+      setIsGoogleLoading(true);
       try {
         const response = await axios.post(
           `${BASE_URL}/register/ios`,
@@ -257,6 +263,8 @@ const RegisterScreen = () => {
             );
           }
         }
+      } finally {
+        setIsGoogleLoading(false);
       }
     } catch (error: any) {
       console.error("[Apple Sign-In Error]:", error);
@@ -265,82 +273,93 @@ const RegisterScreen = () => {
   // =============== apple login ==========================
 
   return (
-    <div className="flex flex-col gap-3 pt-10 px-5 md:px-52">
-      <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
-        <ImageInput onChange={(file) => setValue("profileImg", file)} />
-        <Input
-          label="User Name"
-          type="text"
-          inputProps={{ ...register("userName") }}
-          isBorderRed={errors.userName !== undefined}
-          errorMessage={errors.userName?.message}
-        />
-        <Input
-          label="Phone"
-          type="number"
-          inputProps={{ ...register("phone") }}
-          isBorderRed={errors.phone !== undefined}
-          errorMessage={errors.phone?.message}
-        />
-        <Input
-          label="Email"
-          type="email"
-          inputProps={{ ...register("email") }}
-          isBorderRed={errors.email !== undefined}
-          errorMessage={errors.email?.message}
-        />
-        <Input
-          type={isPasswordShow ? "text" : "password"}
-          label="Password"
-          Icon={isPasswordShow ? eyeOutline : eyeOffOutline}
-          IconOnClick={() => setIsPasswordShow((prev) => !prev)}
-          inputProps={{ ...register("password") }}
-          isBorderRed={errors.password !== undefined}
-          errorMessage={errors.password?.message}
-        />
-
-        <div className="flex items-center justify-between">
-          <p className="text-gray">Date of Birth</p>
-        </div>
-        <DOBSelect
-          day={day}
-          setDay={setDay}
-          month={month}
-          setMonth={setMonth}
-          year={year}
-          setYear={setYear}
-        />
-
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <div className="w-full flex items-center justify-center mt-3">
-            <Button type="submit" variant="primary">
-              Sign Up
-            </Button>
+    <div className="relative flex flex-col gap-3 pt-10 px-5 md:px-52">
+      {/* Overlay */}
+      {isGoogleLoading && (
+        <div className="absolute inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg w-[40%]">
+            <Loading /> {/* Your existing Loading spinner component */}
           </div>
-        )}
-      </form>
+        </div>
+      )}
 
-      <div className="w-full px-5 my-5 flex items-center justify-center gap-5">
-        <p className="w-full border border-gray-second" />
-        <p className="whitespace-nowrap text-sm text-gray">Or Signup with</p>
-        <p className="w-full border border-gray-second" />
-      </div>
+      <>
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+          <ImageInput onChange={(file) => setValue("profileImg", file)} />
+          <Input
+            label="User Name"
+            type="text"
+            inputProps={{ ...register("userName") }}
+            isBorderRed={errors.userName !== undefined}
+            errorMessage={errors.userName?.message}
+          />
+          <Input
+            label="Phone"
+            type="number"
+            inputProps={{ ...register("phone") }}
+            isBorderRed={errors.phone !== undefined}
+            errorMessage={errors.phone?.message}
+          />
+          <Input
+            label="Email"
+            type="email"
+            inputProps={{ ...register("email") }}
+            isBorderRed={errors.email !== undefined}
+            errorMessage={errors.email?.message}
+          />
+          <Input
+            type={isPasswordShow ? "text" : "password"}
+            label="Password"
+            Icon={isPasswordShow ? eyeOutline : eyeOffOutline}
+            IconOnClick={() => setIsPasswordShow((prev) => !prev)}
+            inputProps={{ ...register("password") }}
+            isBorderRed={errors.password !== undefined}
+            errorMessage={errors.password?.message}
+          />
 
-      {/* social icon */}
-      <div className="flex items-center justify-center gap-5">
-        <SocialIconButton icon={googleIcon} onClick={handleGoogleRegister} />
-        <SocialIconButton icon={appleIcon} onClick={signInWithApple} />
-      </div>
+          <div className="flex items-center justify-between">
+            <p className="text-gray">Date of Birth</p>
+          </div>
+          <DOBSelect
+            day={day}
+            setDay={setDay}
+            month={month}
+            setMonth={setMonth}
+            year={year}
+            setYear={setYear}
+          />
 
-      {/* register route */}
-      <p className="my-5 text-center text-gray-second text-sm">
-        Already have an account?
-        <Link to="/login" className="active:text-red-primary ml-2">
-          Login
-        </Link>
-      </p>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <div className="w-full flex items-center justify-center mt-3">
+              <Button type="submit" variant="primary">
+                Sign Up
+              </Button>
+            </div>
+          )}
+        </form>
+
+        <div className="w-full px-5 my-5 flex items-center justify-center gap-5">
+          <p className="w-full border border-gray-second" />
+          <p className="whitespace-nowrap text-sm text-gray">Or Signup with</p>
+          <p className="w-full border border-gray-second" />
+        </div>
+
+        {/* social icon */}
+        <div className="flex items-center justify-center gap-5">
+          <SocialIconButton icon={googleIcon} onClick={handleGoogleRegister} />
+          <SocialIconButton icon={appleIcon} onClick={signInWithApple} />
+        </div>
+
+        {/* register route */}
+        <p className="my-5 text-center text-gray-second text-sm">
+          Already have an account?
+          <Link to="/login" className="active:text-red-primary ml-2">
+            Login
+          </Link>
+        </p>
+      </>
     </div>
   );
 };
