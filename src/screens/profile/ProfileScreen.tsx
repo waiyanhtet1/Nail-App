@@ -133,7 +133,7 @@ const ProfileScreen = () => {
             setIsConfirmSliderOpen(value);
           }}
           title="Logout?"
-          description="sure to logout?"
+          description="Are you Sure to Logout?"
           actionButtonText="Logout"
           actionButtonHandler={handleLogout}
         />

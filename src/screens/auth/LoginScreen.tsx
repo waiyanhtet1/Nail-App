@@ -163,7 +163,7 @@ const LoginScreen = () => {
       }
     } catch (error) {
       console.log("Google Login Error:", error);
-      toast.error(JSON.stringify(error));
+      // toast.error(JSON.stringify(error));
     }
   };
   // ================ google register ====================
@@ -227,7 +227,7 @@ const LoginScreen = () => {
           // toast.error(error.response?.data.msg);
           if (error.response?.data.msg.includes("Invalid credentials")) {
             toast(
-              "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
+              "သင့် AppleId  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
               {
                 duration: 5000,
               }

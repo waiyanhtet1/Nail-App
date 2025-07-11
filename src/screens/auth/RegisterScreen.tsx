@@ -165,7 +165,7 @@ const RegisterScreen = () => {
             )
           ) {
             toast(
-              "သင့် Gmail  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Google ဖြင့် Account အသစ်ဖွင့်ပါ။",
+              "ဤ Gmail ဖြင့် အကောင့်ဖွင့်ထားပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
               {
                 duration: 5000,
               }
@@ -177,7 +177,6 @@ const RegisterScreen = () => {
       }
     } catch (error) {
       console.log("Google Login Error:", error);
-      toast.error(JSON.stringify(error));
     }
   };
 
@@ -256,7 +255,7 @@ const RegisterScreen = () => {
             )
           ) {
             toast(
-              "သင့် AppleId  ဖြင့် Account မရှိသေးပါ။ Register Screen တွင် Register with Apple ဖြင့် Account အသစ်ဖွင့်ပါ။",
+              "ဤ AppleId ဖြင့် အကောင့်ဖွင့်ထားပြီးဖြစ်သည်။ Log In Screen တွင် Log In ဝင်ပါ။",
               {
                 duration: 5000,
               }
