@@ -111,13 +111,17 @@ export default function Wrapper() {
         // console.log("Permission granted:", permissionGranted);
         // alert("Permission granted:" + JSON.stringify(permissionGranted));
 
-        // get playerId
+        // get playerId or subscription id
         await OneSignal.User.getOnesignalId()
           .then((playerId) => {
-            // alert("🎯 Player ID: " + playerId);
+            console.log("🎯 Player ID: " + playerId);
             dispatch(setToken(playerId as string));
           })
           .catch((err) => alert(JSON.stringify(err)));
+
+        // get subscription id
+        const subscriptionId = await OneSignal.User.pushSubscription.id;
+        console.log("subscriptionId", subscriptionId);
       } catch (error: any) {
         console.error("🔥 OneSignal init error:", error);
         // alert("OneSignal error: " + (error?.message || JSON.stringify(error)));
