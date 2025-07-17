@@ -54,7 +54,7 @@ const RegisterScreen = () => {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { playerId } = useAppSelector((state) => state.token);
+  const { playerId, subsId } = useAppSelector((state) => state.token);
 
   const {
     register,
@@ -83,6 +83,7 @@ const RegisterScreen = () => {
     formData.append("password", data.password);
     formData.append("DOB", dateProps as string);
     formData.append("playerId", playerId);
+    formData.append("subsId", subsId);
 
     if (data.profileImg && data.profileImg.length > 0) {
       formData.append("profileImage", data.profileImg[0]);
@@ -149,6 +150,7 @@ const RegisterScreen = () => {
         const response = await axios.post(`${BASE_URL}/register/google-sso`, {
           serverAuthCode: serverAuthCode,
           playerId: playerId,
+          subsId: subsId,
         });
 
         localStorage.setItem("userInfo", encryptData(response.data));
@@ -229,6 +231,7 @@ const RegisterScreen = () => {
       formData.append("password", appleUserId);
       formData.append("DOB", "");
       formData.append("playerId", playerId);
+      formData.append("subsId", subsId);
       formData.append("isIosUser", "true");
 
       setIsGoogleLoading(true);

@@ -1,0 +1,22 @@
+{
+	"appId": "com.barbiestudio.app",
+	"appName": "Barbie’s Studio",
+	"webDir": "dist",
+	"plugins": {
+		"SplashScreen": {
+			"launchAutoHide": true,
+			"splashFullScreen": false,
+			"splashImmersive": false,
+			"androidScaleType": "CENTER_CROP",
+			"showSpinner": false
+		},
+		"GoogleAuth": {
+			"scopes": [
+				"profile",
+				"email"
+			],
+			"serverClientId": "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com",
+			"forceCodeForRefreshToken": true
+		}
+	}
+}

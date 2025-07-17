@@ -17,7 +17,7 @@ import UserNameBottomSheet from "./components/bottomSheets/UserNameBottomSheet";
 import MainLayout from "./layouts/MainLayout";
 import { getLoginUser } from "./libs/userUtils";
 import { useAppDispatch } from "./redux/hook";
-import { setToken } from "./redux/slices/tokenSlice";
+import { setSubId, setToken } from "./redux/slices/tokenSlice";
 import ForgotPassword from "./screens/auth/ForgotPassword";
 import LoginScreen from "./screens/auth/LoginScreen";
 import NewPasswordScreen from "./screens/auth/NewPasswordScreen";
@@ -139,6 +139,11 @@ export default function Wrapper() {
             dispatch(setToken(playerId as string));
           })
           .catch((err) => alert(JSON.stringify(err)));
+
+        // get subscription id
+        const subscriptionId = await OneSignal.User.pushSubscription.id;
+        console.log("subscriptionId", subscriptionId);
+        dispatch(setSubId(subscriptionId as string));
       } catch (error: any) {
         console.error("🔥 OneSignal init error:", error);
         // alert("OneSignal error: " + (error?.message || JSON.stringify(error)));

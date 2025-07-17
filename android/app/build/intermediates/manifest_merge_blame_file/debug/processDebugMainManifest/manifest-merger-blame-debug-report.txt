@@ -1,0 +1,776 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.barbiestudio.app"
+4    android:versionCode="19"
+5    android:versionName="1.19.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="35" />
+10
+11    <!-- Permissions -->
+12
+13    <uses-permission android:name="android.permission.INTERNET" />
+13-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:41:5-67
+13-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:41:22-64
+14
+15    <queries>
+15-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-11:15
+16        <intent>
+16-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-10:18
+17            <action android:name="android.support.customtabs.action.CustomTabsService" />
+17-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-90
+17-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:21-87
+18        </intent>
+19    </queries>
+20
+21    <uses-permission android:name="android.permission.USE_CREDENTIALS" /> <!-- Create a unique permission for your app and use it so only your app can receive your OneSignal messages. -->
+21-->[:codetrix-studio-capacitor-google-auth] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@codetrix-studio/capacitor-google-auth/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-74
+21-->[:codetrix-studio-capacitor-google-auth] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@codetrix-studio/capacitor-google-auth/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:22-71
+22    <permission
+22-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:10:5-12:47
+23        android:name="com.barbiestudio.app.permission.C2D_MESSAGE"
+23-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:11:9-63
+24        android:protectionLevel="signature" />
+24-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:12:9-44
+25
+26    <uses-permission android:name="com.barbiestudio.app.permission.C2D_MESSAGE" /> <!-- Required runtime permission to display notifications on Android 13 -->
+26-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:14:5-79
+26-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:14:22-76
+27    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Required, makes sure notifications are delivered on time. -->
+27-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:17:5-77
+27-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:17:22-74
+28    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- c2dm RECEIVE are basic requirements for push messages through Google's FCM -->
+28-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:18:5-68
+28-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:18:22-65
+29    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+29-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:19:5-82
+29-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:19:22-79
+30    <!--
+31 Required so the device vibrates on receiving a push notification.
+32         Vibration settings of the device still apply.
+33    -->
+34    <uses-permission android:name="android.permission.VIBRATE" />
+34-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:24:5-66
+34-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:24:22-63
+35    <!--
+36 Use to restore notifications the user hasn't interacted with.
+37     They could be missed notifications if the user reboots their device if this isn't in place.
+38    -->
+39    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- START: ShortcutBadger -->
+39-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:29:5-81
+39-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:29:22-78
+40    <!-- Samsung -->
+41    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+41-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:31:5-86
+41-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:31:22-83
+42    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" /> <!-- HTC -->
+42-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:32:5-87
+42-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:32:22-84
+43    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+43-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:33:5-81
+43-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:33:22-78
+44    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" /> <!-- Sony -->
+44-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:34:5-83
+44-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:34:22-80
+45    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+45-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:35:5-88
+45-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:35:22-85
+46    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" /> <!-- Apex -->
+46-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:36:5-92
+46-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:36:22-89
+47    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT" /> <!-- Solid -->
+47-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:37:5-84
+47-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:37:22-81
+48    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE" /> <!-- Huawei -->
+48-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:38:5-83
+48-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:38:22-80
+49    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+49-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:39:5-91
+49-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:39:22-88
+50    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+50-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:40:5-92
+50-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:40:22-89
+51    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" /> <!-- ZUK -->
+51-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:41:5-93
+51-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:41:22-90
+52    <uses-permission android:name="android.permission.READ_APP_BADGE" /> <!-- OPPO -->
+52-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:42:5-73
+52-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:42:22-70
+53    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+53-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:43:5-82
+53-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:43:22-79
+54    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" /> <!-- EvMe -->
+54-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:44:5-83
+54-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:44:22-80
+55    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
+55-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:45:5-88
+55-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:45:22-85
+56    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
+56-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:46:5-89
+56-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:46:22-86
+57    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+57-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:10:5-79
+57-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:10:22-76
+58    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+58-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:26:5-77
+58-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:26:22-74
+59
+60    <permission
+60-->[androidx.core:core:1.15.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5f51ed623ec66baebfa6a053fe8a8b2a/transformed/core-1.15.0/AndroidManifest.xml:22:5-24:47
+61        android:name="com.barbiestudio.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+61-->[androidx.core:core:1.15.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5f51ed623ec66baebfa6a053fe8a8b2a/transformed/core-1.15.0/AndroidManifest.xml:23:9-81
+62        android:protectionLevel="signature" />
+62-->[androidx.core:core:1.15.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5f51ed623ec66baebfa6a053fe8a8b2a/transformed/core-1.15.0/AndroidManifest.xml:24:9-44
+63
+64    <uses-permission android:name="com.barbiestudio.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+64-->[androidx.core:core:1.15.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5f51ed623ec66baebfa6a053fe8a8b2a/transformed/core-1.15.0/AndroidManifest.xml:26:5-97
+64-->[androidx.core:core:1.15.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5f51ed623ec66baebfa6a053fe8a8b2a/transformed/core-1.15.0/AndroidManifest.xml:26:22-94
+65
+66    <application
+66-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:3:5-37:19
+67        android:allowBackup="true"
+67-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:4:5-31
+68        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+68-->[androidx.core:core:1.15.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5f51ed623ec66baebfa6a053fe8a8b2a/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
+69        android:debuggable="true"
+70        android:extractNativeLibs="false"
+71        android:icon="@mipmap/ic_launcher"
+71-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:5:5-39
+72        android:label="@string/app_name"
+72-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:6:5-37
+73        android:roundIcon="@mipmap/ic_launcher_round"
+73-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:7:5-50
+74        android:supportsRtl="true"
+74-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:8:5-31
+75        android:testOnly="true"
+76        android:theme="@style/AppTheme" >
+76-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:9:5-36
+77        <activity
+77-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:11:9-23:20
+78            android:name="com.barbiestudio.app.MainActivity"
+78-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:13:7-35
+79            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"
+79-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:12:7-134
+80            android:exported="true"
+80-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:17:7-30
+81            android:label="@string/title_activity_main"
+81-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:14:7-50
+82            android:launchMode="singleTask"
+82-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:16:7-38
+83            android:theme="@style/AppTheme.NoActionBarLaunch" >
+83-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:15:7-56
+84            <intent-filter>
+84-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:19:13-22:29
+85                <action android:name="android.intent.action.MAIN" />
+85-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:20:17-69
+85-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:20:25-66
+86
+87                <category android:name="android.intent.category.LAUNCHER" />
+87-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:21:17-77
+87-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:21:27-74
+88            </intent-filter>
+89        </activity>
+90
+91        <provider
+92            android:name="androidx.core.content.FileProvider"
+92-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:26:7-56
+93            android:authorities="com.barbiestudio.app.fileprovider"
+93-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:27:7-58
+94            android:exported="false"
+94-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:28:7-31
+95            android:grantUriPermissions="true" >
+95-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:29:7-41
+96            <meta-data
+96-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:31:13-34:9
+97                android:name="android.support.FILE_PROVIDER_PATHS"
+97-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:32:9-59
+98                android:resource="@xml/file_paths" />
+98-->/home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/android/app/src/main/AndroidManifest.xml:33:9-43
+99        </provider>
+100
+101        <activity
+101-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:9-18:75
+102            android:name="com.capacitorjs.plugins.browser.BrowserControllerActivity"
+102-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:13-85
+103            android:exported="false"
+103-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:16:13-37
+104            android:launchMode="singleTask"
+104-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:17:13-44
+105            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+105-->[:capacitor-browser] /home/wai-yan-htet/Desktop/pj/nailSpa/Nail-App/node_modules/@capacitor/browser/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:18:13-72
+106
+107        <receiver
+107-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:49:9-60:20
+108            android:name="com.onesignal.notifications.receivers.FCMBroadcastReceiver"
+108-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:50:13-86
+109            android:exported="true"
+109-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:51:13-36
+110            android:permission="com.google.android.c2dm.permission.SEND" >
+110-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:52:13-73
+111
+112            <!-- High priority so OneSignal payloads can be filtered from other FCM receivers -->
+113            <intent-filter android:priority="999" >
+113-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:55:13-59:29
+113-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:55:28-50
+114                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+114-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:56:17-81
+114-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:56:25-78
+115
+116                <category android:name="com.barbiestudio.app" />
+116-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:58:17-61
+116-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:58:27-58
+117            </intent-filter>
+118        </receiver>
+119
+120        <service
+120-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:62:9-68:19
+121            android:name="com.onesignal.notifications.services.HmsMessageServiceOneSignal"
+121-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:63:13-91
+122            android:exported="false" >
+122-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:64:13-37
+123            <intent-filter>
+123-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:65:13-67:29
+124                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+124-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:66:17-81
+124-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:66:25-78
+125            </intent-filter>
+126        </service> <!-- CAUTION: OneSignal backend includes the activity name in the payload, modifying the name without sync may result in notification click not firing -->
+127        <activity
+127-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:69:9-77:20
+128            android:name="com.onesignal.NotificationOpenedActivityHMS"
+128-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:70:13-71
+129            android:exported="true"
+129-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:71:13-36
+130            android:noHistory="true"
+130-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:72:13-37
+131            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+131-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:73:13-72
+132            <intent-filter>
+132-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:74:13-76:29
+133                <action android:name="android.intent.action.VIEW" />
+133-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:75:17-69
+133-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:75:25-66
+134            </intent-filter>
+135        </activity>
+136
+137        <receiver
+137-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:79:9-81:39
+138            android:name="com.onesignal.notifications.receivers.NotificationDismissReceiver"
+138-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:80:13-93
+139            android:exported="true" />
+139-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:81:13-36
+140        <receiver
+140-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:82:9-89:20
+141            android:name="com.onesignal.notifications.receivers.BootUpReceiver"
+141-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:83:13-80
+142            android:exported="true" >
+142-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:84:13-36
+143            <intent-filter>
+143-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:85:13-88:29
+144                <action android:name="android.intent.action.BOOT_COMPLETED" />
+144-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:86:17-79
+144-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:86:25-76
+145                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+145-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:87:17-82
+145-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:87:25-79
+146            </intent-filter>
+147        </receiver>
+148        <receiver
+148-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:90:9-96:20
+149            android:name="com.onesignal.notifications.receivers.UpgradeReceiver"
+149-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:91:13-81
+150            android:exported="true" >
+150-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:92:13-36
+151            <intent-filter>
+151-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:93:13-95:29
+152                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+152-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:94:17-84
+152-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:94:25-81
+153            </intent-filter>
+154        </receiver>
+155
+156        <activity
+156-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:98:9-104:75
+157            android:name="com.onesignal.notifications.activities.NotificationOpenedActivity"
+157-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:99:13-93
+158            android:excludeFromRecents="true"
+158-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:100:13-46
+159            android:exported="true"
+159-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:101:13-36
+160            android:noHistory="true"
+160-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:102:13-37
+161            android:taskAffinity=""
+161-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:103:13-36
+162            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+162-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:104:13-72
+163        <activity
+163-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:105:9-110:75
+164            android:name="com.onesignal.notifications.activities.NotificationOpenedActivityAndroid22AndOlder"
+164-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:106:13-110
+165            android:excludeFromRecents="true"
+165-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:107:13-46
+166            android:exported="true"
+166-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:108:13-36
+167            android:noHistory="true"
+167-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:109:13-37
+168            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+168-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:110:13-72
+169
+170        <service
+170-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:13:9-16:72
+171            android:name="com.onesignal.core.services.SyncJobService"
+171-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:14:13-70
+172            android:exported="false"
+172-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:15:13-37
+173            android:permission="android.permission.BIND_JOB_SERVICE" />
+173-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:16:13-69
+174
+175        <activity
+175-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:18:9-21:75
+176            android:name="com.onesignal.core.activities.PermissionsActivity"
+176-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:19:13-77
+177            android:exported="false"
+177-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:20:13-37
+178            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+178-->[com.onesignal:core:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/3aae9e061ed1c6c05a917b1c00f516d0/transformed/core-5.1.29/AndroidManifest.xml:21:13-72
+179        <activity
+179-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:23:9-27:75
+180            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+180-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:24:13-93
+181            android:excludeFromRecents="true"
+181-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:25:13-46
+182            android:exported="false"
+182-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:26:13-37
+183            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+183-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:27:13-72
+184        <!--
+185            Service handling Google Sign-In user revocation. For apps that do not integrate with
+186            Google Sign-In, this service will never be started.
+187        -->
+188        <service
+188-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:33:9-37:51
+189            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+189-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:34:13-89
+190            android:exported="true"
+190-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:35:13-36
+191            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+191-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:36:13-107
+192            android:visibleToInstantApps="true" />
+192-->[com.google.android.gms:play-services-auth:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5ee9f356af7ade0d386b38fe5cf6881d/transformed/play-services-auth-18.1.0/AndroidManifest.xml:37:13-48
+193
+194        <receiver
+194-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:29:9-40:20
+195            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+195-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:30:13-78
+196            android:exported="true"
+196-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:31:13-36
+197            android:permission="com.google.android.c2dm.permission.SEND" >
+197-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:32:13-73
+198            <intent-filter>
+198-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:33:13-35:29
+199                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+199-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:56:17-81
+199-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:56:25-78
+200            </intent-filter>
+201
+202            <meta-data
+202-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:37:13-39:40
+203                android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED"
+203-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:38:17-92
+204                android:value="true" />
+204-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:39:17-37
+205        </receiver>
+206        <!--
+207             FirebaseMessagingService performs security checks at runtime,
+208             but set to not exported to explicitly avoid allowing another app to call it.
+209        -->
+210        <service
+210-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:46:9-53:19
+211            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+211-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:47:13-82
+212            android:directBootAware="true"
+212-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:48:13-43
+213            android:exported="false" >
+213-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:49:13-37
+214            <intent-filter android:priority="-500" >
+214-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:50:13-52:29
+214-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:50:28-51
+215                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+215-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:51:17-78
+215-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:51:25-75
+216            </intent-filter>
+217        </service>
+218        <service
+218-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:54:9-63:19
+219            android:name="com.google.firebase.components.ComponentDiscoveryService"
+219-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:55:13-84
+220            android:directBootAware="true"
+220-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:32:13-43
+221            android:exported="false" >
+221-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:56:13-37
+222            <meta-data
+222-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:57:13-59:85
+223                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar"
+223-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:58:17-122
+224                android:value="com.google.firebase.components.ComponentRegistrar" />
+224-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:59:17-82
+225            <meta-data
+225-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:60:13-62:85
+226                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+226-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:61:17-119
+227                android:value="com.google.firebase.components.ComponentRegistrar" />
+227-->[com.google.firebase:firebase-messaging:23.4.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/7131bae719e655a0e625d09f42ba02a8/transformed/firebase-messaging-23.4.0/AndroidManifest.xml:62:17-82
+228            <meta-data
+228-->[com.google.firebase:firebase-installations:17.2.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2d121929483b8667b8bd7f522bf5e661/transformed/firebase-installations-17.2.0/AndroidManifest.xml:15:13-17:85
+229                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+229-->[com.google.firebase:firebase-installations:17.2.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2d121929483b8667b8bd7f522bf5e661/transformed/firebase-installations-17.2.0/AndroidManifest.xml:16:17-130
+230                android:value="com.google.firebase.components.ComponentRegistrar" />
+230-->[com.google.firebase:firebase-installations:17.2.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2d121929483b8667b8bd7f522bf5e661/transformed/firebase-installations-17.2.0/AndroidManifest.xml:17:17-82
+231            <meta-data
+231-->[com.google.firebase:firebase-installations:17.2.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2d121929483b8667b8bd7f522bf5e661/transformed/firebase-installations-17.2.0/AndroidManifest.xml:18:13-20:85
+232                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+232-->[com.google.firebase:firebase-installations:17.2.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2d121929483b8667b8bd7f522bf5e661/transformed/firebase-installations-17.2.0/AndroidManifest.xml:19:17-127
+233                android:value="com.google.firebase.components.ComponentRegistrar" />
+233-->[com.google.firebase:firebase-installations:17.2.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2d121929483b8667b8bd7f522bf5e661/transformed/firebase-installations-17.2.0/AndroidManifest.xml:20:17-82
+234            <meta-data
+234-->[com.google.firebase:firebase-common-ktx:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/dd986953abf51f29e3d7851cf1acaed2/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:12:13-14:85
+235                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+235-->[com.google.firebase:firebase-common-ktx:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/dd986953abf51f29e3d7851cf1acaed2/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:13:17-116
+236                android:value="com.google.firebase.components.ComponentRegistrar" />
+236-->[com.google.firebase:firebase-common-ktx:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/dd986953abf51f29e3d7851cf1acaed2/transformed/firebase-common-ktx-20.4.2/AndroidManifest.xml:14:17-82
+237            <meta-data
+237-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:35:13-37:85
+238                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+238-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:36:17-109
+239                android:value="com.google.firebase.components.ComponentRegistrar" />
+239-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:37:17-82
+240            <meta-data
+240-->[com.google.firebase:firebase-datatransport:18.1.7] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/dc116ea7abd12849303732d4907f9879/transformed/firebase-datatransport-18.1.7/AndroidManifest.xml:27:13-29:85
+241                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+241-->[com.google.firebase:firebase-datatransport:18.1.7] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/dc116ea7abd12849303732d4907f9879/transformed/firebase-datatransport-18.1.7/AndroidManifest.xml:28:17-115
+242                android:value="com.google.firebase.components.ComponentRegistrar" />
+242-->[com.google.firebase:firebase-datatransport:18.1.7] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/dc116ea7abd12849303732d4907f9879/transformed/firebase-datatransport-18.1.7/AndroidManifest.xml:29:17-82
+243        </service>
+244
+245        <activity
+245-->[com.google.android.gms:play-services-base:18.0.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/b230ccc4c3071da754e2bd5ef15689db/transformed/play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
+246            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+246-->[com.google.android.gms:play-services-base:18.0.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/b230ccc4c3071da754e2bd5ef15689db/transformed/play-services-base-18.0.1/AndroidManifest.xml:20:19-85
+247            android:exported="false"
+247-->[com.google.android.gms:play-services-base:18.0.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/b230ccc4c3071da754e2bd5ef15689db/transformed/play-services-base-18.0.1/AndroidManifest.xml:22:19-43
+248            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+248-->[com.google.android.gms:play-services-base:18.0.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/b230ccc4c3071da754e2bd5ef15689db/transformed/play-services-base-18.0.1/AndroidManifest.xml:21:19-78
+249
+250        <provider
+250-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:23:9-28:39
+251            android:name="com.google.firebase.provider.FirebaseInitProvider"
+251-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:24:13-77
+252            android:authorities="com.barbiestudio.app.firebaseinitprovider"
+252-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:25:13-72
+253            android:directBootAware="true"
+253-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:26:13-43
+254            android:exported="false"
+254-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:27:13-37
+255            android:initOrder="100" />
+255-->[com.google.firebase:firebase-common:20.4.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/197680b94a71cce1b33ef41b2b1b298e/transformed/firebase-common-20.4.2/AndroidManifest.xml:28:13-36
+256        <provider
+256-->[androidx.emoji2:emoji2:1.3.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/455628e39230ce08b70f281b4ac99c3c/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+257            android:name="androidx.startup.InitializationProvider"
+257-->[androidx.emoji2:emoji2:1.3.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/455628e39230ce08b70f281b4ac99c3c/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+258            android:authorities="com.barbiestudio.app.androidx-startup"
+258-->[androidx.emoji2:emoji2:1.3.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/455628e39230ce08b70f281b4ac99c3c/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+259            android:exported="false" >
+259-->[androidx.emoji2:emoji2:1.3.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/455628e39230ce08b70f281b4ac99c3c/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+260            <meta-data
+260-->[androidx.emoji2:emoji2:1.3.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/455628e39230ce08b70f281b4ac99c3c/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+261                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+261-->[androidx.emoji2:emoji2:1.3.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/455628e39230ce08b70f281b4ac99c3c/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+262                android:value="androidx.startup" />
+262-->[androidx.emoji2:emoji2:1.3.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/455628e39230ce08b70f281b4ac99c3c/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+263            <meta-data
+263-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:34:13-36:52
+264                android:name="androidx.work.WorkManagerInitializer"
+264-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:35:17-68
+265                android:value="androidx.startup" />
+265-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:36:17-49
+266            <meta-data
+266-->[androidx.lifecycle:lifecycle-process:2.6.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2086035d7e747a32c2be40e6ed7f404e/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:29:13-31:52
+267                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+267-->[androidx.lifecycle:lifecycle-process:2.6.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2086035d7e747a32c2be40e6ed7f404e/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:30:17-78
+268                android:value="androidx.startup" />
+268-->[androidx.lifecycle:lifecycle-process:2.6.2] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2086035d7e747a32c2be40e6ed7f404e/transformed/lifecycle-process-2.6.2/AndroidManifest.xml:31:17-49
+269            <meta-data
+269-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+270                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+270-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+271                android:value="androidx.startup" />
+271-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+272        </provider>
+273
+274        <service
+274-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:39:9-45:35
+275            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+275-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:40:13-88
+276            android:directBootAware="false"
+276-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:41:13-44
+277            android:enabled="@bool/enable_system_alarm_service_default"
+277-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:42:13-72
+278            android:exported="false" />
+278-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:43:13-37
+279        <service
+279-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:46:9-52:35
+280            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+280-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:47:13-84
+281            android:directBootAware="false"
+281-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:48:13-44
+282            android:enabled="@bool/enable_system_job_service_default"
+282-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:49:13-70
+283            android:exported="true"
+283-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:50:13-36
+284            android:permission="android.permission.BIND_JOB_SERVICE" />
+284-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:51:13-69
+285        <service
+285-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:53:9-59:35
+286            android:name="androidx.work.impl.foreground.SystemForegroundService"
+286-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:54:13-81
+287            android:directBootAware="false"
+287-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:55:13-44
+288            android:enabled="@bool/enable_system_foreground_service_default"
+288-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:56:13-77
+289            android:exported="false" />
+289-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:57:13-37
+290
+291        <receiver
+291-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:61:9-66:35
+292            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+292-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:62:13-88
+293            android:directBootAware="false"
+293-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:63:13-44
+294            android:enabled="true"
+294-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:64:13-35
+295            android:exported="false" />
+295-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:65:13-37
+296        <receiver
+296-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:67:9-77:20
+297            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+297-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:68:13-106
+298            android:directBootAware="false"
+298-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:69:13-44
+299            android:enabled="false"
+299-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:70:13-36
+300            android:exported="false" >
+300-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:71:13-37
+301            <intent-filter>
+301-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:73:13-76:29
+302                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+302-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:74:17-87
+302-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:74:25-84
+303                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+303-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:75:17-90
+303-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:75:25-87
+304            </intent-filter>
+305        </receiver>
+306        <receiver
+306-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:78:9-88:20
+307            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+307-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:79:13-104
+308            android:directBootAware="false"
+308-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:80:13-44
+309            android:enabled="false"
+309-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:81:13-36
+310            android:exported="false" >
+310-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:82:13-37
+311            <intent-filter>
+311-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:84:13-87:29
+312                <action android:name="android.intent.action.BATTERY_OKAY" />
+312-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:85:17-77
+312-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:85:25-74
+313                <action android:name="android.intent.action.BATTERY_LOW" />
+313-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:86:17-76
+313-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:86:25-73
+314            </intent-filter>
+315        </receiver>
+316        <receiver
+316-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:89:9-99:20
+317            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+317-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:90:13-104
+318            android:directBootAware="false"
+318-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:91:13-44
+319            android:enabled="false"
+319-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:92:13-36
+320            android:exported="false" >
+320-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:93:13-37
+321            <intent-filter>
+321-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:95:13-98:29
+322                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+322-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:96:17-83
+322-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:96:25-80
+323                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+323-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:97:17-82
+323-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:97:25-79
+324            </intent-filter>
+325        </receiver>
+326        <receiver
+326-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:100:9-109:20
+327            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+327-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:101:13-103
+328            android:directBootAware="false"
+328-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:102:13-44
+329            android:enabled="false"
+329-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:103:13-36
+330            android:exported="false" >
+330-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:104:13-37
+331            <intent-filter>
+331-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:106:13-108:29
+332                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+332-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:107:17-79
+332-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:107:25-76
+333            </intent-filter>
+334        </receiver>
+335        <receiver
+335-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:110:9-121:20
+336            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+336-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:111:13-88
+337            android:directBootAware="false"
+337-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:112:13-44
+338            android:enabled="false"
+338-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:113:13-36
+339            android:exported="false" >
+339-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:114:13-37
+340            <intent-filter>
+340-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:116:13-120:29
+341                <action android:name="android.intent.action.BOOT_COMPLETED" />
+341-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:86:17-79
+341-->[com.onesignal:notifications:5.1.29] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/ec0c256efef7de0acdae90bc46b92ba0/transformed/notifications-5.1.29/AndroidManifest.xml:86:25-76
+342                <action android:name="android.intent.action.TIME_SET" />
+342-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:118:17-73
+342-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:118:25-70
+343                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+343-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:119:17-81
+343-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:119:25-78
+344            </intent-filter>
+345        </receiver>
+346        <receiver
+346-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:122:9-131:20
+347            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+347-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:123:13-99
+348            android:directBootAware="false"
+348-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:124:13-44
+349            android:enabled="@bool/enable_system_alarm_service_default"
+349-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:125:13-72
+350            android:exported="false" >
+350-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:126:13-37
+351            <intent-filter>
+351-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:128:13-130:29
+352                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+352-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:129:17-98
+352-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:129:25-95
+353            </intent-filter>
+354        </receiver>
+355        <receiver
+355-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:132:9-142:20
+356            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+356-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:133:13-78
+357            android:directBootAware="false"
+357-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:134:13-44
+358            android:enabled="true"
+358-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:135:13-35
+359            android:exported="true"
+359-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:136:13-36
+360            android:permission="android.permission.DUMP" >
+360-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:137:13-57
+361            <intent-filter>
+361-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:139:13-141:29
+362                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+362-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:140:17-88
+362-->[androidx.work:work-runtime:2.8.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/c569202273c21479f1315d000b46f5d5/transformed/work-runtime-2.8.1/AndroidManifest.xml:140:25-85
+363            </intent-filter>
+364        </receiver>
+365
+366        <meta-data
+366-->[com.google.android.gms:play-services-basement:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2f5e3337a7cddd0c544b7acea12683f4/transformed/play-services-basement-18.1.0/AndroidManifest.xml:21:9-23:69
+367            android:name="com.google.android.gms.version"
+367-->[com.google.android.gms:play-services-basement:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2f5e3337a7cddd0c544b7acea12683f4/transformed/play-services-basement-18.1.0/AndroidManifest.xml:22:13-58
+368            android:value="@integer/google_play_services_version" />
+368-->[com.google.android.gms:play-services-basement:18.1.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/2f5e3337a7cddd0c544b7acea12683f4/transformed/play-services-basement-18.1.0/AndroidManifest.xml:23:13-66
+369
+370        <service
+370-->[androidx.room:room-runtime:2.5.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/22ca111fcb639f5e14d95fe16d3d7e42/transformed/room-runtime-2.5.0/AndroidManifest.xml:24:9-28:63
+371            android:name="androidx.room.MultiInstanceInvalidationService"
+371-->[androidx.room:room-runtime:2.5.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/22ca111fcb639f5e14d95fe16d3d7e42/transformed/room-runtime-2.5.0/AndroidManifest.xml:25:13-74
+372            android:directBootAware="true"
+372-->[androidx.room:room-runtime:2.5.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/22ca111fcb639f5e14d95fe16d3d7e42/transformed/room-runtime-2.5.0/AndroidManifest.xml:26:13-43
+373            android:exported="false" />
+373-->[androidx.room:room-runtime:2.5.0] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/22ca111fcb639f5e14d95fe16d3d7e42/transformed/room-runtime-2.5.0/AndroidManifest.xml:27:13-37
+374
+375        <receiver
+375-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+376            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+376-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+377            android:directBootAware="false"
+377-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+378            android:enabled="true"
+378-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+379            android:exported="true"
+379-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+380            android:permission="android.permission.DUMP" >
+380-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+381            <intent-filter>
+381-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+382                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+382-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+382-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+383            </intent-filter>
+384            <intent-filter>
+384-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+385                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+385-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+385-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+386            </intent-filter>
+387            <intent-filter>
+387-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+388                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+388-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+388-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+389            </intent-filter>
+390            <intent-filter>
+390-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+391                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+391-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+391-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/0f3d68271fd414f74f11a6a9c308b287/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+392            </intent-filter>
+393        </receiver>
+394
+395        <service
+395-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/6623d766d878b79b1f5dea0a1a7f08b2/transformed/transport-backend-cct-3.1.8/AndroidManifest.xml:28:9-34:19
+396            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+396-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/6623d766d878b79b1f5dea0a1a7f08b2/transformed/transport-backend-cct-3.1.8/AndroidManifest.xml:29:13-103
+397            android:exported="false" >
+397-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/6623d766d878b79b1f5dea0a1a7f08b2/transformed/transport-backend-cct-3.1.8/AndroidManifest.xml:30:13-37
+398            <meta-data
+398-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/6623d766d878b79b1f5dea0a1a7f08b2/transformed/transport-backend-cct-3.1.8/AndroidManifest.xml:31:13-33:39
+399                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+399-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/6623d766d878b79b1f5dea0a1a7f08b2/transformed/transport-backend-cct-3.1.8/AndroidManifest.xml:32:17-94
+400                android:value="cct" />
+400-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/6623d766d878b79b1f5dea0a1a7f08b2/transformed/transport-backend-cct-3.1.8/AndroidManifest.xml:33:17-36
+401        </service>
+402        <service
+402-->[com.google.android.datatransport:transport-runtime:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5014b3ad63f7cceb01f18af1cfbd5a4e/transformed/transport-runtime-3.1.8/AndroidManifest.xml:26:9-30:19
+403            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+403-->[com.google.android.datatransport:transport-runtime:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5014b3ad63f7cceb01f18af1cfbd5a4e/transformed/transport-runtime-3.1.8/AndroidManifest.xml:27:13-117
+404            android:exported="false"
+404-->[com.google.android.datatransport:transport-runtime:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5014b3ad63f7cceb01f18af1cfbd5a4e/transformed/transport-runtime-3.1.8/AndroidManifest.xml:28:13-37
+405            android:permission="android.permission.BIND_JOB_SERVICE" >
+405-->[com.google.android.datatransport:transport-runtime:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5014b3ad63f7cceb01f18af1cfbd5a4e/transformed/transport-runtime-3.1.8/AndroidManifest.xml:29:13-69
+406        </service>
+407
+408        <receiver
+408-->[com.google.android.datatransport:transport-runtime:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5014b3ad63f7cceb01f18af1cfbd5a4e/transformed/transport-runtime-3.1.8/AndroidManifest.xml:32:9-34:40
+409            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+409-->[com.google.android.datatransport:transport-runtime:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5014b3ad63f7cceb01f18af1cfbd5a4e/transformed/transport-runtime-3.1.8/AndroidManifest.xml:33:13-132
+410            android:exported="false" />
+410-->[com.google.android.datatransport:transport-runtime:3.1.8] /home/wai-yan-htet/.gradle/caches/8.11.1/transforms/5014b3ad63f7cceb01f18af1cfbd5a4e/transformed/transport-runtime-3.1.8/AndroidManifest.xml:34:13-37
+411    </application>
+412
+413</manifest>

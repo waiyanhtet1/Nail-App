@@ -47,7 +47,7 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const { playerId } = useAppSelector((state) => state.token);
+  const { playerId, subsId } = useAppSelector((state) => state.token);
 
   const {
     register,
@@ -69,6 +69,7 @@ const LoginScreen = () => {
         username: data.userName,
         password: data.password,
         playerId: playerId,
+        subsId: subsId,
       });
 
       console.log(response.data);
@@ -135,6 +136,7 @@ const LoginScreen = () => {
         const response = await axios.post(`${BASE_URL}/login/google-sso`, {
           serverAuthCode: serverAuthCode,
           playerId: playerId,
+          subsId: subsId,
         });
 
         localStorage.setItem("userInfo", encryptData(response.data));
@@ -214,6 +216,7 @@ const LoginScreen = () => {
           username: email || `${appleUserId}@gmail.com`,
           password: appleUserId, // ✅ Use sub as password
           playerId: playerId,
+          subsId: subsId,
           isIosUser: true,
         });
 
