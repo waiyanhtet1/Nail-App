@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SplashScreen } from "@capacitor/splash-screen";
 import "@codetrix-studio/capacitor-google-auth"; // only needed for web
 import { setupIonicReact } from "@ionic/react";
@@ -99,35 +98,56 @@ export default function Wrapper() {
   useEffect(() => {
     const initOneSignal = async () => {
       try {
-        // Set verbose debug logs
+        // Set debug logs
         OneSignal.Debug.setLogLevel(6);
 
-        // Initialize OneSignal
-        OneSignal.initialize("624a863f-5157-4806-8b92-e0b5bc351b76");
+        // Initialize with your OneSignal App ID
+        await OneSignal.initialize("624a863f-5157-4806-8b92-e0b5bc351b76");
 
-        // Request push permission
-        // const permissionGranted =
-        await OneSignal.Notifications.requestPermission(true);
-        // console.log("Permission granted:", permissionGranted);
-        // alert("Permission granted:" + JSON.stringify(permissionGranted));
+        // Request permission
+        const permission = await OneSignal.Notifications.requestPermission(
+          true
+        );
+        console.log("🔔 Notification permission:", permission);
 
-        // get playerId or subscription id
-        await OneSignal.User.getOnesignalId()
-          .then((playerId) => {
-            console.log("🎯 Player ID: " + playerId);
-            dispatch(setToken(playerId as string));
-          })
-          .catch((err) => alert(JSON.stringify(err)));
+        // Try getting the Player ID directly
+        const playerId = await OneSignal.User.getOnesignalId();
+        const subscriptionId = OneSignal.User.pushSubscription?.id;
 
-        // get subscription id
-        const subscriptionId = await OneSignal.User.pushSubscription.id;
-        console.log("subscriptionId", subscriptionId);
-        dispatch(setSubId(subscriptionId as string));
-      } catch (error: any) {
+        if (playerId) {
+          console.log("🎯 Player ID:", playerId);
+          dispatch(setToken(playerId));
+        } else {
+          console.warn("❌ Player ID not yet available");
+        }
+
+        if (subscriptionId) {
+          console.log("📮 Subscription ID:", subscriptionId);
+          dispatch(setSubId(subscriptionId));
+        } else {
+          console.warn("❌ Subscription ID not yet available");
+        }
+
+        // Extra delay fallback (3 seconds later)
+        setTimeout(async () => {
+          const delayedPlayerId = await OneSignal.User.getOnesignalId();
+          const delayedSubId = OneSignal.User.pushSubscription?.id;
+
+          if (delayedPlayerId) {
+            console.log("⏱ Delayed Player ID:", delayedPlayerId);
+            dispatch(setToken(delayedPlayerId));
+          }
+
+          if (delayedSubId) {
+            console.log("⏱ Delayed Subscription ID:", delayedSubId);
+            dispatch(setSubId(delayedSubId));
+          }
+        }, 3000);
+      } catch (error) {
         console.error("🔥 OneSignal init error:", error);
-        // alert("OneSignal error: " + (error?.message || JSON.stringify(error)));
       }
     };
+
     initOneSignal();
   }, [dispatch]);
 
