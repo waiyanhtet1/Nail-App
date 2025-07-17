@@ -37,7 +37,7 @@ const LoginScreen = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { playerId } = useAppSelector((state) => state.token);
+  const { playerId, subsId } = useAppSelector((state) => state.token);
 
   const {
     register,
@@ -59,6 +59,7 @@ const LoginScreen = () => {
         username: data.userName,
         password: data.password,
         playerId: playerId,
+        subsId: subsId,
       });
 
       console.log(response.data);
@@ -142,6 +143,7 @@ const LoginScreen = () => {
           username: user.email,
           password: user.uid,
           playerId: playerId,
+          subsId: subsId,
         });
 
         localStorage.setItem("userInfo", encryptData(response.data));
@@ -165,64 +167,6 @@ const LoginScreen = () => {
       }
     }
   };
-
-  // const signInWithFacebookNative = async (): Promise<UserCredential> => {
-  //   return new Promise((resolve, reject) => {
-  //     facebookConnectPlugin.login(
-  //       ["public_profile", "email"],
-  //       async (response: any) => {
-  //         if (response.authResponse) {
-  //           const { accessToken } = response.authResponse;
-
-  //           const credential = FacebookAuthProvider.credential(accessToken);
-  //           try {
-  //             const userCredential = await signInWithCredential(
-  //               auth,
-  //               credential
-  //             );
-  //             resolve(userCredential); // now properly typed
-  //           } catch (firebaseError) {
-  //             reject(firebaseError);
-  //           }
-  //         } else {
-  //           reject("No auth response");
-  //         }
-  //       },
-  //       (error: any) => reject(error)
-  //     );
-  //   });
-  // };
-
-  // const signInWithFacebookWeb = async () => {
-  //   const provider = new FacebookAuthProvider();
-  //   const userCredential = await signInWithPopup(auth, provider);
-  //   return userCredential;
-  // };
-
-  // const handleFacebookRegister = async () => {
-  //   try {
-  //     const userCredential = Capacitor.isNativePlatform()
-  //       ? await signInWithFacebookNative()
-  //       : await signInWithFacebookWeb();
-
-  //     const user = userCredential.user;
-
-  //     const response = await axios.post(`${BASE_URL}/login`, {
-  //       username: user.email,
-  //       password: user.uid,
-  //       playerId: playerId,
-  //     });
-
-  //     localStorage.setItem("userInfo", encryptData(response.data.user));
-  //     navigate("/");
-  //     showToast("Login success");
-  //     toast.success("Login success");
-  //   } catch (err) {
-  //     console.error("Facebook login error", err);
-  //     showToast("Facebook Login Fail!");
-  //     toast.error("Facebook Login Fail");
-  //   }
-  // };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen pt-15">
