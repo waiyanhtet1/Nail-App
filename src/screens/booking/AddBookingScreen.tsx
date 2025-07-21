@@ -137,12 +137,12 @@ const AddBookingScreen = () => {
       </div>
 
       {isLoading && <p className="text-center">Loading Info...</p>}
-      <div className="flex flex-col gap-5 p-5 overflow-y-scroll h-[calc(100vh-250px)] no-scrollbar">
+      <div className="flex flex-col gap-5 p-5 overflow-y-scroll no-scrollbar">
         {/* artist list */}
         <p className="text-secondary text-lg font-semibold">
           Choose Nail Artists
         </p>
-        <div className="flex items-center overflow-x-scroll min-h-max no-scrollbar">
+        <div className="flex items-center overflow-x-scroll no-scrollbar">
           {serviceDetail?.stylists &&
             serviceDetail.stylists.map((item) => (
               <SelectArtistSection
