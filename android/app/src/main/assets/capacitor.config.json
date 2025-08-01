@@ -4,19 +4,15 @@
 	"webDir": "dist",
 	"plugins": {
 		"SplashScreen": {
-			"launchAutoHide": true,
-			"splashFullScreen": false,
-			"splashImmersive": false,
-			"androidScaleType": "CENTER_CROP",
-			"showSpinner": false
+			"launchAutoHide": false,
+			"showSplashScreen": false
 		},
-		"GoogleAuth": {
-			"scopes": [
-				"profile",
-				"email"
-			],
-			"serverClientId": "103072032496-tfrc7vm80sub2t3mrdjkr73sfcihhiil.apps.googleusercontent.com",
-			"forceCodeForRefreshToken": true
+		"SocialLogin": {
+			"google": {
+				"webClientId": "785555693645-nkum8i6hg77k0ms3gbvam2ura0618e2d.apps.googleusercontent.com",
+				"iOSClientId": "785555693645-n4aj6urtbk07jfctdjoenac20k6l2l46.apps.googleusercontent.com",
+				"mode": "offline"
+			}
 		}
 	}
 }

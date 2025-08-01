@@ -63,7 +63,7 @@
     module.exports.metadata =
     // TOP OF METADATA
     {
-      "onesignal-cordova-plugin": "5.2.11"
+      "onesignal-cordova-plugin": "5.2.13"
     };
     // BOTTOM OF METADATA
     });
